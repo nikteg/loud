@@ -1,0 +1,33 @@
+{
+  "name": "loud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "reactpack --dev src/index.js",
+    "build": "reactpack --clean src/index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "eslint": "^3.0.1",
+    "eslint-config-airbnb": "^9.0.1",
+    "eslint-plugin-import": "^1.10.2",
+    "eslint-plugin-jsx-a11y": "^2.0.0",
+    "eslint-plugin-react": "^5.2.2",
+    "reactpack": "^0.7.3",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.1.1"
+  },
+  "dependencies": {
+    "history": "^2.0.0",
+    "normalize.css": "^4.2.0",
+    "react": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-redux": "^4.4.5",
+    "react-router": "^2.5.2",
+    "react-router-redux": "^4.0.5",
+    "react-youtube": "^7.0.1",
+    "redux": "^3.5.2"
+  }
+}
