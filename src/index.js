@@ -1,37 +1,40 @@
 import React from "react";
 import { render } from "react-dom";
 
-import { combineReducers, applyMiddleware, compose, createStore } from "redux";
-import { syncHistoryWithStore, routerReducer, routerMiddleware, push } from "react-router-redux";
+import { applyMiddleware, compose, createStore } from "redux";
+import { syncHistoryWithStore, routerMiddleware } from "react-router-redux";
 import { Router, Route, browserHistory } from "react-router";
-import { Provider } from "react-redux";
+import { Provider, connect } from "react-redux";
+import thunk from "redux-thunk";
 
-import YouTube from "react-youtube";
+import Footer from "./components/Footer/Footer";
+import { videoLoad } from "./reducers/Video";
 
-import Player from "./components/Player/Player";
+import reducers from "./reducers";
 
 require("normalize.css");
 require("./style/global.styl");
 
-const Example1 = () => <YouTube videoId="2g811Eo7K8U" />;
-const Example2 = () => <YouTube videoId="BdPosNHFWk4" />;
-
-const App = (props) => <div className="app">{props.children}</div>;
-
-const routes = (
-  <Route path="/" component={Example1}>
-    <Route path="lol" component={Example2} />
-  </Route>
+const App = (props) => (
+  <div className="wrapper">
+    <div className="Header"></div>
+    {props.children}
+    <Footer />
+  </div>
 );
 
-const reducer = combineReducers({
-  routing: routerReducer,
-  //app: rootReducer, //you can combine all your other reducers under a single namespace like so
-});
+const Preview = connect((state, ownProps) => ({
+  id: ownProps.params.id,
+}), { videoLoad })((props) => (
+  <div className="Preview">
+    Preview for {props.id}.
+    Wanna play? Press <a onClick={() => props.videoLoad(props.id)}>here</a>
+  </div>
+));
 
 function configureStore(initialState) {
   const composers = [
-    applyMiddleware(routerMiddleware(browserHistory)),
+    applyMiddleware(thunk, routerMiddleware(browserHistory)),
   ];
 
   if (window.devToolsExtension) {
@@ -41,12 +44,14 @@ function configureStore(initialState) {
 
   const store = compose(
     ...composers
-  )(createStore)(reducer, initialState);
+  )(createStore)(reducers, initialState);
 
   return store;
 }
 
 const store = configureStore();
+
+window.leif = store;
 
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -54,8 +59,7 @@ const root = (
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}>
-        <Route path="player/:id" component={Player} />
-        <Route path="bar" component={Example2} />
+        <Route path=":id" component={Preview} />
       </Route>
     </Router>
   </Provider>

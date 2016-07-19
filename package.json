@@ -29,6 +29,8 @@
     "react-router": "^2.5.2",
     "react-router-redux": "^4.0.5",
     "react-youtube": "^7.0.1",
-    "redux": "^3.5.2"
+    "redux": "^3.5.2",
+    "redux-actions": "^0.10.1",
+    "redux-thunk": "^2.1.0"
   }
 }
