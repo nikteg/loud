@@ -8,6 +8,13 @@ require("./Player.styl");
 
 const Player = (props) => (
   <YouTube
+    opts={{
+      playerVars: {
+        controls: 0,
+        rel: 0,
+        showinfo: 0,
+      },
+    }}
     className="Player"
     videoId={props.id}
     onReady={(e) => props.videoInit(e.target)}

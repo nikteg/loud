@@ -1,6 +1,48 @@
 .Footer
-  position: fixed
-  bottom: 0
-  left: 0
-  right: 0
-  background: red
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #37474F;
+  display: flex;
+  color: white;
+
+.Controls
+  display: flex;
+  width: 100%;
+
+  .Controls-buttons
+    display: flex;
+    padding: 8px;
+    align-items: center;
+
+    .Button
+      width: 48px;
+      height: 48px;
+      fill: white;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 0;
+
+  .Controls-info
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    flex: 1;
+    justify-content: center;
+
+    .Controls-info-title
+      font-size: 1.5rem;
+
+    .Controls-info-progress
+      margin-top: 8px;
+      height: 16px;
+      border-radius: 4px;
+      background: #263238;
+
+      .Controls-info-progress-bar
+        background: #FF5722;
+        height: 100%;
+        border-radius: 4px;

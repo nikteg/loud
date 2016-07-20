@@ -3,12 +3,12 @@ import { render } from "react-dom";
 
 import { applyMiddleware, compose, createStore } from "redux";
 import { syncHistoryWithStore, routerMiddleware } from "react-router-redux";
-import { Router, Route, browserHistory } from "react-router";
+import { Router, Route, IndexRoute, browserHistory, Link } from "react-router";
 import { Provider, connect } from "react-redux";
 import thunk from "redux-thunk";
 
 import Footer from "./components/Footer/Footer";
-import { videoLoad } from "./reducers/Video";
+import { videoLoad, videoProgressTick } from "./reducers/Video";
 
 import reducers from "./reducers";
 
@@ -18,7 +18,7 @@ require("./style/global.styl");
 const App = (props) => (
   <div className="wrapper">
     <div className="Header"></div>
-    {props.children}
+      {props.children}
     <Footer />
   </div>
 );
@@ -32,6 +32,8 @@ const Preview = connect((state, ownProps) => ({
   </div>
 ));
 
+const Welcome = (props) => <div className="Welcome">Welcome to Loud. <Link to="/klIWLlJXplY">Test this</Link></div>;
+
 function configureStore(initialState) {
   const composers = [
     applyMiddleware(thunk, routerMiddleware(browserHistory)),
@@ -39,7 +41,16 @@ function configureStore(initialState) {
 
   if (window.devToolsExtension) {
     // https://github.com/zalmoxisus/redux-devtools-extension
-    composers.push(window.devToolsExtension());
+    composers.push(window.devToolsExtension({
+      // https://github.com/zalmoxisus/redux-devtools-extension/issues/159
+      statesFilter: state => {
+        if (state.Video.player) {
+          return { ...state, Video: { ...state.Video, player: "<<PLAYER>>" } };
+        }
+
+        return state;
+      },
+    }));
   }
 
   const store = compose(
@@ -51,7 +62,7 @@ function configureStore(initialState) {
 
 const store = configureStore();
 
-window.leif = store;
+setInterval(() => videoProgressTick()(store.dispatch, store.getState), 500);
 
 const history = syncHistoryWithStore(browserHistory, store);
 
@@ -59,6 +70,7 @@ const root = (
   <Provider store={store}>
     <Router history={history}>
       <Route path="/" component={App}>
+        <IndexRoute component={Welcome} />
         <Route path=":id" component={Preview} />
       </Route>
     </Router>
