@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "reactpack --dev src/index.js",
     "build": "reactpack --clean src/index.js",
-    "deploy": "git checkout gh-pages; git merge master; reactpack --clean src/index.js; git add dist; git commit -m \"dist subtree\"; git subtree push --prefix dist origin gh-pages; git checkout master"
+    "deploy": "git checkout gh-pages; git merge master; reactpack --clean --optimize src/index.js; git add dist; git commit -m \"dist subtree\"; git subtree push -f --prefix dist origin gh-pages; git checkout master"
   },
   "author": "",
   "license": "ISC",
