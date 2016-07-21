@@ -4,7 +4,7 @@ import { Link } from "react-router";
 
 import { videoLoad } from "../../reducers/Video";
 
-require("./List.styl");
+import "./List.styl";
 
 const playlist = {
   test: [

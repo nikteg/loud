@@ -5,7 +5,7 @@ import cx from "classnames";
 
 import YouTube from "react-youtube";
 
-require("./Video.styl");
+import "./Video.styl";
 
 const Video = (props) => (
   <div className={cx("Video", { none: !props.show })}>

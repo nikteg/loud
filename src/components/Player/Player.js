@@ -6,7 +6,7 @@ import VideoButton from "./VideoButton";
 import ProgressBar, { CurrentTime, Duration } from "./ProgressBar";
 import VolumeButton from "./VolumeButton";
 
-require("./Player.styl");
+import "./Player.styl";
 
 const PrevButton = (props) => (
   <button className="Controls-buttons-button">

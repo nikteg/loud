@@ -1,6 +1,6 @@
 import React from "react";
 
-require("./Welcome.styl");
+import "./Welcome.styl";
 
 const Welcome = (props) => (
   <div className="Welcome">

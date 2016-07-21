@@ -16,8 +16,8 @@ import { videoProgressTick, videoPlayPause } from "./reducers/Video";
 
 import reducers from "./reducers";
 
-require("normalize.css");
-require("./style/global.styl");
+import "normalize.css";
+import "./style/global.styl";
 
 function configureStore(initialState) {
   const composers = [

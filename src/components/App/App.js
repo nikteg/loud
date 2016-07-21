@@ -4,7 +4,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import Player from "../Player/Player";
 import Video from "../Video/Video";
 
-require("./App.styl");
+import "./App.styl";
 
 const App = (props) => (
   <div className="App">
