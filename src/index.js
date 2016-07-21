@@ -3,7 +3,7 @@ import { render } from "react-dom";
 
 import { applyMiddleware, compose, createStore } from "redux";
 import { syncHistoryWithStore, routerMiddleware } from "react-router-redux";
-import { Router, Route, IndexRoute, browserHistory } from "react-router";
+import { Router, Route, IndexRoute, hashHistory } from "react-router";
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 
@@ -21,7 +21,7 @@ require("./style/global.styl");
 
 function configureStore(initialState) {
   const composers = [
-    applyMiddleware(thunk, routerMiddleware(browserHistory)),
+    applyMiddleware(thunk, routerMiddleware(hashHistory)),
   ];
 
   if (window.devToolsExtension) {
@@ -58,7 +58,7 @@ window.addEventListener("keydown", e => {
   }
 });
 
-const history = syncHistoryWithStore(browserHistory, store);
+const history = syncHistoryWithStore(hashHistory, store);
 
 const root = (
   <Provider store={store}>
