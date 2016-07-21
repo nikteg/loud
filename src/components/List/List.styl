@@ -1,0 +1,32 @@
+@require "../../style/variables"
+
+.List
+  padding: 8px;
+
+  ul
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    .ListItem
+      padding: 8px;
+      display: flex;
+      align-items: center;
+
+      .ListItem-button
+        display: block;
+        width: 32px;
+        height: 32px;
+        margin-right: 8px;
+        border: none;
+        background: accent-color;
+        border-radius: 50%;
+        padding: 8px;
+        cursor: pointer;
+        fill: white;
+        outline: none;
+
+      .ListItem-title
+        flex: 1;
+        color: white;
+        text-decoration: none;

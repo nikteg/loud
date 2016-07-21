@@ -84,6 +84,7 @@ export const videoSeekTo = factor => withPlayer((player, dispatch, getState) => 
   const seconds = getState().Video.duration * factor;
 
   player.seekTo(seconds);
+  dispatch(videoProgress(seconds));
 });
 
 export const videoMuteToggle = () => withPlayer((player, dispatch, getState) => {
