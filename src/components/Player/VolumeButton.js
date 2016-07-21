@@ -11,6 +11,7 @@ const volumeIconStates = {
   MUTE: "MUTE",
 };
 
+/* eslint-disable max-len */
 const volumeIcons = {
   [volumeIconStates.HIGH]: (
     <svg viewBox="0 0 17 16">
@@ -37,6 +38,7 @@ const volumeIcons = {
     </svg>
   ),
 };
+/* eslint-enable max-len */
 
 class Volume extends React.Component {
 
@@ -64,7 +66,7 @@ class Volume extends React.Component {
     return (
       <div className="Volume">
         <div className="Volume-popup">
-          <div className="Volume-popup-slider" onClick={this.setVolume} ref={node => this.volumeSlider = node}>
+          <div className="Volume-popup-slider" onClick={this.setVolume} ref={node => (this.volumeSlider = node)}>
             <div className="Volume-popup-slider-fill" style={{ height: `${this.props.percent}%` }} />
           </div>
         </div>

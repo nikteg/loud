@@ -9,7 +9,7 @@ import VolumeButton from "./VolumeButton";
 require("./Player.styl");
 
 const PrevButton = (props) => (
-  <button onClick={props.onClick} className="Controls-buttons-button">
+  <button className="Controls-buttons-button">
     <svg viewBox="0 0 16 16">
       <path d="M4 14v-12h2v5.5l5-5v11l-5-5v5.5z" />
     </svg>
@@ -17,7 +17,7 @@ const PrevButton = (props) => (
 );
 
 const NextButton = (props) => (
-  <button onClick={props.onClick} className="Controls-buttons-button">
+  <button className="Controls-buttons-button">
     <svg viewBox="0 0 16 16">
       <path d="M12 2v12h-2v-5.5l-5 5v-11l5 5v-5.5z" />
     </svg>
