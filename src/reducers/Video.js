@@ -7,6 +7,7 @@ export const videoDuration = createAction("VIDEO_DURATION", duration => duration
 export const videoMuted = createAction("VIDEO_MUTED", muted => muted);
 export const videoVolume = createAction("VIDEO_VOLUME", volume => volume);
 export const videoLoaded = createAction("VIDEO_LOADED", id => id);
+export const videoPopupToggle = createAction("VIDEO_POPUP");
 
 function withPlayer(fn) {
   return (dispatch, getState) => {
@@ -36,7 +37,7 @@ export const videoPlayPause = () => withPlayer((player, dispatch, getState) => {
     player.pauseVideo();
   }
 
-  if (state.Video.state === "pause") {
+  if (state.Video.state === "pause" || state.Video.state === "end") {
     player.playVideo();
   }
 });
@@ -127,6 +128,10 @@ export default handleActions({
     ...state,
     id: action.payload,
   }),
+  [videoPopupToggle]: (state, action) => ({
+    ...state,
+    popup: !state.popup,
+  }),
 }, {
   id: null,
   state: null,
@@ -134,4 +139,5 @@ export default handleActions({
   duration: 0,
   muted: false,
   volume: 100,
+  popup: false,
 });
