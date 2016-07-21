@@ -21,6 +21,7 @@
     "stylus-loader": "^2.1.1"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "history": "^2.0.0",
     "normalize.css": "^4.2.0",
     "react": "^15.2.1",

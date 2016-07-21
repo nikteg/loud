@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { videoInit, videoState } from "../../reducers/Video";
+import { videoInit, videoStatePlay, videoStatePause, videoStateEnd, videoStateError } from "../../reducers/Video";
 
 import YouTube from "react-youtube";
 
@@ -18,11 +18,11 @@ const Player = (props) => (
     className="Player"
     videoId={props.id}
     onReady={(e) => props.videoInit(e.target)}
-    onPlay={() => props.videoState("play")}
-    onPause={() => props.videoState("pause")}
-    onEnd={() => props.videoState("end")}
-    onError={() => props.videoState("error")}
+    onPlay={props.videoStatePlay}
+    onPause={props.videoStatePause}
+    onEnd={props.videoStateEnd}
+    onError={props.videoStateError}
   />
 );
 
-export default connect(null, { videoInit, videoState })(Player);
+export default connect(null, { videoInit, videoStatePlay, videoStatePause, videoStateEnd, videoStateError })(Player);
