@@ -1,4 +1,5 @@
 import { createAction, handleActions } from "redux-actions";
+import isEqual from "lodash/isEqual";
 
 export const videoInit = createAction("VIDEO_INIT", player => player);
 export const videoState = createAction("VIDEO_STATE", state => state);
@@ -7,7 +8,10 @@ export const videoDuration = createAction("VIDEO_DURATION", duration => duration
 export const videoMuted = createAction("VIDEO_MUTED", muted => muted);
 export const videoVolume = createAction("VIDEO_VOLUME", volume => volume);
 export const videoLoaded = createAction("VIDEO_LOADED", id => id);
-export const videoPopupToggle = createAction("VIDEO_POPUP");
+export const videoListLoaded = createAction("VIDEO_LIST_LOADED", ids => ids);
+export const videoListIndex = createAction("VIDEO_LIST_INDEX", index => index);
+export const videoPopupToggle = createAction("VIDEO_POPUP", show => show);
+export const videoError = createAction("VIDEO_ERROR", code => code);
 
 function withPlayer(fn) {
   return (dispatch, getState) => {
@@ -50,10 +54,36 @@ export const videoLoad = (id, playPause = false) => withPlayer((player, dispatch
   }
 
   player.loadVideoById(id);
-  // TODO: Temporary for my ears sake.
-  dispatch(videoVolumeSet(20));
+  dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
   dispatch(videoLoaded(id));
   player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
+});
+
+export const videoListLoad = (ids, index = 0) => withPlayer((player, dispatch, getState) => {
+  if (isEqual(getState().Video.playlist, ids)) {
+    if (getState().Video.playlistIndex === index) {
+      return dispatch(videoPlayPause());
+    }
+
+    return player.playVideoAt(index);
+  }
+
+  player.loadPlaylist(ids, index);
+
+  dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
+  dispatch(videoListLoaded(ids));
+  dispatch(videoListIndex(index));
+  // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
+});
+
+export const videoListNext = () => withPlayer((player, dispatch, getState) => {
+  player.nextVideo();
+  dispatch(videoListIndex(Math.min(getState().Video.playlist.length - 1, getState().Video.playlistIndex + 1)));
+});
+
+export const videoListPrev = () => withPlayer((player, dispatch, getState) => {
+  player.previousVideo();
+  dispatch(videoListIndex(Math.max(0, getState().Video.playlistIndex - 1)));
 });
 
 export const videoPlay = () => withPlayer(player => player.playVideo());
@@ -68,9 +98,14 @@ export const videoProgressTick = () => withPlayer((player, dispatch, getState) =
 export const videoStatePlay = () => withPlayer((player, dispatch, getState) => {
   // Hooking into the play state seems to be the easiest way to determine the video duration
   const duration = player.getDuration();
+  const playlistIndex = player.getPlaylistIndex();
 
   if (getState().Video.duration !== duration) {
     dispatch(videoDuration(duration));
+  }
+
+  if (getState().Video.playlistIndex !== playlistIndex) {
+    dispatch(videoListIndex(playlistIndex));
   }
 
   dispatch(videoState("play"));
@@ -78,7 +113,15 @@ export const videoStatePlay = () => withPlayer((player, dispatch, getState) => {
 
 export const videoStatePause = () => videoState("pause");
 export const videoStateEnd = () => videoState("end");
-export const videoStateError = () => videoState("error");
+export const videoStateError = code => (dispatch, getState) => {
+  dispatch(videoError(code));
+  setTimeout(() => dispatch(videoError(null)), 5000); // Dismiss error after 5 seconds
+
+  // Go to next video
+  if (getState().Video.playlistIndex < getState().Video.playlist.length - 1) {
+    dispatch(videoListNext());
+  }
+};
 
 export const videoSeekTo = factor => withPlayer((player, dispatch, getState) => {
   const seconds = getState().Video.duration * factor;
@@ -125,20 +168,31 @@ export default handleActions({
     ...state,
     volume: action.payload,
   }),
-  [videoLoaded]: (state, action) => ({
+  [videoListLoaded]: (state, action) => ({
     ...state,
-    id: action.payload,
+    playlist: action.payload,
+    playlistIndex: 0,
+  }),
+  [videoListIndex]: (state, action) => ({
+    ...state,
+    playlistIndex: action.payload,
   }),
   [videoPopupToggle]: (state, action) => ({
     ...state,
     popup: !state.popup,
   }),
+  [videoError]: (state, action) => ({
+    ...state,
+    error: action.payload,
+  }),
 }, {
-  id: null,
+  playlist: [],
+  playlistIndex: 0,
   state: null,
   progress: 0,
   duration: 0,
   muted: false,
   volume: 100,
   popup: false,
+  error: null,
 });

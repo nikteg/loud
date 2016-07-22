@@ -17,11 +17,11 @@ const Video = (props) => (
           },
         }}
         videoId={props.id}
-        onReady={(e) => props.videoInit(e.target)}
+        onReady={e => props.videoInit(e.target)}
         onPlay={props.videoStatePlay}
         onPause={props.videoStatePause}
         onEnd={props.videoStateEnd}
-        onError={props.videoStateError}
+        onError={e => props.videoStateError(e.data)}
       />
     </div>
   </div>

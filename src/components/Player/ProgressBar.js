@@ -47,5 +47,5 @@ class ProgressBar extends React.Component {
 }
 
 export default connect(state => ({
-  percent: state.Video.duration > 0 ? state.Video.progress / state.Video.duration * 100 : 0,
+  percent: state.Video.duration > 0 ? Math.min(100, Math.max(0, state.Video.progress / state.Video.duration * 100)) : 0,
 }), { videoSeekTo })(ProgressBar);

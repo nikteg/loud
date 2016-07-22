@@ -5,24 +5,10 @@ import PlayPauseButton from "./PlayPauseButton";
 import VideoButton from "./VideoButton";
 import ProgressBar, { CurrentTime, Duration } from "./ProgressBar";
 import VolumeButton from "./VolumeButton";
+import NextButton from "./NextButton";
+import PrevButton from "./PrevButton";
 
 import "./Player.styl";
-
-const PrevButton = (props) => (
-  <button className="Controls-buttons-button">
-    <svg viewBox="0 0 16 16">
-      <path d="M4 14v-12h2v5.5l5-5v11l-5-5v5.5z" />
-    </svg>
-  </button>
-);
-
-const NextButton = (props) => (
-  <button className="Controls-buttons-button">
-    <svg viewBox="0 0 16 16">
-      <path d="M12 2v12h-2v-5.5l-5 5v-11l5 5v-5.5z" />
-    </svg>
-  </button>
-);
 
 const Player = connect()((props) => (
   <div className="Player">
