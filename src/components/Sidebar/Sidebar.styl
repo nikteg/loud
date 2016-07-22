@@ -1,13 +1,15 @@
 @require "../../style/variables"
 
 .Sidebar
-  padding: 16px;
+  padding: 8px;
   width: 256px;
   margin-right: 8px;
 
   .Sidebar-title
+    background: #000;
+    color: #fff;
     text-transform: uppercase;
-    font-size: 1.25rem;
+    padding: 8px;
 
   ul
     list-style: none;
@@ -21,8 +23,8 @@
 
       &.active
         border-left-color: accent-color;
+        font-weight: bold;
 
       a
         display: block;
-        color: white;
         text-decoration: none;

@@ -3,6 +3,13 @@
 .List
   padding: 8px;
 
+  .List-title
+    background: #000;
+    color: #fff;
+    text-transform: uppercase;
+    padding: 8px;
+    margin-bottom: 8px;
+
   ul
     list-style: none;
     padding: 0;
@@ -12,6 +19,9 @@
       padding: 8px;
       display: flex;
       align-items: center;
+
+      &.active
+        font-weight: bold;
 
       .ListItem-button
         display: block;
@@ -28,5 +38,4 @@
 
       .ListItem-title
         flex: 1;
-        color: white;
         text-decoration: none;

@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import isEqual from "lodash/isEqual";
+import cx from "classnames";
 
 import { videoListLoad } from "../../reducers/Video";
 
@@ -40,7 +41,7 @@ const ListItem = connect((state) => ({
   ...ownProps,
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
 }))((props) => (
-  <li className="ListItem">
+  <li className={cx("ListItem", { active: props.isPlaying })}>
     <button onClick={() => props.loadIndex(props.index)} className="ListItem-button">
       <svg viewBox="0 0 16 16">
         {props.isPlaying ? <path d="M3.5 2h3v12h-3zM9.5 2h3v12h-3z" /> : <path d="M4.5 2l10 6-10 6z" />}
@@ -58,6 +59,7 @@ const List = connect(state => ({
   isCurrentPlaylist: isEqual(stateProps.playlist, playlist[ownProps.params.id].map(it => it.id)),
 }))(props => (
   <div className="List">
+    <div className="List-title">Songs</div>
     <ul>
       {playlist[props.params.id].map((item, i) => (
         <ListItem
