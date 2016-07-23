@@ -10,7 +10,7 @@ export const videoVolume = createAction("VIDEO_VOLUME", volume => volume);
 export const videoLoaded = createAction("VIDEO_LOADED", id => id);
 export const videoListLoaded = createAction("VIDEO_LIST_LOADED", ids => ids);
 export const videoListIndex = createAction("VIDEO_LIST_INDEX", index => index);
-export const videoPopupToggle = createAction("VIDEO_POPUP", show => show);
+export const videoPopup = createAction("VIDEO_POPUP", show => show);
 export const videoError = createAction("VIDEO_ERROR", code => code);
 
 function withPlayer(fn) {
@@ -20,6 +20,8 @@ function withPlayer(fn) {
     return fn(player, dispatch, getState);
   };
 }
+
+export const videoPopupToggle = () => (dispatch, getState) => dispatch(videoPopup(!getState().Video.popup));
 
 export const videoVolumeSet = percent => withPlayer((player, dispatch, getState) => {
   const muted = getState().Video.player.isMuted();
@@ -130,6 +132,13 @@ export const videoSeekTo = factor => withPlayer((player, dispatch, getState) => 
   dispatch(videoProgress(seconds));
 });
 
+export const videoSeekRelative = seconds => withPlayer((player, dispatch, getState) => {
+  const progress = Math.min(getState().Video.duration, Math.max(0, getState().Video.progress + seconds));
+
+  player.seekTo(progress);
+  dispatch(videoProgress(progress));
+});
+
 export const videoMuteToggle = () => withPlayer((player, dispatch, getState) => {
   const muted = getState().Video.player.isMuted();
 
@@ -177,9 +186,9 @@ export default handleActions({
     ...state,
     playlistIndex: action.payload,
   }),
-  [videoPopupToggle]: (state, action) => ({
+  [videoPopup]: (state, action) => ({
     ...state,
-    popup: !state.popup,
+    popup: action.payload,
   }),
   [videoError]: (state, action) => ({
     ...state,
