@@ -28,7 +28,10 @@ class ProgressBar extends React.Component {
 
   seek(e) {
     const node = ReactDOM.findDOMNode(this);
-    const x = e.pageX - node.offsetLeft;
+
+    const { left } = node.getBoundingClientRect();
+
+    const x = e.pageX - left;
     const width = node.offsetWidth;
 
     const factor = x / width;

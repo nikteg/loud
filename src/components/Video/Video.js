@@ -14,6 +14,8 @@ const Video = (props) => (
         opts={{
           playerVars: {
             rel: 0,
+            controls: 0,
+            showinfo: 0,
           },
         }}
         videoId={props.id}
