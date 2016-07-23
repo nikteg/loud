@@ -58,8 +58,8 @@ const List = connect(state => ({
   ...ownProps,
   isCurrentPlaylist: isEqual(stateProps.playlist, playlist[ownProps.params.id].map(it => it.id)),
 }))(props => (
-  <div className="List">
-    <div className="List-title">Songs</div>
+  <div className="List page">
+    <div className="List-title header-title">Songs</div>
     <ul>
       {playlist[props.params.id].map((item, i) => (
         <ListItem
