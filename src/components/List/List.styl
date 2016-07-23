@@ -8,22 +8,27 @@
     margin: 0;
 
     .ListItem
-      padding: 8px;
+      padding: 4px;
       display: flex;
       align-items: center;
+      border-radius: 4px;
 
       &.active
+        background: gray-light-color;
         font-weight: bold;
+
+      a
+        color: inherit;
 
       .ListItem-button
         display: block;
-        width: 32px;
-        height: 32px;
+        width: 24px;
+        height: 24px;
         margin-right: 8px;
         border: none;
         background: accent-color;
         border-radius: 50%;
-        padding: 8px;
+        padding: 4px;
         cursor: pointer;
         fill: white;
         outline: none;

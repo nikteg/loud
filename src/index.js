@@ -19,6 +19,8 @@ import {
   videoPopupToggle,
   videoSeekRelative,
   videoMuteToggle,
+  videoListPrev,
+  videoListNext,
 } from "./reducers/Video";
 
 import reducers from "./reducers";
@@ -91,6 +93,16 @@ window.addEventListener("keydown", e => {
   if (e.keyCode === 77) { // M
     e.preventDefault();
     store.dispatch(videoMuteToggle());
+  }
+
+  if (e.keyCode === 66) { // B
+    e.preventDefault();
+    store.dispatch(videoListPrev());
+  }
+
+  if (e.keyCode === 78) { // N
+    e.preventDefault();
+    store.dispatch(videoListNext());
   }
 });
 

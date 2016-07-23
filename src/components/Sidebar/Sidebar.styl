@@ -1,11 +1,10 @@
 @require "../../style/variables"
 
 .Sidebar
-  background: #eee;
   width: 256px;
 
   .Sidebar-subtitle
-    padding: 8px;
+    padding: 8px 8px 4px;
     text-transform: uppercase;
     font-weight: bold;
 
@@ -17,11 +16,11 @@
     .Sidebar-item
       display: block;
       padding: 4px 16px;
+      border-radius: 4px;
 
       &.active
+        background: gray-light-color;
         font-weight: bold;
-        background: #fff;
-        color: accent-color;
 
       a
         color: inherit;

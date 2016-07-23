@@ -2,13 +2,14 @@
 
 .Player
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
   background: #000;
   display: flex;
   color: white;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  border-radius: 4px;
 
 .Controls
   display: flex;
@@ -54,6 +55,7 @@
         height: 128px;
         bottom: 56px;
         display: none;
+        border-radius: 4px;
 
         .Volume-popup-slider
           display: flex;
@@ -62,7 +64,7 @@
           width: 6px;
           height: 100%;
           cursor: pointer;
-          background: darken(#556270, 25%);
+          background: gray-dark-color;
 
           &:hover
             .Volume-popup-slider-fill:after
@@ -103,7 +105,7 @@
         border-radius: 2px;
         flex: 1;
         margin: 0 8px;
-        background: darken(#556270, 25%);
+        background: gray-dark-color;
         height: 6px;
         cursor: pointer;
 
