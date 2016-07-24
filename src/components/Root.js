@@ -3,10 +3,10 @@ import { Router, Route, IndexRoute, hashHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
 import { Provider } from "react-redux";
 
-import App from "./App/App";
-import Welcome from "./Welcome/Welcome";
-import Preview from "./Preview/Preview";
-import List from "./List/List";
+import App from "./App";
+import Welcome from "./Welcome";
+import Preview from "./Preview";
+import List from "./List";
 
 export const Root = props => (
   <Provider store={props.store}>

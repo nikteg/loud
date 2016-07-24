@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router";
 import cx from "classnames";
 
-import "./Sidebar.styl";
+import "./index.styl";
 
 const playlists = ["test", "test2"];
 

@@ -1,11 +1,11 @@
 import React from "react";
 
-import Sidebar from "../Sidebar/Sidebar";
-import Player from "../Player/Player";
-import Video from "../Video/Video";
-import Notifications from "../Notifications/Notifications";
+import Sidebar from "../Sidebar";
+import Player from "../Player";
+import Video from "../Video";
+import Notifications from "../Notifications";
 
-import "./App.styl";
+import "./index.styl";
 
 const App = (props) => (
   <div className="App">

@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./Welcome.styl";
+import "./index.styl";
 
 const Welcome = (props) => (
   <div className="Welcome page">
