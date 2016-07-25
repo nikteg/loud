@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { videoListLoad } from "../../reducers/Video";
 
-import "./index.styl";
+import "./style.styl";
 
 const Preview = connect(null, { videoListLoad })((props) => (
   <div className="Preview page">

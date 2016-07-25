@@ -5,7 +5,7 @@ import Player from "../Player";
 import Video from "../Video";
 import Notifications from "../Notifications";
 
-import "./index.styl";
+import "./style.styl";
 
 const App = (props) => (
   <div className="App">

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 
 import { videoError } from "../../reducers/Video";
 
-import "./index.styl";
+import "./style.styl";
 
 const NextButton = connect(state => ({
   error: state.Video.error,

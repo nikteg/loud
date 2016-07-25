@@ -6,7 +6,7 @@ import cx from "classnames";
 
 import { videoListLoad } from "../../reducers/Video";
 
-import "./index.styl";
+import "./style.styl";
 
 const playlist = {
   test: [

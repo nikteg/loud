@@ -8,7 +8,7 @@ import VolumeButton from "./VolumeButton";
 import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
 
-import "./index.styl";
+import "./style.styl";
 
 const Player = connect()((props) => (
   <div className="Player">
