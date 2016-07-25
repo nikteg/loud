@@ -205,7 +205,7 @@ export default handleActions({
   playlistIndex: 0,
   state: null,
   progress: 0,
-  duration: 0,
+  duration: 1,
   muted: false,
   volume: 100,
   popup: false,

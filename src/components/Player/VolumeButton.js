@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
+import Slider from "rc-slider";
 
 import { videoMuteToggle, videoVolumeSet } from "../../reducers/Video";
 
@@ -40,44 +41,27 @@ const volumeIcons = {
 };
 /* eslint-enable max-len */
 
-class Volume extends React.Component {
+const VolumeSlider = connect(state => ({
+  min: 0,
+  max: 100,
+  value: state.Video.volume,
+  className: "Volume-popup-slider",
+  tipFormatter: null,
+  vertical: true,
+}), {
+  onChange: videoVolumeSet,
+})(Slider);
 
-  constructor(props) {
-    super(props);
-
-    this.setVolume = this.setVolume.bind(this);
-
-    this.volumeSlider = null;
-  }
-
-  setVolume(e) {
-    const node = ReactDOM.findDOMNode(this.volumeSlider);
-
-    const { top } = node.getBoundingClientRect();
-
-    const height = node.offsetHeight;
-    const y = height - (e.pageY - top);
-
-    const factor = y / height;
-    this.props.videoVolumeSet(factor * 100);
-  }
-
-  render() {
-    return (
-      <div className="Volume">
-        <div className="Volume-popup">
-          <div className="Volume-popup-slider" onClick={this.setVolume} ref={node => (this.volumeSlider = node)}>
-            <div className="Volume-popup-slider-fill" style={{ height: `${this.props.percent}%` }} />
-          </div>
-        </div>
-        <button onClick={this.props.videoMuteToggle} className="Controls-buttons-button">
-          {volumeIcons[this.props.iconState]}
-        </button>
-      </div>
-    );
-  }
-
-}
+const VolumeButton = props => (
+  <div className="Volume">
+    <div className="Volume-popup">
+      <VolumeSlider />
+    </div>
+    <button onClick={props.videoMuteToggle} className="Controls-buttons-button">
+      {volumeIcons[props.iconState]}
+    </button>
+  </div>
+);
 
 export default connect(state => {
   let iconState = volumeIconStates.LOW;
@@ -98,4 +82,4 @@ export default connect(state => {
     iconState,
     percent,
   };
-}, { videoMuteToggle, videoVolumeSet })(Volume);
+}, { videoMuteToggle, videoVolumeSet })(VolumeButton);

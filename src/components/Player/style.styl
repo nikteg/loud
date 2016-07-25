@@ -60,32 +60,17 @@
         .Volume-popup-slider
           display: flex;
           align-items: flex-end;
-          border-radius: 2px;
           width: 6px;
           height: 100%;
-          cursor: pointer;
-          background: gray-dark-color;
 
-          &:hover
-            .Volume-popup-slider-fill:after
-              display: block;
-
-          .Volume-popup-slider-fill
+          .rc-slider-track
             border-radius: 2px;
             background: accent-color;
             width: 100%;
-            position: relative;
 
-            &:after
-              content: "";
-              display: none;
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-              position: absolute;
-              background: accent-color;
-              top: -4px;
-              margin-left: -3px;
+          .rc-slider-handle
+            margin-left: -3px;
+            margin-bottom: -5px;
 
   .Controls-info
     display: flex;
@@ -101,27 +86,20 @@
       display: flex;
       align-items: center;
 
+      .Controls-info-progress-time
+        width: 2.5em;
+
+        &.left
+          text-align: left;
+
+        &.right
+          text-align: right;
+
       .Controls-info-progress-bar
         flex: 1;
         margin: 0 8px;
-        background: gray-dark-color;
         height: 6px;
 
-        .rc-slider-track
-          border-radius: 2px;
-          background: accent-color;
-          height: 100%;
-
         .rc-slider-handle
-          display: none;
-          border-radius: 50%;
-          width: 12px;
-          height: 12px;
           margin-left: -6px;
           margin-top: -3px;
-          background: accent-color;
-          border: none;
-
-      &:hover
-        .rc-slider-handle
-          display: block;
