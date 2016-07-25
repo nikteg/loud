@@ -12,6 +12,9 @@ export const videoListLoaded = createAction("VIDEO_LIST_LOADED", ids => ids);
 export const videoListIndex = createAction("VIDEO_LIST_INDEX", index => index);
 export const videoPopup = createAction("VIDEO_POPUP", show => show);
 export const videoError = createAction("VIDEO_ERROR", code => code);
+export const videoSeeking = createAction("VIDEO_SEEKING", seeking => seeking);
+
+export const videoSeekingStart = () => videoSeeking(true);
 
 function withPlayer(fn) {
   return (dispatch, getState) => {
@@ -92,7 +95,7 @@ export const videoPlay = () => withPlayer(player => player.playVideo());
 export const videoPause = () => withPlayer(player => player.pauseVideo());
 
 export const videoProgressTick = () => withPlayer((player, dispatch, getState) => {
-  if (getState().Video.state === "play") {
+  if (!getState().Video.seeking && getState().Video.state === "play") {
     dispatch(videoProgress(player.getCurrentTime()));
   }
 });
@@ -125,11 +128,10 @@ export const videoStateError = code => (dispatch, getState) => {
   }
 };
 
-export const videoSeekTo = factor => withPlayer((player, dispatch, getState) => {
-  const seconds = getState().Video.duration * factor;
-
+export const videoSeekTo = seconds => withPlayer((player, dispatch, getState) => {
   player.seekTo(seconds);
   dispatch(videoProgress(seconds));
+  dispatch(videoSeeking(false));
 });
 
 export const videoSeekRelative = seconds => withPlayer((player, dispatch, getState) => {
@@ -194,6 +196,10 @@ export default handleActions({
     ...state,
     error: action.payload,
   }),
+  [videoSeeking]: (state, action) => ({
+    ...state,
+    seeking: action.payload,
+  }),
 }, {
   playlist: [],
   playlistIndex: 0,
@@ -204,4 +210,5 @@ export default handleActions({
   volume: 100,
   popup: false,
   error: null,
+  seeking: false,
 });

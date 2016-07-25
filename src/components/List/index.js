@@ -31,6 +31,9 @@ const playlist = {
     { name: "Vice Feat. Caitlyn Scarlett - Bad Love (ESH Remix)", id: "UG2ZtXJ6mro" },
     { name: "RetroVision - Happy Hour", id: "rhJA1qATcXA" },
   ],
+  bengt: [
+    { name: "David Gravell - Stay Awake (Extended Mix)", id: "4C2gFYYB9Kc" },
+  ],
 };
 
 const ListItem = connect((state) => ({

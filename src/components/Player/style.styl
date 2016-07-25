@@ -102,30 +102,26 @@
       align-items: center;
 
       .Controls-info-progress-bar
-        border-radius: 2px;
         flex: 1;
         margin: 0 8px;
         background: gray-dark-color;
         height: 6px;
-        cursor: pointer;
 
-        &:hover
-          .Controls-info-progress-bar-fill:after
-            display: block;
-
-        .Controls-info-progress-bar-fill
+        .rc-slider-track
+          border-radius: 2px;
           background: accent-color;
           height: 100%;
-          border-radius: 2px;
-          position: relative;
 
-          &:after
-            content: "";
-            display: none;
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            position: absolute;
-            background: accent-color;
-            right: -4px;
-            margin-top: -3px;
+        .rc-slider-handle
+          display: none;
+          border-radius: 50%;
+          width: 12px;
+          height: 12px;
+          margin-left: -6px;
+          margin-top: -3px;
+          background: accent-color;
+          border: none;
+
+      &:hover
+        .rc-slider-handle
+          display: block;

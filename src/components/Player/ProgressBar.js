@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { connect } from "react-redux";
+import Slider from "rc-slider";
 
 import { formatTime } from "../../util";
 
-import { videoSeekTo } from "../../reducers/Video";
+import { videoSeekTo, videoProgress, videoSeekingStart } from "../../reducers/Video";
+
+import "rc-slider/assets/index.css";
 
 export const CurrentTime = connect(state => ({
   progress: formatTime(state.Video.progress),
@@ -41,14 +44,22 @@ class ProgressBar extends React.Component {
 
   render() {
     return (
-      <div className="Controls-info-progress-bar" onClick={this.seek}>
-        <div className="Controls-info-progress-bar-fill" style={{ width: `${this.props.percent}%` }} />
-      </div>
+      <Slider
+        onClick={() => console.log("yolo")}
+        className="Controls-info-progress-bar"
+        tipFormatter={formatTime}
+        onBeforeChange={this.props.videoSeekingStart}
+        onChange={this.props.videoProgress}
+        onAfterChange={this.props.videoSeekTo}
+        {...this.props}
+      />
     );
   }
 
 }
 
 export default connect(state => ({
-  percent: state.Video.duration > 0 ? Math.min(100, Math.max(0, state.Video.progress / state.Video.duration * 100)) : 0,
-}), { videoSeekTo })(ProgressBar);
+  min: 0,
+  max: state.Video.duration,
+  value: state.Video.progress,
+}), { videoSeekTo, videoProgress, videoSeekingStart })(ProgressBar);

@@ -4,7 +4,7 @@ import cx from "classnames";
 
 import "./style.styl";
 
-const playlists = ["test", "test2"];
+const playlists = ["test", "test2", "bengt"];
 
 const Sidebar = (props) => (
   <div className="Sidebar">
