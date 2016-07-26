@@ -1,13 +1,18 @@
 import { applyMiddleware, compose, createStore } from "redux";
-import { routerMiddleware } from "react-router-redux";
-import { hashHistory } from "react-router";
+import { reduxReactRouter } from "redux-router";
+import { createHashHistory as createHistory } from "history";
+// import { hashHistory } from "react-router";
 import thunk from "redux-thunk";
 
 import reducers from "./reducers";
 
-export default function configureStore(initialState) {
+export default function configureStore(initialState, routes) {
   const composers = [
-    applyMiddleware(thunk, routerMiddleware(hashHistory)),
+    applyMiddleware(thunk),
+    reduxReactRouter({
+      routes,
+      createHistory,
+    }),
   ];
 
   if (window.devToolsExtension) {

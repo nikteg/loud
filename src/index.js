@@ -1,8 +1,10 @@
 import React from "react";
 import { render } from "react-dom";
+import { Provider } from "react-redux";
+import { ReduxRouter } from "redux-router";
 
 import configureStore from "./configureStore";
-import Root from "./components/Root";
+import routes from "./routes";
 
 import {
   videoProgressTick,
@@ -15,10 +17,12 @@ import {
   videoListNext,
 } from "./reducers/Video";
 
+import { playlistSelect } from "./reducers/Playlist";
+
 import "normalize.css";
 import "./style/global.styl";
 
-const store = configureStore();
+const store = configureStore({}, routes);
 
 window.redux = store;
 
@@ -70,4 +74,10 @@ window.addEventListener("keydown", e => {
   }
 });
 
-render(<Root store={store} />, document.getElementById("app"));
+render((
+  <Provider store={store}>
+    <ReduxRouter>
+      {routes}
+    </ReduxRouter>
+  </Provider>
+), document.getElementById("app"));

@@ -1,13 +1,14 @@
 import { createAction, handleActions } from "redux-actions";
 import isEqual from "lodash/isEqual";
 
+import { playlistSelect } from "./Playlist";
+
 export const videoInit = createAction("VIDEO_INIT", player => player);
 export const videoState = createAction("VIDEO_STATE", state => state);
 export const videoProgress = createAction("VIDEO_PROGRESS", progress => progress);
 export const videoDuration = createAction("VIDEO_DURATION", duration => duration);
 export const videoMuted = createAction("VIDEO_MUTED", muted => muted);
 export const videoVolume = createAction("VIDEO_VOLUME", volume => volume);
-export const videoLoaded = createAction("VIDEO_LOADED", id => id);
 export const videoListLoaded = createAction("VIDEO_LIST_LOADED", ids => ids);
 export const videoListIndex = createAction("VIDEO_LIST_INDEX", index => index);
 export const videoPopup = createAction("VIDEO_POPUP", show => show);
@@ -51,21 +52,14 @@ export const videoPlayPause = () => withPlayer((player, dispatch, getState) => {
   }
 });
 
-export const videoLoad = (id, playPause = false) => withPlayer((player, dispatch, getState) => {
-  // If the video is already playing
-  if (playPause && getState().Video.id === id &&
-    (getState().Video.state === "play" || getState().Video.state === "pause")) {
-    return dispatch(videoPlayPause());
-  }
-
+export const videoLoad = (id) => withPlayer((player, dispatch, getState) => {
   player.loadVideoById(id);
   dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
-  dispatch(videoLoaded(id));
-  player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
+  // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
 });
 
-export const videoListLoad = (ids, index = 0) => withPlayer((player, dispatch, getState) => {
-  if (isEqual(getState().Video.playlist, ids)) {
+export const videoListLoad = (playlistKey, index = 0) => withPlayer((player, dispatch, getState) => {
+  if (getState().Playlist.playlistKey === playlistKey) {
     if (getState().Video.playlistIndex === index) {
       return dispatch(videoPlayPause());
     }
@@ -73,23 +67,18 @@ export const videoListLoad = (ids, index = 0) => withPlayer((player, dispatch, g
     return player.playVideoAt(index);
   }
 
+  const ids = [...getState().Playlist.playlists.get(playlistKey).values()].map(item => item.id);
+
   player.loadPlaylist(ids, index);
+  dispatch(playlistSelect(playlistKey));
+  dispatch(videoListIndex(index));
 
   dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
-  dispatch(videoListLoaded(ids));
-  dispatch(videoListIndex(index));
   // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
 });
 
-export const videoListNext = () => withPlayer((player, dispatch, getState) => {
-  player.nextVideo();
-  dispatch(videoListIndex(Math.min(getState().Video.playlist.length - 1, getState().Video.playlistIndex + 1)));
-});
-
-export const videoListPrev = () => withPlayer((player, dispatch, getState) => {
-  player.previousVideo();
-  dispatch(videoListIndex(Math.max(0, getState().Video.playlistIndex - 1)));
-});
+export const videoListNext = () => withPlayer(player => player.nextVideo());
+export const videoListPrev = () => withPlayer(player => player.previousVideo());
 
 export const videoPlay = () => withPlayer(player => player.playVideo());
 export const videoPause = () => withPlayer(player => player.pauseVideo());
@@ -123,7 +112,7 @@ export const videoStateError = code => (dispatch, getState) => {
   setTimeout(() => dispatch(videoError(null)), 5000); // Dismiss error after 5 seconds
 
   // Go to next video
-  if (getState().Video.playlistIndex < getState().Video.playlist.length - 1) {
+  if (getState().Video.playlistIndex < getState().Playlist.playlist.length - 1) {
     dispatch(videoListNext());
   }
 };
@@ -179,11 +168,6 @@ export default handleActions({
     ...state,
     volume: action.payload,
   }),
-  [videoListLoaded]: (state, action) => ({
-    ...state,
-    playlist: action.payload,
-    playlistIndex: 0,
-  }),
   [videoListIndex]: (state, action) => ({
     ...state,
     playlistIndex: action.payload,
@@ -200,9 +184,12 @@ export default handleActions({
     ...state,
     seeking: action.payload,
   }),
+  [videoLoad]: (state, action) => ({
+    ...state,
+    playlistIndex: -1,
+  }),
 }, {
-  playlist: [],
-  playlistIndex: 0,
+  playlistIndex: -1,
   state: null,
   progress: 0,
   duration: 1,

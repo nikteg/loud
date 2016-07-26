@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
-import { routerReducer } from "react-router-redux";
+import { routerStateReducer as router } from "redux-router";
 
 import Video from "./Video";
+import Playlist from "./Playlist";
 
 export default combineReducers({
-  routing: routerReducer,
+  router,
   Video,
+  Playlist,
 });
