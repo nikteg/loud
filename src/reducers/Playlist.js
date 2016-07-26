@@ -27,7 +27,7 @@ export default handleActions({
       { id: "XFo2dUCRsYs", name: "Noah Neiman & The Mutints - Never Die" },
       { id: "1_y5Fa_Q9h0", name: "Promise Land & Luciana - Rebound To The Beat (Official Music Video)" },
       { id: "NE9ZfowSOUw", name: "Justin Jay ft Chris Lorenzo - Storm" },
-      { id: "JnYVdH4WB6A", name: "Twang Machine", broken: true },
+      { id: "JnYVdH4WB6A", name: "Twang Machine" },
       { id: "gaFh71YwZ4Y", name: "Caravan Palace - Comics" },
       { id: "dPnEXx1vwVA", name: "Oliver Heldens feat. RUMORS - Ghost (Official Music Video)" },
       { id: "UG2ZtXJ6mro", name: "Vice Feat. Caitlyn Scarlett - Bad Love (ESH Remix)" },
