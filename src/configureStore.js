@@ -1,14 +1,21 @@
 import { applyMiddleware, compose, createStore } from "redux";
-import { reduxReactRouter } from "redux-router";
+import { reduxReactRouter, replace } from "redux-router";
 import { createHashHistory as createHistory } from "history";
-// import { hashHistory } from "react-router";
 import thunk from "redux-thunk";
+import translator from "./middleware/translator";
 
 import reducers from "./reducers";
+import { authLoginActions, authRegisterActions } from "./reducers/Auth";
+import { playlistsLoad } from "./reducers/Playlist";
+
+const translation = translator({
+  [authRegisterActions.complete]: [replace("/"), playlistsLoad()],
+  [authLoginActions.complete]: [replace("/"), playlistsLoad()],
+});
 
 export default function configureStore(initialState, routes) {
   const composers = [
-    applyMiddleware(thunk),
+    applyMiddleware(thunk, translation),
     reduxReactRouter({
       routes,
       createHistory,

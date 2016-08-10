@@ -1,0 +1,111 @@
+import decode from "jwt-decode";
+import { createAction, handleActions } from "redux-actions";
+// import { ROUTER_DID_CHANGE } from "redux-router/lib/constants";
+
+function createNetworkAction(prefix) {
+  return {
+    start: createAction(`${prefix}_START`),
+    error: createAction(`${prefix}_ERROR`, error => error),
+    complete: createAction(`${prefix}_COMPLETE`, res => res),
+  };
+}
+
+export const authRegisterActions = createNetworkAction("AUTH_REGISTER");
+export const authLoginActions = createNetworkAction("AUTH_LOGIN");
+export const authLogoutActions = createNetworkAction("AUTH_LOGOUT");
+
+const api = "http://localhost:4000";
+
+function post(route, params, networkAction) {
+  return (dispatch, getState) => {
+    dispatch(networkAction.start());
+
+    fetch(route, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    })
+      .then(res => res.json())
+      .then(json => {
+        if (json.error) {
+          return dispatch(networkAction.error(json.error));
+        }
+
+        dispatch(networkAction.complete(json.token));
+      });
+  };
+}
+
+export const authRegister = (username, password) => post(
+  `${api}/auth/register`,
+  { username, password },
+  authRegisterActions);
+
+export const authLogin = (username, password) => post(
+  `${api}/auth/login`,
+  { username, password },
+  authLoginActions);
+
+export const authLogout = (token) => post(
+  `${api}/auth/logout`,
+  { token },
+  authLogoutActions);
+
+export default handleActions({
+  [authRegisterActions.start]: (state, action) => ({
+    ...state,
+    loading: true,
+  }),
+  [authRegisterActions.complete]: (state, action) => {
+    const token = action.payload;
+    const { id, username } = decode(token);
+
+    localStorage.setItem("token", token);
+
+    return {
+      ...state,
+      id,
+      username,
+      token,
+    };
+  },
+  [authRegisterActions.error]: (state, action) => ({
+    ...state,
+    error: action.payload,
+  }),
+  [authLoginActions.start]: (state, action) => ({
+    ...state,
+    loading: true,
+  }),
+  [authLoginActions.complete]: (state, action) => {
+    const token = action.payload;
+    const { id, username } = decode(token);
+
+    localStorage.setItem("token", token);
+
+    return {
+      ...state,
+      id,
+      username,
+      token,
+    };
+  },
+  [authLoginActions.error]: (state, action) => ({
+    ...state,
+    error: action.payload,
+  }),
+  [authLogoutActions.complete]: (state, action) => ({
+    ...state,
+    id: 0,
+    username: null,
+    token: null,
+  }),
+}, {
+  id: 0,
+  username: null,
+  loading: false,
+  token: null,
+  error: null,
+});

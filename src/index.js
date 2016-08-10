@@ -2,6 +2,7 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { ReduxRouter } from "redux-router";
+import decode from "jwt-decode";
 
 import configureStore from "./configureStore";
 import routes from "./routes";
@@ -17,7 +18,7 @@ import {
   videoListNext,
 } from "./reducers/Video";
 
-import { playlistSelect } from "./reducers/Playlist";
+import { authLoginActions } from "./reducers/Auth";
 
 import "normalize.css";
 import "./style/global.styl";
@@ -25,6 +26,13 @@ import "./style/global.styl";
 const store = configureStore({}, routes);
 
 window.redux = store;
+
+// store.dispatch(playlistsLoad());
+
+if (localStorage.getItem("token") != null) {
+  const token = localStorage.getItem("token");
+  store.dispatch(authLoginActions.complete(token));
+}
 
 setInterval(() => videoProgressTick()(store.dispatch, store.getState), 500);
 
