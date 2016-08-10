@@ -1,5 +1,4 @@
 import { createAction, handleActions } from "redux-actions";
-import isEqual from "lodash/isEqual";
 
 import { playlistSelect } from "./Playlist";
 
