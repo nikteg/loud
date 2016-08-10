@@ -17,7 +17,7 @@ const ListItem = connect((state) => ({
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
 }))(bindClosures({
   onClick(props) {
-    props.videoListLoad(props.playlistKey, props.index);
+    props.videoListLoad(props.playlistId, props.index);
   },
 })(props => (
   <li className={cx("ListItem", { active: props.isPlaying })}>
@@ -26,27 +26,28 @@ const ListItem = connect((state) => ({
         {props.isPlaying ? <path d="M3.5 2h3v12h-3zM9.5 2h3v12h-3z" /> : <path d="M4.5 2l10 6-10 6z" />}
       </svg>
     </button>
-    <Link to={`/${props.item.id}`} className="ListItem-title">{props.item.name}</Link>
+    <Link to={`/${props.track.key}`} className="ListItem-title">{props.track.artist} - {props.track.name}</Link>
   </li>
 )));
 
 const List = connect(state => ({
-  playlist: state.Playlist.playlists.get(state.router.params.id),
-  playlistKey: state.router.params.id,
-  isInCurrentPlaylist: state.Playlist.playlistKey === state.router.params.id,
+  loading: state.Playlist.loading,
+  playlist: state.Playlist.playlists.find(list => list.id === +state.router.params.id),
+  isInCurrentPlaylist: state.Playlist.playlist.id === +state.router.params.id,
 }))(props => (
   <div className="List page">
     <div className="List-title header-title">Songs</div>
     <ul>
-      {[...props.playlist.values()].map((item, i) => (
+      {!props.loading && props.playlist && props.playlist.tracks.map((track, i) => (
         <ListItem
           key={i}
           index={i}
-          item={item}
-          playlistKey={props.playlistKey}
+          track={track}
+          playlistId={props.playlist.id}
           isInCurrentPlaylist={props.isInCurrentPlaylist}
         />
       ))}
+      {props.loading && [1, 2, 3, 4].map((v, i) => <li key={i} className="ListItem"><div className="loading" /></li>)}
     </ul>
   </div>
 ));

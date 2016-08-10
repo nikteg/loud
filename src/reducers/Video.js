@@ -57,8 +57,8 @@ export const videoLoad = (id) => withPlayer((player, dispatch, getState) => {
   // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
 });
 
-export const videoListLoad = (playlistKey, index = 0) => withPlayer((player, dispatch, getState) => {
-  if (getState().Playlist.playlistKey === playlistKey) {
+export const videoListLoad = (playlistId, index = 0) => withPlayer((player, dispatch, getState) => {
+  if (getState().Playlist.playlistId === playlistId) {
     if (getState().Video.playlistIndex === index) {
       return dispatch(videoPlayPause());
     }
@@ -66,10 +66,11 @@ export const videoListLoad = (playlistKey, index = 0) => withPlayer((player, dis
     return player.playVideoAt(index);
   }
 
-  const ids = [...getState().Playlist.playlists.get(playlistKey).values()].map(item => item.id);
+  const playlist = getState().Playlist.playlists.find(list => list.id === playlistId);
+  const ids = playlist.tracks.map(track => track.key);
 
   player.loadPlaylist(ids, index);
-  dispatch(playlistSelect(playlistKey));
+  dispatch(playlistSelect(playlistId));
   dispatch(videoListIndex(index));
 
   dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.

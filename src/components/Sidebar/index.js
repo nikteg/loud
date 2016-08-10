@@ -10,16 +10,18 @@ const Sidebar = props => (
     <div className="Sidebar-title header-title"><Link to="/">Loud</Link></div>
     <div className="Sidebar-subtitle">Playlists</div>
     <ul>
-      {[...props.playlists].map((item, i) =>
-        <li key={i} className={cx("Sidebar-item", { active: props.selectedPlaylist === item })}>
-          <Link to={`/list/${item}`}>{item}</Link>
+      {!props.loading && props.playlists.map((list, i) =>
+        <li key={i} className={cx("Sidebar-item", { active: props.selectedPlaylist === list.id })}>
+          <Link to={`/list/${list.id}`}>{list.name}</Link>
         </li>
       )}
+      {props.loading && [1, 2, 3, 4].map((v, i) => <li key={i} className="Sidebar-item"><div className="loading" /></li>)}
     </ul>
   </div>
 );
 
 export default connect(state => ({
-  playlists: state.Playlist.playlists.keys(),
-  selectedPlaylist: state.router.params.id,
+  loading: state.Playlist.loading,
+  playlists: state.Playlist.playlists,
+  selectedPlaylist: +state.router.params.id,
 }))(Sidebar);
