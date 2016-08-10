@@ -37,7 +37,7 @@ if (localStorage.getItem("token") != null) {
 setInterval(() => videoProgressTick()(store.dispatch, store.getState), 500);
 
 window.addEventListener("keydown", e => {
-  if (e.altKey || e.ctrlKey || e.metaKey) {
+  if (e.altKey || e.ctrlKey || e.metaKey || e.target !== document.body) {
     return;
   }
 
