@@ -10,29 +10,35 @@ import List from "./components/List";
 import Login from "./components/Login";
 
 
-function requireAuth(Comp) {
-  class Auth extends React.Component {
+function fnComp(Comp, fn) {
+  return class FnComp extends React.Component {
     componentDidMount() {
-      if (!this.props.loggedIn) {
-        this.props.replace("/login");
-      }
+      fn(this.props);
     }
 
-    // maybe check auth in WillReceiveProps
+    componentWillReceiveProps(nextProps) {
+      fn(nextProps);
+    }
 
     render() {
-      return this.props.loggedIn && <Comp {...this.props} />;
+      return <Comp {...this.props} />;
     }
-  }
-
-  return connect(state => ({ loggedIn: state.Auth.token }), { replace })(Auth);
+  };
 }
+
+const WelcomeRedirect = connect(state => ({
+  loggedIn: state.Auth.token != null,
+}), { replace })(fnComp(Welcome, props => (!props.loggedIn && props.replace("/login"))));
+
+const LoginRedirect = connect(state => ({
+  loggedIn: state.Auth.token != null,
+}), { replace })(fnComp(Login, props => (props.loggedIn && props.replace("/"))));
 
 export const routes = (
   <Route>
-    <Route path="/login" component={Login} />
+    <Route path="/login" component={LoginRedirect} />
     <Route path="/" component={App}>
-      <IndexRoute component={requireAuth(Welcome)} />
+      <IndexRoute component={WelcomeRedirect} />
       <Route path=":id" component={Preview} />
       <Route path="/list/:id" component={List} />
     </Route>
