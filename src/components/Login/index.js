@@ -1,5 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
+import { replace } from "redux-router";
+
+import fnComp from "../../lib/fncomp";
 
 import { authLogin, authRegister } from "../../reducers/Auth";
 
@@ -54,4 +57,5 @@ class Login extends React.Component {
 export default connect(state => ({
   error: state.Auth.error,
   loading: state.Auth.loading,
-}), { authLogin, authRegister })(Login);
+  loggedIn: state.Auth.token != null,
+}), { authLogin, authRegister, replace })(fnComp(Login, props => (props.loggedIn && props.replace("/"))));
