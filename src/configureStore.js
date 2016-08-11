@@ -5,12 +5,13 @@ import thunk from "redux-thunk";
 import translator from "./middleware/translator";
 
 import reducers from "./reducers";
-import { authLoginActions, authRegisterActions } from "./reducers/Auth";
+import { authLoginActions, authRegisterActions, authLogoutActions } from "./reducers/Auth";
 import { playlistsLoad } from "./reducers/Playlist";
 
 const translation = translator({
   [authRegisterActions.complete]: [replace("/"), playlistsLoad()],
   [authLoginActions.complete]: [replace("/"), playlistsLoad()],
+  [authLogoutActions.complete]: [replace("/login")],
 });
 
 export default function configureStore(initialState, routes) {
