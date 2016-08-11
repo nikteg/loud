@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { authRegister } from "../../reducers/Auth";
+import { authLogin, authRegister } from "../../reducers/Auth";
 
 import "./style.styl";
 
@@ -11,9 +11,19 @@ class Login extends React.Component {
     super(props);
 
     this.onLogin = this.onLogin.bind(this);
+    this.onRegister = this.onRegister.bind(this);
   }
 
   onLogin(e) {
+    e.preventDefault();
+
+    const username = this.username.value;
+    const password = this.password.value;
+
+    this.props.authLogin(username, password);
+  }
+
+  onRegister(e) {
     e.preventDefault();
 
     const username = this.username.value;
@@ -25,15 +35,23 @@ class Login extends React.Component {
   render() {
     return (
       <div className="Login">
-        <h1 className="Login-title">Login yes yes?</h1>
-        <form onSubmit={this.onLogin}>
-          <input type="text" ref={node => (this.username = node)} />
-          <input type="password" ref={node => (this.password = node)} />
-          <button type="submit">Login</button>
+        <form className="Login-form" onSubmit={this.onLogin}>
+          <div className="Login-form-title">Loud</div>
+          <input type="text" placeholder="Username" ref={node => (this.username = node)} />
+          <input type="password" placeholder="Password" ref={node => (this.password = node)} />
+          <div className="vertical">
+            <button type="submit">Login</button>
+            <button onClick={this.onRegister}>Register</button>
+          </div>
+          {this.props.error && <div className="Login-form-status error">{this.props.error}</div>}
+          {this.props.loading && <div className="Login-form-status">Loading...</div>}
         </form>
       </div>
     );
   }
 }
 
-export default connect(state => ({}), { authRegister })(Login);
+export default connect(state => ({
+  error: state.Auth.error,
+  loading: state.Auth.loading,
+}), { authLogin, authRegister })(Login);

@@ -23,6 +23,7 @@ function post(route, params, networkAction) {
     fetch(route, {
       method: "POST",
       headers: {
+        "Authorization": `Bearer ${getState().Auth.token}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify(params),
@@ -57,6 +58,7 @@ export default handleActions({
   [authRegisterActions.start]: (state, action) => ({
     ...state,
     loading: true,
+    error: null,
   }),
   [authRegisterActions.complete]: (state, action) => {
     const token = action.payload;
@@ -69,15 +71,19 @@ export default handleActions({
       id,
       username,
       token,
+      loading: false,
+      error: null,
     };
   },
   [authRegisterActions.error]: (state, action) => ({
     ...state,
     error: action.payload,
+    loading: false,
   }),
   [authLoginActions.start]: (state, action) => ({
     ...state,
     loading: true,
+    error: null,
   }),
   [authLoginActions.complete]: (state, action) => {
     const token = action.payload;
@@ -95,13 +101,20 @@ export default handleActions({
   [authLoginActions.error]: (state, action) => ({
     ...state,
     error: action.payload,
+    loading: false,
   }),
-  [authLogoutActions.complete]: (state, action) => ({
-    ...state,
-    id: 0,
-    username: null,
-    token: null,
-  }),
+  [authLogoutActions.complete]: (state, action) => {
+    localStorage.removeItem("token");
+
+    return {
+      ...state,
+      id: 0,
+      username: null,
+      token: null,
+      loading: false,
+      error: null,
+    };
+  },
 }, {
   id: 0,
   username: null,
