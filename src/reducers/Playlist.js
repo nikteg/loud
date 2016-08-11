@@ -5,12 +5,10 @@ export const playlistSelect = createAction("PLAYLIST_SELECT", key => key);
 export const playlistsLoaded = createAction("PLAYLISTS_LOADED", playlists => playlists);
 export const playlistsLoading = createAction("PLAYLISTS_LOADING");
 
-const api = "http://localhost:4000";
-
 export const playlistsLoad = () => (dispatch, getState) => {
   dispatch(playlistsLoading());
 
-  fetch(`${api}/playlists`, {
+  fetch(`${API_URL}/playlists`, {
     headers: {
       "Authorization": `Bearer ${getState().Auth.token}`,
     },

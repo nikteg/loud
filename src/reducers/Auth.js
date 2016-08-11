@@ -14,8 +14,6 @@ export const authRegisterActions = createNetworkAction("AUTH_REGISTER");
 export const authLoginActions = createNetworkAction("AUTH_LOGIN");
 export const authLogoutActions = createNetworkAction("AUTH_LOGOUT");
 
-const api = "http://localhost:4000";
-
 function post(route, params, networkAction) {
   return (dispatch, getState) => {
     dispatch(networkAction.start());
@@ -40,17 +38,17 @@ function post(route, params, networkAction) {
 }
 
 export const authRegister = (username, password) => post(
-  `${api}/auth/register`,
+  `${API_URL}/auth/register`,
   { username, password },
   authRegisterActions);
 
 export const authLogin = (username, password) => post(
-  `${api}/auth/login`,
+  `${API_URL}/auth/login`,
   { username, password },
   authLoginActions);
 
 export const authLogout = (token) => post(
-  `${api}/auth/logout`,
+  `${API_URL}/auth/logout`,
   { token },
   authLogoutActions);
 
