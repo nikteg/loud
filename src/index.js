@@ -19,7 +19,7 @@ import {
   videoPause,
 } from "./reducers/Video";
 
-import { authLoginActions } from "./reducers/Auth";
+import { authToken } from "./reducers/Auth";
 
 import "normalize.css";
 import "./style/global.styl";
@@ -32,7 +32,7 @@ window.redux = store;
 
 if (localStorage.getItem("token") != null) {
   const token = localStorage.getItem("token");
-  store.dispatch(authLoginActions.complete(token));
+  store.dispatch(authToken(token));
 }
 
 setInterval(() => videoProgressTick()(store.dispatch, store.getState), 500);

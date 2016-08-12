@@ -5,7 +5,7 @@ import thunk from "redux-thunk";
 import translator from "redux-action-translator";
 
 import reducers from "./reducers";
-import { authLoginActions, authRegisterActions, authLogoutActions } from "./reducers/Auth";
+import { authLoginActions, authRegisterActions, authLogoutActions, authToken } from "./reducers/Auth";
 import { playlistsLoad } from "./reducers/Playlist";
 import { videoError } from "./reducers/Video";
 import { notificationShow } from "./reducers/Notification";
@@ -13,6 +13,7 @@ import { notificationShow } from "./reducers/Notification";
 const translation = translator({
   [authRegisterActions.complete]: [replace("/"), playlistsLoad()],
   [authLoginActions.complete]: [replace("/"), playlistsLoad()],
+  [authToken]: [playlistsLoad()],
   [authLogoutActions.complete]: [replace("/login")],
   [videoError]: a => [notificationShow(`Video error. Code: ${a.payload}`)],
 });

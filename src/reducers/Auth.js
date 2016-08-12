@@ -13,6 +13,7 @@ function createNetworkAction(prefix) {
 export const authRegisterActions = createNetworkAction("AUTH_REGISTER");
 export const authLoginActions = createNetworkAction("AUTH_LOGIN");
 export const authLogoutActions = createNetworkAction("AUTH_LOGOUT");
+export const authToken = createAction("AUTH_TOKEN", token => token);
 
 function post(route, params, networkAction) {
   return (dispatch, getState) => {
@@ -111,6 +112,17 @@ export default handleActions({
       token: null,
       loading: false,
       error: null,
+    };
+  },
+  [authToken]: (state, action) => {
+    const token = action.payload;
+    const { id, username } = decode(token);
+
+    return {
+      ...state,
+      id,
+      username,
+      token,
     };
   },
 }, {
