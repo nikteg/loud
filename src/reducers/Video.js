@@ -109,7 +109,6 @@ export const videoStatePause = () => videoState("pause");
 export const videoStateEnd = () => videoState("end");
 export const videoStateError = code => (dispatch, getState) => {
   dispatch(videoError(code));
-  setTimeout(() => dispatch(videoError(null)), 5000); // Dismiss error after 5 seconds
 
   // Go to next video
   if (getState().Video.playlistIndex < getState().Playlist.playlist.length - 1) {

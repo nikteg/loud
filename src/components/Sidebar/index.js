@@ -5,6 +5,7 @@ import cx from "classnames";
 import bindClosures from "react-bind-closures";
 
 import { authLogout } from "../../reducers/Auth";
+import { notificationShow } from "../../reducers/Notification";
 
 import * as Icons from "../Icons";
 
@@ -14,13 +15,16 @@ const Sidebar = bindClosures({
   onLogout(props) {
     props.authLogout(props.token);
   },
+  notImplementedNotification(props) {
+    props.notificationShow("Not implemented yet");
+  },
 })(props => (
   <div className="Sidebar">
     <div className="Sidebar-title header-title"><Link to="/">Loud</Link></div>
     {props.loggedIn && <div className="Sidebar-subtitle">{props.username}</div>}
     {props.loggedIn && <ul>
-      <li className="Sidebar-item"><a><Icons.User />Profile</a></li>
-      <li className="Sidebar-item"><a><Icons.Settings />Settings</a></li>
+      <li className="Sidebar-item"><a onClick={props.notImplementedNotification}><Icons.User />Profile</a></li>
+      <li className="Sidebar-item"><a onClick={props.notImplementedNotification}><Icons.Settings />Settings</a></li>
       <li className="Sidebar-item"><a onClick={props.onLogout}><Icons.Logout />Logout</a></li>
     </ul>}
     <div className="Sidebar-subtitle">Playlists</div>
@@ -43,4 +47,4 @@ export default connect(state => ({
   username: state.Auth.username,
   loggedIn: state.Auth.token != null,
   token: state.Auth.token,
-}), { authLogout })(Sidebar);
+}), { authLogout, notificationShow })(Sidebar);

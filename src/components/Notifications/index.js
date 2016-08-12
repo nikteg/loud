@@ -1,16 +1,16 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { videoError } from "../../reducers/Video";
+import { notificationDismiss } from "../../reducers/Notification";
 
 import "./style.styl";
 
-const NextButton = connect(state => ({
-  error: state.Video.error,
-}), { videoError })(props => (
-  props.error && <div className="Notifications">
-    Something went wrong. Try another song. Error code: {props.error}
-  </div> || null
+const Notifications = connect(state => ({
+  message: state.Notification.messages[0],
+}), { notificationDismiss })(props => (
+  props.message !== undefined && <div className="Notifications">
+    {props.message}
+  </div>
 ));
 
-export default NextButton;
+export default Notifications;
