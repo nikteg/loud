@@ -2,7 +2,7 @@ import { applyMiddleware, compose, createStore } from "redux";
 import { reduxReactRouter, replace } from "redux-router";
 import { createHashHistory as createHistory } from "history";
 import thunk from "redux-thunk";
-import translator from "./middleware/translator";
+import translator from "redux-action-translator";
 
 import reducers from "./reducers";
 import { authLoginActions, authRegisterActions, authLogoutActions } from "./reducers/Auth";
