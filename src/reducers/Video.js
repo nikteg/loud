@@ -1,4 +1,5 @@
 import { createAction, handleActions } from "redux-actions";
+import crosstab from "crosstab";
 
 import { playlistSelect } from "./Playlist";
 
@@ -47,6 +48,8 @@ export const videoPlayPause = () => withPlayer((player, dispatch, getState) => {
   }
 
   if (state.Video.state === "pause" || state.Video.state === "end") {
+    crosstab.broadcast("PAUSE");
+    console.log("Sent pause event");
     player.playVideo();
   }
 });
@@ -58,6 +61,9 @@ export const videoLoad = (id) => withPlayer((player, dispatch, getState) => {
 });
 
 export const videoListLoad = (playlistId, index = 0) => withPlayer((player, dispatch, getState) => {
+  crosstab.broadcast("PAUSE");
+  console.log("Sent pause event");
+
   if (getState().Playlist.playlistId === playlistId) {
     if (getState().Video.playlistIndex === index) {
       return dispatch(videoPlayPause());

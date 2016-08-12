@@ -22,6 +22,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "crosstab": "^0.2.12",
     "history": "^2.0.0",
     "jwt-decode": "^2.1.0",
     "normalize.css": "^4.2.0",
