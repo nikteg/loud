@@ -15,5 +15,11 @@ const Welcome = (props) => (
 
 export default connect(state => ({
   loggedIn: state.Auth.token != null,
-}), { replace })(fnComp(Welcome, props => (!props.loggedIn && props.replace("/login"))));
+}), { replace })(fnComp(Welcome, props => {
+  if (!props.loggedIn) {
+    props.replace("/login");
+
+    return true;
+  }
+}));
 

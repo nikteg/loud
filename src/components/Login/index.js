@@ -58,4 +58,10 @@ export default connect(state => ({
   error: state.Auth.error,
   loading: state.Auth.loading,
   loggedIn: state.Auth.token != null,
-}), { authLogin, authRegister, replace })(fnComp(Login, props => (props.loggedIn && props.replace("/"))));
+}), { authLogin, authRegister, replace })(fnComp(Login, props => {
+  if (props.loggedIn) {
+    props.replace("/");
+
+    return true;
+  }
+}));

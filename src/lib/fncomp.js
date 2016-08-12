@@ -7,20 +7,20 @@ export default function fnComp(Comp, fn) {
       super(props);
 
       this.state = {
-        shouldRender: true,
+        shouldHide: true,
       };
     }
 
     componentWillMount() {
-      this.setState({ shouldRender: fn(this.props) || true });
+      this.setState({ shouldHide: !!fn(this.props) });
     }
 
     componentWillReceiveProps(nextProps) {
-      this.setState({ shouldRender: fn(nextProps) || true });
+      this.setState({ shouldHide: !!fn(nextProps) });
     }
 
     render() {
-      return this.state.shouldRender && <Comp {...this.props} />;
+      return !this.state.shouldHide && <Comp {...this.props} />;
     }
   };
 }
