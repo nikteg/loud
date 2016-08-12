@@ -6,6 +6,8 @@ import cx from "classnames";
 
 import { videoListLoad } from "../../reducers/Video";
 
+import { formatTime } from "../../util";
+
 import "./style.styl";
 
 const ListItem = connect((state) => ({
@@ -27,6 +29,7 @@ const ListItem = connect((state) => ({
       </svg>
     </button>
     <Link to={`/${props.track.key}`} className="ListItem-title">{props.track.artist} - {props.track.name}</Link>
+    <div>{formatTime(props.track.duration)}</div>
   </li>
 )));
 
