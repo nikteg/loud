@@ -2,7 +2,7 @@ module.exports = {
   webpack: {
     extra: {
       output: {
-        publicPath: "",
+        publicPath: "/",
       },
     },
     html: {

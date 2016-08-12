@@ -4,9 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "react run src/index.js --reload",
-    "build": "react build src/index.js --vendor",
-    "deploy": "react build src/index.js --vendor && echo loud.sodapop.se > dist/CNAME && git add dist && git commit -m \"dist subtree\" && git push origin `git subtree split --prefix dist master`:gh-pages --force && git reset HEAD~1"
+    "dev": "react run src/index.js --reload --fallback",
+    "build": "react build src/index.js --vendor"
   },
   "author": "",
   "license": "ISC",
