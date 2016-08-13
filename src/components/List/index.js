@@ -6,7 +6,7 @@ import cx from "classnames";
 
 import { videoListLoad } from "../../reducers/Video";
 
-import { formatTime } from "../../util";
+import { formatTime } from "../../lib/utils";
 
 import "./style.styl";
 

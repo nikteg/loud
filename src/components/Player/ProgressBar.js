@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Slider from "rc-slider";
 
-import { formatTime } from "../../util";
+import { formatTime } from "../../lib/utils";
 
 import { videoSeekTo, videoProgress, videoSeekingStart } from "../../reducers/Video";
 
