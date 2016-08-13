@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 // import { ROUTER_DID_CHANGE } from "redux-router/lib/constants";
 
 import { notificationNew } from "./Notification";
+import { authLogoutActions } from "./Auth";
 import { getPlaylists } from "../lib/api";
 import { createNetworkAction } from "../lib/utils";
 
@@ -52,6 +53,13 @@ export const playlistRemove = (id) => (dispatch, getState) => {
   //   .catch(err => dispatch(notificationNew(err.message)));
 };
 
+const initialState = {
+  playlists: [],
+  playlistId: 0,
+  playlist: [],
+  loading: false,
+};
+
 export default handleActions({
   [playlistSelect]: (state, action) => ({
     ...state,
@@ -75,9 +83,5 @@ export default handleActions({
     ...state,
     playlists: action.payload,
   }),
-}, {
-  playlists: [],
-  playlistId: 0,
-  playlist: [],
-  loading: false,
-});
+  [authLogoutActions.complete]: (state, action) => initialState,
+}, initialState);

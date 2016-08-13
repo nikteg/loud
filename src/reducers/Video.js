@@ -2,6 +2,7 @@ import { createAction, handleActions } from "redux-actions";
 import crosstab from "crosstab";
 
 import { playlistSelect } from "./Playlist";
+import { authLogoutActions } from "./Auth";
 
 export const videoInit = createAction("VIDEO_INIT", player => player);
 export const videoState = createAction("VIDEO_STATE", state => state);
@@ -147,6 +148,18 @@ export const videoMuteToggle = () => withPlayer((player, dispatch, getState) => 
   dispatch(videoMuted(!muted));
 });
 
+const initialState = {
+  playlistIndex: -1,
+  state: null,
+  progress: 0,
+  duration: 1,
+  muted: false,
+  volume: 100,
+  popup: false,
+  error: null,
+  seeking: false,
+};
+
 export default handleActions({
   [videoInit]: (state, action) => ({
     ...state,
@@ -193,14 +206,5 @@ export default handleActions({
     ...state,
     playlistIndex: -1,
   }),
-}, {
-  playlistIndex: -1,
-  state: null,
-  progress: 0,
-  duration: 1,
-  muted: false,
-  volume: 100,
-  popup: false,
-  error: null,
-  seeking: false,
-});
+  [authLogoutActions.complete]: (state, action) => initialState,
+}, initialState);
