@@ -1,12 +1,23 @@
 @require "../../style/variables"
+@require "../../style/inputs"
 
 .Sidebar
   width: 256px;
+
+  a
+    color: inherit;
+    display: block;
+    text-decoration: none;
+
+    &:hover
+      color: accent-color;
+      fill: accent-color;
 
   .Sidebar-subtitle
     padding: 8px 8px 4px;
     text-transform: uppercase;
     font-weight: bold;
+    display: flex;
 
   ul
     list-style: none;
@@ -14,8 +25,7 @@
     margin: 0;
 
     .Sidebar-item
-      display: block;
-      padding: 4px 16px;
+      padding: 4px 12px;
       border-radius: 4px;
 
       .Icon
@@ -32,7 +42,25 @@
         background: gray-light-color;
         height: 1rem;
 
-      a
-        color: inherit;
+.Playlists
+  .Playlists-item
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .Playlist-item-link
+      flex: 1;
+
+    .Icon-Bin
+      display: none;
+
+    &:hover
+      .Icon-Bin
         display: block;
-        text-decoration: none;
+
+  .Sidebar-item
+    input
+      @extends .input
+      box-sizing: border-box;
+      width: 100%;
+      flex: 1;

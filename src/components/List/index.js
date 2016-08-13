@@ -50,6 +50,8 @@ const List = connect(state => ({
           isInCurrentPlaylist={props.isInCurrentPlaylist}
         />
       ))}
+      {!props.loading && props.playlist && props.playlist.tracks.length === 0 && <li className="ListItem">Nothing here yet...</li>}
+      {!props.loading && !props.playlist && <li className="ListItem">Could not find playlist</li>}
       {props.loading && [1, 2, 3, 4].map((v, i) => <li key={i} className="ListItem"><div className="loading" /></li>)}
     </ul>
   </div>

@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { ReduxRouter } from "redux-router";
 import crosstab from "crosstab";
+import decode from "jwt-decode";
 
 import configureStore from "./configureStore";
 import routes from "./routes";
@@ -19,7 +20,7 @@ import {
   videoPause,
 } from "./reducers/Video";
 
-import { authToken } from "./reducers/Auth";
+import { authToken, authLogoutActions } from "./reducers/Auth";
 
 import "normalize.css";
 import "./style/global.styl";
@@ -32,7 +33,15 @@ window.redux = store;
 
 if (localStorage.getItem("token") != null) {
   const token = localStorage.getItem("token");
-  store.dispatch(authToken(token));
+
+  try {
+    const { id, username } = decode(token);
+    store.dispatch(authToken({ id, username, token }));
+  } catch (err) {
+    localStorage.removeItem("token");
+    console.error("Could not decode token", token);
+    store.dispatch(authLogoutActions.complete());
+  }
 }
 
 setInterval(() => videoProgressTick()(store.dispatch, store.getState), 500);
