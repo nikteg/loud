@@ -19,6 +19,15 @@ class Playlists extends React.Component {
     this.onAdd = this.onAdd.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.onRemove = this.onRemove.bind(this);
+    this.resetInput = this.resetInput.bind(this);
+  }
+
+  componentDidMount() {
+    document.body.addEventListener("click", e => {
+      if (this.state.adding && e.target !== this.playlist) {
+        this.resetInput(e);
+      }
+    });
   }
 
   onAdd(e) {
@@ -38,13 +47,18 @@ class Playlists extends React.Component {
 
   onKeyDown(e) {
     if (e.keyCode === 27) {
-      e.target.value = "";
-      this.setState({ adding: false });
+      this.resetInput(e);
     }
   }
 
   onRemove(id) {
     return () => this.props.playlistRemove(id);
+  }
+
+  resetInput(e) {
+    e.preventDefault();
+    this.playlist.value = "";
+    this.setState({ adding: false });
   }
 
   render() {
