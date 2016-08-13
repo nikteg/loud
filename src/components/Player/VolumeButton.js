@@ -44,7 +44,7 @@ const volumeIcons = {
 const VolumeSlider = connect(state => ({
   min: 0,
   max: 100,
-  value: state.Video.volume,
+  value: state.Video.muted ? 0 : state.Video.volume,
   className: "Volume-popup-slider",
   tipFormatter: null,
   vertical: true,
@@ -76,10 +76,7 @@ export default connect(state => {
     iconState = volumeIconStates.MUTE;
   }
 
-  const percent = state.Video.muted ? 0 : state.Video.volume;
-
   return {
     iconState,
-    percent,
   };
 }, { videoMuteToggle, videoVolumeSet })(VolumeButton);
