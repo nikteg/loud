@@ -13,7 +13,7 @@ export const routes = (
     <Route path="/login" component={Login} />
     <Route path="/" component={App}>
       <IndexRoute component={Welcome} />
-      <Route path="/profile" component={Profile} />
+      <Route path="/profile/:username" component={Profile} />
       <Route path="/list/:id" component={List} />
       <Route path=":id" component={Preview} />
     </Route>

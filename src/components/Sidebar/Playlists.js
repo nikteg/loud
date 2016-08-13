@@ -53,7 +53,7 @@ class Playlists extends React.Component {
         {!this.props.loading && this.props.playlists.map((list, i) =>
           <li key={i} className={cx("Playlists-item Sidebar-item", { active: this.props.selectedPlaylist === list.id })}>
             <Link className="Playlist-item-link" to={`/list/${list.id}`}>{list.name}</Link>
-            <a onClick={this.onRemove(list.id)}><Icons.Bin /></a>
+            <a className="Playlist-item-remove" onClick={this.onRemove(list.id)}><Icons.Bin /></a>
           </li>
         )}
         {this.props.playlists.length === 0 && <li className="Sidebar-item">Nothing here yet...</li>}

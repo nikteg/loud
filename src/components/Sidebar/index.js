@@ -20,7 +20,7 @@ const Sidebar = bindClosures({
     <div className="Sidebar-title header-title"><Link to="/">Loud</Link></div>
     {props.loggedIn && <div className="Sidebar-subtitle">{props.username}</div>}
     {props.loggedIn && <ul>
-      <li className="Sidebar-item"><Link to="/profile"><Icons.User />Profile</Link></li>
+      <li className="Sidebar-item"><Link to={`/profile/${props.username}`}><Icons.User />Profile</Link></li>
       <li className="Sidebar-item"><a onClick={props.notImplementedNotification}><Icons.Settings />Settings</a></li>
       <li className="Sidebar-item"><a onClick={props.authLogout}><Icons.Logout />Logout</a></li>
     </ul>}
