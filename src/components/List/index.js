@@ -39,7 +39,7 @@ const List = connect(state => ({
   isInCurrentPlaylist: state.Playlist.playlist.id === +state.router.params.id,
 }))(props => (
   <div className="List page">
-    <div className="List-title header-title">Songs</div>
+    <div className="List-title header-title">{props.playlist && props.playlist.name}</div>
     <ul>
       {!props.loading && props.playlist && props.playlist.tracks.map((track, i) => (
         <ListItem
