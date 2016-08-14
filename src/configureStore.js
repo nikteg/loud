@@ -12,6 +12,8 @@ import { videoError } from "./reducers/Video";
 import { notificationShow } from "./reducers/Notification";
 import { searchQuery } from "./reducers/Search";
 
+import windowTitle from "./middleware/windowTitle";
+
 const translation = translator({
   [authLoginActions.complete]: [replace("/"), playlistsLoad()],
   [authToken]: [playlistsLoad()],
@@ -32,7 +34,7 @@ export default function configureStore(initialState, routes) {
       routes,
       createHistory,
     }),
-    applyMiddleware(thunk, translation),
+    applyMiddleware(thunk, translation, windowTitle),
   ];
 
   if (window.devToolsExtension) {
