@@ -5,6 +5,7 @@ import Video from "./Video";
 import Playlist from "./Playlist";
 import Auth from "./Auth";
 import Notification from "./Notification";
+import Search from "./Search";
 
 export default combineReducers({
   router,
@@ -12,4 +13,5 @@ export default combineReducers({
   Playlist,
   Auth,
   Notification,
+  Search,
 });

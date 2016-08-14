@@ -1,7 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 import crosstab from "crosstab";
 
-import { playlistSelect } from "./Playlist";
+import { playlistSelect, playlistSelectCustom } from "./Playlist";
 import { authLogoutActions } from "./Auth";
 
 export const videoInit = createAction("VIDEO_INIT", player => player);
@@ -78,6 +78,29 @@ export const videoListLoad = (playlistId, index = 0) => withPlayer((player, disp
 
   player.loadPlaylist(ids, index);
   dispatch(playlistSelect(playlistId));
+  dispatch(videoListIndex(index));
+
+  dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
+  // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
+});
+
+export const videoQueueLoad = (tracks, index = 0) => withPlayer((player, dispatch, getState) => {
+  crosstab.broadcast("PAUSE");
+  console.log("Sent pause event");
+
+  if (getState().Playlist.playlistId === -1) {
+    if (getState().Video.playlistIndex === index) {
+      return dispatch(videoPlayPause());
+    } else if (getState().Video.playlistIndex !== -1) {
+      console.log("playvideo at")
+      return player.playVideoAt(index);
+    }
+  }
+
+  const ids = tracks.map(track => track.key);
+
+  player.loadPlaylist(ids, index);
+  dispatch(playlistSelectCustom(tracks));
   dispatch(videoListIndex(index));
 
   dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.

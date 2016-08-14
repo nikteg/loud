@@ -12,6 +12,7 @@ import {
 import { createNetworkAction } from "../lib/utils";
 
 export const playlistSelect = createAction("PLAYLIST_SELECT", key => key);
+export const playlistSelectCustom = createAction("PLAYLIST_SELECT_CUSTOM", tracks => tracks);
 export const playlistsLoadActions = createNetworkAction("PLAYLISTS_LOAD");
 export const playlistCreateActions = createNetworkAction("PLAYLIST_CREATE");
 export const playlistUpdateActions = createNetworkAction("PLAYLIST_UPDATE");
@@ -58,7 +59,7 @@ export const playlistRemove = (id) => (dispatch, getState) => {
 
 const initialState = {
   playlists: [],
-  playlistId: 0,
+  playlistId: -1,
   playlist: [],
   loading: false,
 };
@@ -68,6 +69,11 @@ export default handleActions({
     ...state,
     playlistId: action.payload,
     playlist: state.playlists.find(list => list.id === action.payload) || [],
+  }),
+  [playlistSelectCustom]: (state, action) => ({
+    ...state,
+    playlistId: -1,
+    playlist: action.payload,
   }),
   [playlistsLoadActions.start]: (state, action) => ({
     ...state,

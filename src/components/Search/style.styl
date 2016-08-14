@@ -1,0 +1,43 @@
+@require "../../style/variables"
+
+.Search
+
+  ul
+    list-style: none;
+    padding: 8px;
+    margin: 0;
+
+    .ListItem
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
+
+      &.active
+        background: gray-light-color;
+        font-weight: bold;
+
+      .loading
+        flex: 1;
+        background: gray-light-color;
+        height: 1rem;
+
+      a
+        color: inherit;
+
+      .ListItem-button
+        display: block;
+        width: 24px;
+        height: 24px;
+        margin-right: 8px;
+        border: none;
+        background: accent-color;
+        border-radius: 50%;
+        padding: 4px;
+        cursor: pointer;
+        fill: white;
+        outline: none;
+
+      .ListItem-title
+        flex: 1;
+        text-decoration: none;

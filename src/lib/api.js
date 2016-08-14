@@ -65,3 +65,9 @@ export function updatePlaylist(token, id, name, tracks) {
 export function removePlaylist(token, id) {
   return request(`/playlists/${id}`, token, "DELETE");
 }
+
+// Search
+
+export function search(token) {
+  return request("/tracks", token, "GET");
+}
