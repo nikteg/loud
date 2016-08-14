@@ -2,26 +2,57 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import bindClosures from "react-bind-closures";
+import { DragSource } from "react-dnd";
 import cx from "classnames";
 
 import { videoListLoad } from "../../reducers/Video";
+import { playlistTrackAdd } from "../../reducers/Playlist";
 
 import { formatTime } from "../../lib/utils";
 
 import "./style.styl";
 
+const trackSource = {
+  beginDrag(props, monitor, component) {
+    return props.track;
+  },
+  endDrag(props, monitor, component) {
+    if (!monitor.didDrop()) {
+      // You can check whether the drop was successful
+      // or if the drag ended but nobody handled the drop
+      return;
+    }
+
+    const track = monitor.getItem();
+    const playlist = monitor.getDropResult();
+
+    component.props.playlistTrackAdd(playlist.id, track);
+
+    console.log(track, playlist);
+  },
+};
+
+function collect(conn, monitor) {
+  return {
+    // Call this function inside render()
+    // to let React DnD handle the drag events:
+    connectDragSource: conn.dragSource(),
+    connectDragPreview: conn.dragPreview(),
+  };
+}
+
 const ListItem = connect((state) => ({
   isPlaying: state.Video.state === "play",
   index: state.Video.playlistIndex,
-}), { videoListLoad }, (stateProps, dispatchProps, ownProps) => ({
+}), { videoListLoad, playlistTrackAdd }, (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
-}))(bindClosures({
+}))(DragSource("TRACK", trackSource, collect)(bindClosures({
   onClick(props) {
     props.videoListLoad(props.playlistId, props.index);
   },
-})(props => (
+})(props => props.connectDragSource(
   <li className={cx("ListItem", { active: props.isPlaying })}>
     <button className="ListItem-button" onClick={props.onClick}>
       <svg viewBox="0 0 16 16">
@@ -30,8 +61,8 @@ const ListItem = connect((state) => ({
     </button>
     <Link to={`/${props.track.key}`} className="ListItem-title">{props.track.artist} - {props.track.name}</Link>
     <div>{formatTime(props.track.duration)}</div>
-  </li>
-)));
+  </li>, { dropEffect: "copy" }
+))));
 
 const List = connect(state => ({
   loading: state.Playlist.loading,

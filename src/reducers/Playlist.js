@@ -3,12 +3,18 @@ import { createAction, handleActions } from "redux-actions";
 
 import { notificationNew } from "./Notification";
 import { authLogoutActions } from "./Auth";
-import { getPlaylists } from "../lib/api";
+import {
+  getPlaylists,
+  createPlaylist,
+  updatePlaylist,
+  removePlaylist,
+} from "../lib/api";
 import { createNetworkAction } from "../lib/utils";
 
 export const playlistSelect = createAction("PLAYLIST_SELECT", key => key);
 export const playlistsLoadActions = createNetworkAction("PLAYLISTS_LOAD");
 export const playlistCreateActions = createNetworkAction("PLAYLIST_CREATE");
+export const playlistUpdateActions = createNetworkAction("PLAYLIST_UPDATE");
 export const playlistRemoveActions = createNetworkAction("PLAYLIST_REMOVE");
 
 export const playlistsLoad = () => (dispatch, getState) => {
@@ -22,35 +28,32 @@ export const playlistsLoad = () => (dispatch, getState) => {
 export const playlistCreate = (name) => (dispatch, getState) => {
   dispatch(playlistCreateActions.start());
 
-  // TODO: Actually do this
-  if (name.trim() === "") {
-    return dispatch(playlistCreateActions.error());
-  }
+  createPlaylist(getState().Auth.token, name, [])
+    .then(playlist => dispatch(playlistCreateActions.complete(playlist)))
+    .catch(err => dispatch(notificationNew(err.message)));
+};
 
-  const playlists = getState().Playlist.playlists;
-  const lastId = playlists.length > 0 ? playlists[playlists.length - 1].id : 0;
-  setTimeout(() => {
-    dispatch(playlistCreateActions.complete({ name, tracks: [], id: (lastId + 1) }));
-  }, 100);
+export const playlistUpdate = (id, name, tracks) => (dispatch, getState) => {
+  dispatch(playlistUpdateActions.start());
 
-  // createPlaylist(getState().Auth.token)
-  //   .then(playlists => dispatch(playlistsLoaded(playlists)))
-  //   .catch(err => dispatch(notificationNew(err.message)));
+  updatePlaylist(getState().Auth.token, id, name, tracks)
+    .then(playlist => dispatch(playlistUpdateActions.complete(playlist)))
+    .catch(err => dispatch(notificationNew(err.message)));
+};
+
+export const playlistTrackAdd = (id, track) => (dispatch, getState) => {
+  const playlists = getState().Playlist.playlists.slice();
+  const playlist = playlists.find(list => list.id === id);
+  const trackIds = playlist.tracks.concat([track]).map(t => t.id);
+  dispatch(playlistUpdate(id, playlist.name, trackIds));
 };
 
 export const playlistRemove = (id) => (dispatch, getState) => {
   dispatch(playlistRemoveActions.start());
 
-  // TODO: Actually do this
-  const playlists = getState().Playlist.playlists.filter(list => list.id !== id);
-
-  setTimeout(() => {
-    dispatch(playlistRemoveActions.complete(playlists));
-  }, 100);
-
-  // createPlaylist(getState().Auth.token)
-  //   .then(playlists => dispatch(playlistsLoaded(playlists)))
-  //   .catch(err => dispatch(notificationNew(err.message)));
+  removePlaylist(getState().Auth.token, id)
+    .then(() => dispatch(playlistRemoveActions.complete(id)))
+    .catch(err => dispatch(notificationNew(err.message)));
 };
 
 const initialState = {
@@ -81,7 +84,17 @@ export default handleActions({
   }),
   [playlistRemoveActions.complete]: (state, action) => ({
     ...state,
-    playlists: action.payload,
+    playlists: state.playlists.filter(list => list.id !== action.payload),
   }),
+  [playlistUpdateActions.complete]: (state, action) => {
+    const playlists = state.playlists.slice();
+    const playlist = playlists.findIndex(list => list.id === action.payload.id);
+    playlists[playlist] = action.payload;
+
+    return {
+      ...state,
+      playlists,
+    };
+  },
   [authLogoutActions.complete]: (state, action) => initialState,
 }, initialState);

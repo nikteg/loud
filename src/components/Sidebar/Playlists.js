@@ -2,10 +2,39 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import cx from "classnames";
+import { DropTarget } from "react-dnd";
 
 import { playlistCreate, playlistRemove } from "../../reducers/Playlist";
 
 import * as Icons from "../Icons";
+
+const Playlist = (props) => props.connectDropTarget(
+  <li className={cx("Playlists-item Sidebar-item", { active: props.active, isOver: props.isOver })}>
+    <Link className="Playlist-item-link" to={`/list/${props.list.id}`}><Icons.Music />{props.list.name}</Link>
+    <a className="Playlist-item-remove" onClick={props.onRemove(props.list.id)}><Icons.Bin /></a>
+  </li>
+);
+
+const trackTarget = {
+  drop(props, monitor, component) {
+    return { id: props.list.id };
+  },
+};
+
+function collect(conn, monitor) {
+  return {
+    // Call this function inside render()
+    // to let React DnD handle the drag events:
+    connectDropTarget: conn.dropTarget(),
+    // You can ask the monitor about the current drag state:
+    isOver: monitor.isOver(),
+    isOverCurrent: monitor.isOver({ shallow: true }),
+    canDrop: monitor.canDrop(),
+    itemType: monitor.getItemType(),
+  };
+}
+
+const PlaylistDropTarget = DropTarget("TRACK", trackTarget, collect)(Playlist);
 
 class Playlists extends React.Component {
 
@@ -65,10 +94,7 @@ class Playlists extends React.Component {
     return (
       <ul className="Playlists">
         {!this.props.loading && this.props.playlists.map((list, i) =>
-          <li key={i} className={cx("Playlists-item Sidebar-item", { active: this.props.selectedPlaylist === list.id })}>
-            <Link className="Playlist-item-link" to={`/list/${list.id}`}><Icons.Music />{list.name}</Link>
-            <a className="Playlist-item-remove" onClick={this.onRemove(list.id)}><Icons.Bin /></a>
-          </li>
+          <PlaylistDropTarget key={i} list={list} active={this.props.selectedPlaylist === list.id} onRemove={this.onRemove} />
         )}
         {this.props.playlists.length === 0 && <li className="Sidebar-item">Nothing here yet...</li>}
         {this.props.loading && [1, 2, 3, 4].map((v, i) =>

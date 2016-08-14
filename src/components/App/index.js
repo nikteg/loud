@@ -1,5 +1,8 @@
 import React from "react";
 
+import HTML5Backend from "react-dnd-html5-backend";
+import { DragDropContext } from "react-dnd";
+
 import Sidebar from "../Sidebar";
 import Player from "../Player";
 import Video from "../Video";
@@ -26,4 +29,4 @@ App.propTypes = {
   params: React.PropTypes.object,
 };
 
-export default App;
+export default DragDropContext(HTML5Backend)(App);
