@@ -2,7 +2,6 @@ import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { ReduxRouter } from "redux-router";
-import crosstab from "crosstab";
 import decode from "jwt-decode";
 
 import configureStore from "./configureStore";
@@ -45,11 +44,6 @@ if (localStorage.getItem("token") != null) {
 }
 
 setInterval(() => videoProgressTick()(store.dispatch, store.getState), 500);
-
-crosstab.on("PAUSE", () => {
-  console.log("got pause event");
-  store.dispatch(videoPause());
-});
 
 window.addEventListener("keydown", e => {
   if (e.altKey || e.ctrlKey || e.metaKey || e.target !== document.body) {
