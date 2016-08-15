@@ -6,7 +6,7 @@ import { DragSource } from "react-dnd";
 import cx from "classnames";
 
 import { videoQueueLoad } from "../../reducers/Video";
-import { playlistTrackAdd } from "../../reducers/Playlist";
+import { playlistTrackAdd, playlistCreate } from "../../reducers/Playlist";
 import { notificationShow } from "../../reducers/Notification";
 
 import { formatTime } from "../../lib/utils";
@@ -48,7 +48,7 @@ const ListItem = connect((state) => ({
   playlists: state.Playlist.playlists,
   isPlaying: state.Video.state === "play",
   index: state.Video.playlistIndex,
-}), { videoQueueLoad, playlistTrackAdd, notificationShow }, (stateProps, dispatchProps, ownProps) => ({
+}), { videoQueueLoad, playlistTrackAdd, playlistCreate, notificationShow }, (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
