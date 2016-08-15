@@ -50,6 +50,10 @@ export const playlistTrackAdd = (id, track) => (dispatch, getState) => {
 };
 
 export const playlistRemove = (id) => (dispatch, getState) => {
+  if (!confirm("Do you really want to remove this playlist?")) {
+    return;
+  }
+
   dispatch(playlistRemoveActions.start());
 
   removePlaylist(getState().Auth.token, id)
