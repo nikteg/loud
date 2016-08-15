@@ -10,19 +10,23 @@ import Notifications from "../Notifications";
 
 import "./style.styl";
 
-const App = (props) => (
-  <div className="App">
-    <Video />
-    <div className="App-wrapper">
-      <Notifications />
-      <Sidebar activeItem={props.params.id} />
-      <div className="App-wrapper-content">
-        {props.children}
+class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <Video />
+        <div className="App-wrapper">
+          <Notifications />
+          <Sidebar activeItem={this.props.params.id} />
+          <div className="App-wrapper-content">
+            {this.props.children}
+          </div>
+        </div>
+        <Player />
       </div>
-    </div>
-    <Player />
-  </div>
-);
+    );
+  }
+}
 
 App.propTypes = {
   children: React.PropTypes.node,
