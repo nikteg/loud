@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "classnames": "^2.2.5",
+    "core-js": "^2.4.1",
     "history": "^2.0.0",
     "jwt-decode": "^2.1.0",
     "normalize.css": "^4.2.0",
@@ -37,6 +38,7 @@
     "redux-action-translator": "^1.0.3",
     "redux-actions": "^0.10.1",
     "redux-router": "^2.1.1",
-    "redux-thunk": "^2.1.0"
+    "redux-thunk": "^2.1.0",
+    "whatwg-fetch": "^1.0.0"
   }
 }
