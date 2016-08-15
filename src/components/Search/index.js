@@ -7,8 +7,11 @@ import cx from "classnames";
 
 import { videoQueueLoad } from "../../reducers/Video";
 import { playlistTrackAdd } from "../../reducers/Playlist";
+import { notificationShow } from "../../reducers/Notification";
 
 import { formatTime } from "../../lib/utils";
+import * as Icons from "../Icons";
+import Dropdown from "../Dropdown";
 
 import "./style.styl";
 
@@ -42,12 +45,14 @@ function collect(conn, monitor) {
 }
 
 const ListItem = connect((state) => ({
+  playlists: state.Playlist.playlists,
   isPlaying: state.Video.state === "play",
   index: state.Video.playlistIndex,
-}), { videoQueueLoad, playlistTrackAdd }, (stateProps, dispatchProps, ownProps) => ({
+}), { videoQueueLoad, playlistTrackAdd, notificationShow }, (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
+  playlists: stateProps.playlists,
 }))(DragSource("TRACK", trackSource, collect)(bindClosures({
   onClick(props) {
     props.videoQueueLoad(props.tracks, props.index);
@@ -61,6 +66,16 @@ const ListItem = connect((state) => ({
     </button>
     <Link to={`/${props.track.key}`} className="ListItem-title">{props.track.artist} - {props.track.name}</Link>
     <div>{formatTime(props.track.duration)}</div>
+    <Dropdown
+      icon={<Icons.Plus />}
+      onChoose={id => props.playlistTrackAdd(id, props.track)}
+      items={props.playlists.map(list => ({ name: list.name, data: list.id }))}
+    />
+    <Dropdown
+      icon={<Icons.Down />}
+      onChoose={() => props.notificationShow("Not implemented yet")}
+      items={[{ name: "Add to queue" }]}
+    />
   </li>, { dropEffect: "copy" }
 ))));
 

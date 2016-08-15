@@ -6,9 +6,12 @@ import { DragSource } from "react-dnd";
 import cx from "classnames";
 
 import { videoListLoad } from "../../reducers/Video";
-import { playlistTrackAdd } from "../../reducers/Playlist";
+import { playlistTrackAdd, playlistTrackRemove, playlistCreate } from "../../reducers/Playlist";
+import { notificationShow } from "../../reducers/Notification";
 
 import { formatTime } from "../../lib/utils";
+import * as Icons from "../Icons";
+import Dropdown from "../Dropdown";
 
 import "./style.styl";
 
@@ -42,12 +45,20 @@ function collect(conn, monitor) {
 }
 
 const ListItem = connect((state) => ({
+  playlists: state.Playlist.playlists,
   isPlaying: state.Video.state === "play",
   index: state.Video.playlistIndex,
-}), { videoListLoad, playlistTrackAdd }, (stateProps, dispatchProps, ownProps) => ({
+}), {
+  videoListLoad,
+  playlistTrackAdd,
+  playlistTrackRemove,
+  notificationShow,
+  playlistCreate,
+}, (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
+  playlists: stateProps.playlists.filter(list => list.id !== ownProps.playlistId),
 }))(DragSource("TRACK", trackSource, collect)(bindClosures({
   onClick(props) {
     props.videoListLoad(props.playlistId, props.index);
@@ -61,6 +72,28 @@ const ListItem = connect((state) => ({
     </button>
     <Link to={`/${props.track.key}`} className="ListItem-title">{props.track.artist} - {props.track.name}</Link>
     <div>{formatTime(props.track.duration)}</div>
+    <Dropdown
+      icon={<Icons.Plus />}
+      onChoose={id => {
+        if (id) {
+          return props.playlistTrackAdd(id, props.track);
+        }
+
+        props.playlistCreate(`${props.track.artist} - ${props.track.name}`, [props.track]);
+      }}
+      items={props.playlists.map(list => ({ name: list.name, data: list.id })).concat([{ name: "Add to new playlist" }])}
+    />
+    <Dropdown
+      icon={<Icons.Down />}
+      onChoose={data => {
+        if (data) {
+          return props.playlistTrackRemove(props.playlistId, data);
+        }
+
+        props.notificationShow("Not implemented yet");
+      }}
+      items={[{ name: "Add to queue" }, { name: "Remove from playlist", data: props.track }]}
+    />
   </li>, { dropEffect: "copy" }
 ))));
 
