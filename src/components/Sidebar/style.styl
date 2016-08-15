@@ -19,13 +19,13 @@
     font-weight: bold;
     display: flex;
 
-  ul
+  > ul
     list-style: none;
     padding: 0;
     margin: 0;
 
     .Sidebar-item
-      padding: 4px 12px;
+      padding: 4px 4px 4px 12px;
       border-radius: 4px;
 
       .Icon
@@ -55,13 +55,11 @@
     .Playlist-item-link
       flex: 1;
 
-    .Playlist-item-remove
-      width: 1em;
-      display: none;
+    .Dropdown
+      font-weight: normal;
 
-    &:hover
-      .Playlist-item-remove
-        display: block;
+      .Icon
+        margin-top: 0;
 
   .Sidebar-item
     input

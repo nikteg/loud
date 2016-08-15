@@ -5,13 +5,25 @@ import cx from "classnames";
 import { DropTarget } from "react-dnd";
 
 import { playlistCreate, playlistRemove } from "../../reducers/Playlist";
+import { notificationShow } from "../../reducers/Notification";
 
 import * as Icons from "../Icons";
+import Dropdown from "../Dropdown";
 
 const Playlist = (props) => props.connectDropTarget(
   <li className={cx("Playlists-item Sidebar-item", { active: props.active, isOver: props.isOver })}>
     <Link className="Playlist-item-link" to={`/list/${props.list.id}`}><Icons.Music />{props.list.name}</Link>
-    <a className="Playlist-item-remove" onClick={props.onRemove(props.list.id)}><Icons.Bin /></a>
+    <Dropdown
+      icon={<Icons.Down />}
+      onChoose={data => {
+        if (data === "remove") {
+          return props.playlistRemove(props.list.id);
+        }
+
+        props.notificationShow("Not implemented yet");
+      }}
+      items={[{ name: "Rename", data: "rename" }, null, { name: "Remove", data: "remove" }]}
+    />
   </li>
 );
 
@@ -47,7 +59,6 @@ class Playlists extends React.Component {
 
     this.onAdd = this.onAdd.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
-    this.onRemove = this.onRemove.bind(this);
     this.resetInput = this.resetInput.bind(this);
   }
 
@@ -80,10 +91,6 @@ class Playlists extends React.Component {
     }
   }
 
-  onRemove(id) {
-    return () => this.props.playlistRemove(id);
-  }
-
   resetInput(e) {
     e.preventDefault();
     this.playlist.value = "";
@@ -94,7 +101,13 @@ class Playlists extends React.Component {
     return (
       <ul className="Playlists">
         {!this.props.loading && this.props.playlists.map((list, i) =>
-          <PlaylistDropTarget key={i} list={list} active={this.props.selectedPlaylist === list.id} onRemove={this.onRemove} />
+          <PlaylistDropTarget
+            key={i}
+            list={list}
+            active={this.props.selectedPlaylist === list.id}
+            playlistRemove={this.props.playlistRemove}
+            notificationShow={this.props.notificationShow}
+          />
         )}
         {this.props.playlists.length === 0 && <li className="Sidebar-item">Nothing here yet...</li>}
         {this.props.loading && [1, 2, 3, 4].map((v, i) =>
@@ -114,4 +127,4 @@ export default connect(state => ({
   loading: state.Playlist.loading,
   playlists: state.Playlist.playlists,
   selectedPlaylist: +state.router.params.id,
-}), { playlistCreate, playlistRemove })(Playlists);
+}), { playlistCreate, playlistRemove, notificationShow })(Playlists);
