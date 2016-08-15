@@ -26,10 +26,10 @@ export const playlistsLoad = () => (dispatch, getState) => {
     .catch(err => dispatch(notificationNew(err.message)));
 };
 
-export const playlistCreate = (name) => (dispatch, getState) => {
+export const playlistCreate = (name, tracks = []) => (dispatch, getState) => {
   dispatch(playlistCreateActions.start());
 
-  createPlaylist(getState().Auth.token, name, [])
+  createPlaylist(getState().Auth.token, name, tracks.map(t => t.id))
     .then(playlist => dispatch(playlistCreateActions.complete(playlist)))
     .catch(err => dispatch(notificationNew(err.message)));
 };
