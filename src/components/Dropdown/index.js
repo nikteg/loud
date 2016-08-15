@@ -1,4 +1,5 @@
 import React from "react";
+import ReactDOM from "react-dom";
 import cx from "classnames";
 
 import "./style.styl";
@@ -14,33 +15,32 @@ export default class Dropdown extends React.Component {
 
     this.onClick = this.onClick.bind(this);
     this.onChoose = this.onChoose.bind(this);
+    this.onBodyClick = this.onBodyClick.bind(this);
   }
 
   onClick(e) {
-    if (e.target.className === "Dropdown-link") {
-      return true;
-    }
-
-    e.preventDefault();
-
     if (this.state.dropdown) {
-      document.body.removeEventListener("click", this.onClick);
-
+      document.body.removeEventListener("click", this.onBodyClick);
       this.setState({ dropdown: false });
     } else {
-      document.body.addEventListener("click", this.onClick);
-
+      document.body.addEventListener("click", this.onBodyClick);
       this.setState({ dropdown: true });
     }
+  }
 
-    return true;
+  onBodyClick(e) {
+    if (!ReactDOM.findDOMNode(this).contains(e.target)) {
+      document.body.removeEventListener("click", this.onBodyClick);
+      this.setState({ dropdown: false });
+      e.preventDefault();
+      e.stopPropagation();
+    }
   }
 
   onChoose(data) {
     return e => {
-      document.body.removeEventListener("click", this.onClick);
       this.props.onChoose(data);
-      this.setState({ dropdown: false });
+      this.onClick(e);
     };
   }
 
@@ -51,7 +51,7 @@ export default class Dropdown extends React.Component {
         {this.state.dropdown && <ul>
           {this.props.items.map((item, i) => {
             if (item) {
-              return <li key={i}><a onClick={this.onChoose(item.data)} className="Dropdown-link">{item.name}</a></li>;
+              return <li key={i}><a onClick={this.onChoose(item.data)}>{item.name}</a></li>;
             }
 
             return <li key={i} className="seperator" />;
