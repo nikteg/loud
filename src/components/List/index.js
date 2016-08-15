@@ -81,7 +81,7 @@ const ListItem = connect((state) => ({
 
         props.playlistCreate(`${props.track.artist} - ${props.track.name}`, [props.track]);
       }}
-      items={props.playlists.map(list => ({ name: list.name, data: list.id })).concat([{ name: "Add to new playlist" }])}
+      items={props.playlists.map(list => ({ name: list.name, data: list.id })).concat([null, { name: "Add to new playlist" }])}
     />
     <Dropdown
       icon={<Icons.Down />}
@@ -92,7 +92,7 @@ const ListItem = connect((state) => ({
 
         props.notificationShow("Not implemented yet");
       }}
-      items={[{ name: "Add to queue" }, { name: "Remove from playlist", data: props.track }]}
+      items={[{ name: "Add to queue" }, null, { name: "Remove from playlist", data: props.track }]}
     />
   </li>, { dropEffect: "copy" }
 ))));

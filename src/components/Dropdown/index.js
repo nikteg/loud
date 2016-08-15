@@ -49,8 +49,13 @@ export default class Dropdown extends React.Component {
       <div className={cx("Dropdown", { "active": this.state.dropdown })}>
         <a className="Dropdown-button" onClick={this.onClick}>{this.props.icon}</a>
         {this.state.dropdown && <ul>
-          {this.props.items.map((item, i) =>
-            <li key={i}><a onClick={this.onChoose(item.data)} className="Dropdown-link">{item.name}</a></li>)}
+          {this.props.items.map((item, i) => {
+            if (item) {
+              return <li key={i}><a onClick={this.onChoose(item.data)} className="Dropdown-link">{item.name}</a></li>;
+            }
+
+            return <li key={i} className="seperator" />;
+          })}
         </ul>}
       </div>
     );
