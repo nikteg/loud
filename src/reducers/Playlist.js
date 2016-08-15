@@ -49,6 +49,13 @@ export const playlistTrackAdd = (id, track) => (dispatch, getState) => {
   dispatch(playlistUpdate(id, playlist.name, trackIds));
 };
 
+export const playlistTrackRemove = (id, track) => (dispatch, getState) => {
+  const playlists = getState().Playlist.playlists.slice();
+  const playlist = playlists.find(list => list.id === id);
+  const trackIds = playlist.tracks.filter(t => t.id !== track.id).map(t => t.id);
+  dispatch(playlistUpdate(id, playlist.name, trackIds));
+};
+
 export const playlistRemove = (id) => (dispatch, getState) => {
   if (!confirm("Do you really want to remove this playlist?")) {
     return;
