@@ -59,7 +59,6 @@ const Sidebar = bindClosures({
         <Link to="/search"><Icons.Search />All tracks</Link>
       </li>
     </ul>
-    {props.loggedIn && <div className="Sidebar-subtitle">Playlists</div>}
     {props.loggedIn && <Playlists />}
   </div>
 ));

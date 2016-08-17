@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import cx from "classnames";
 import { DropTarget } from "react-dnd";
 
-import { playlistCreate, playlistRemove } from "../../reducers/Playlist";
+import { playlistCreate, playlistRemove, playlistRename } from "../../reducers/Playlist";
 import { notificationShow } from "../../reducers/Notification";
 
 import * as Icons from "../Icons";
@@ -20,10 +20,27 @@ const Playlist = (props) => props.connectDropTarget(
           return props.playlistRemove(props.list.id);
         }
 
-        props.notificationShow("Not implemented yet");
+        if (data === "rename") {
+          return props.onRename(props.list);
+        }
       }}
       items={[{ name: "Rename", data: "rename" }, null, { name: "Remove", data: "remove" }]}
     />
+  </li>
+);
+
+const PlaylistRename = (props) => (
+  <li className="Playlists-item Sidebar-item">
+    <form onSubmit={props.onRename}>
+      <Icons.Music />
+      <input
+        type="text"
+        onKeyDown={props.onKeyDown}
+        placeholder="Playlist name"
+        defaultValue={props.defaultName}
+        id="playlist-rename"
+      />
+    </form>
   </li>
 );
 
@@ -55,17 +72,22 @@ class Playlists extends React.Component {
 
     this.state = {
       adding: false,
+      renamePlaylist: null,
     };
 
     this.onAdd = this.onAdd.bind(this);
+    this.onAddPlaylist = this.onAddPlaylist.bind(this);
     this.onKeyDown = this.onKeyDown.bind(this);
     this.resetInput = this.resetInput.bind(this);
+    this.onRename = this.onRename.bind(this);
+    this.onRenamePlaylist = this.onRenamePlaylist.bind(this);
   }
 
   componentDidMount() {
     document.body.addEventListener("click", e => {
-      if (this.state.adding && e.target !== this.playlist) {
-        this.resetInput(e);
+      console.log(e.target);
+      if ((this.state.adding || this.state.renamePlaylist !== null) && e.target !== document.getElementById("playlist-rename")) {
+        this.resetInput();
       }
     });
   }
@@ -73,16 +95,31 @@ class Playlists extends React.Component {
   onAdd(e) {
     e.preventDefault();
 
-    if (this.state.adding) {
-      const name = this.playlist.value;
-
-      this.setState({ adding: false });
-
-      return this.props.playlistCreate(name);
-    }
-
     this.setState({ adding: true });
-    setTimeout(() => this.playlist.focus(), 0);
+    setTimeout(() => document.getElementById("playlist-rename").select(), 0);
+  }
+
+  onAddPlaylist(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("playlist-rename").value;
+    this.props.playlistCreate(name);
+    this.resetInput();
+  }
+
+  onRename(playlist) {
+    return () => {
+      this.setState({ renamePlaylist: playlist });
+      setTimeout(() => document.getElementById("playlist-rename").select(), 0);
+    };
+  }
+
+  onRenamePlaylist(e) {
+    e.preventDefault();
+
+    const name = document.getElementById("playlist-rename").value;
+    this.props.playlistRename(this.state.renamePlaylist.id, name);
+    this.resetInput();
   }
 
   onKeyDown(e) {
@@ -91,33 +128,48 @@ class Playlists extends React.Component {
     }
   }
 
-  resetInput(e) {
-    e.preventDefault();
-    this.playlist.value = "";
-    this.setState({ adding: false });
+  resetInput() {
+    document.getElementById("playlist-rename").value = "";
+    this.setState({ adding: false, renamePlaylist: null });
   }
 
   render() {
     return (
-      <ul className="Playlists">
-        {!this.props.loading && this.props.playlists.map((list, i) =>
-          <PlaylistDropTarget
-            key={i}
-            list={list}
-            active={this.props.selectedPlaylist === list.id}
-            playlistRemove={this.props.playlistRemove}
-            notificationShow={this.props.notificationShow}
-          />
-        )}
-        {this.props.playlists.length === 0 && <li className="Sidebar-item">Nothing here yet...</li>}
-        {this.props.loading && <li className="Sidebar-item">Loading...</li>}
-        <li className="Sidebar-item">
-          {!this.state.adding && <a onClick={this.onAdd}><Icons.Plus />Add playlist</a>}
-          {this.state.adding && <form onSubmit={this.onAdd}>
-            <input type="text" ref={node => (this.playlist = node)} onKeyDown={this.onKeyDown} placeholder="Playlist name" />
-          </form>}
-        </li>
-      </ul>
+      <div className="Playlists">
+        <div className="Sidebar-subtitle">Playlists<a className="Playlists-add" onClick={this.onAdd}><Icons.Plus /></a></div>
+        <ul>
+          {this.state.adding && <PlaylistRename
+            onRename={this.onAddPlaylist}
+            onKeyDown={this.onKeyDown}
+            defaultName="New playlist"
+          />}
+          {!this.props.loading && this.props.playlists.map((list, i) => {
+            if (this.state.renamePlaylist && this.state.renamePlaylist.id === list.id) {
+              return (
+                <PlaylistRename
+                  key={i}
+                  onRename={this.onRenamePlaylist}
+                  onKeyDown={this.onKeyDown}
+                  defaultName={list.name}
+                />
+              );
+            }
+
+            return (
+              <PlaylistDropTarget
+                key={i}
+                list={list}
+                active={this.props.selectedPlaylist === list.id}
+                playlistRemove={this.props.playlistRemove}
+                notificationShow={this.props.notificationShow}
+                onRename={this.onRename(list)}
+              />
+            );
+          })}
+          {this.props.playlists.length === 0 && <li className="Sidebar-item">Nothing here yet...</li>}
+          {this.props.loading && <li className="Sidebar-item">Loading...</li>}
+        </ul>
+      </div>
     );
   }
 }
@@ -126,4 +178,4 @@ export default connect(state => ({
   loading: state.Playlist.loading,
   playlists: state.Playlist.playlists,
   selectedPlaylist: +state.router.params.id,
-}), { playlistCreate, playlistRemove, notificationShow })(Playlists);
+}), { playlistCreate, playlistRemove, playlistRename, notificationShow })(Playlists);

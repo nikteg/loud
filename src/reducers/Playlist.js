@@ -42,6 +42,12 @@ export const playlistUpdate = (id, name, tracks) => (dispatch, getState) => {
     .catch(err => dispatch(notificationNew(err.message)));
 };
 
+export const playlistRename = (id, name) => (dispatch, getState) => {
+  const playlist = getState().Playlist.playlists.find(list => list.id === id);
+  const trackIds = playlist.tracks.map(t => t.id);
+  dispatch(playlistUpdate(id, name, trackIds));
+};
+
 export const playlistTrackAdd = (id, track) => (dispatch, getState) => {
   const playlists = getState().Playlist.playlists.slice();
   const playlist = playlists.find(list => list.id === id);
@@ -97,7 +103,7 @@ export default handleActions({
   }),
   [playlistCreateActions.complete]: (state, action) => ({
     ...state,
-    playlists: state.playlists.concat([action.payload]),
+    playlists: [action.payload].concat(state.playlists),
   }),
   [playlistRemoveActions.complete]: (state, action) => ({
     ...state,
