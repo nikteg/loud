@@ -2,68 +2,92 @@
 @require "../../style/inputs"
 
 .Sidebar
-  width: 256px;
+  width: 224px;
+  background: sidebar-background-color;
+  color: #c5c1c0;
+  border-right: 1px solid lighten(#323030, 25%);
 
-  a
-    color: inherit;
-    display: block;
-    text-decoration: none;
-
-    &:hover
-      color: accent-color;
-      fill: accent-color;
-
-  .Sidebar-subtitle
-    padding: 8px 8px 4px;
-    text-transform: uppercase;
-    font-weight: bold;
-    display: flex;
+  .Icon
+    fill: #c5c1c0;
 
   > ul
     list-style: none;
     padding: 0;
     margin: 0;
 
-    .Sidebar-item
-      padding: 4px 4px 4px 12px;
-      border-radius: 4px;
+.Sidebar-subtitle
+  padding: 16px 8px 4px;
+  text-transform: uppercase;
+  color: #8a8887;
+  display: flex;
 
+.Sidebar-item
+  padding: 4px 4px 4px 12px;
+  border-radius: 4px;
+
+  a
+    display: block;
+
+    &:hover
       .Icon
-        width: 1em;
-        height: 1em;
-        margin-right: 8px;
-        margin-top: -2px;
+        fill: accent-color;
 
-      &.active
-        background: gray-light-color;
-        font-weight: bold;
+  .Icon
+    width: 1em;
+    height: 1em;
+    margin-right: 8px;
+    margin-top: -2px;
 
-      .loading
-        background: gray-light-color;
-        height: 1rem;
+  &.active
+    background: lighten(#323030, 5%);
+    color: #fff;
 
-.Playlists
-  .Playlists-item
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    .Icon
+      fill: #fff;
 
-    &.isOver
-      background: accent-color !important;
-      cursor: copy;
+.Playlists-item
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    .Playlist-item-link
-      flex: 1;
+  &.isOver
+    background: accent-color !important;
+    cursor: copy;
 
-    .Dropdown
-      font-weight: normal;
+  .Playlist-item-link
+    flex: 1;
+    border-right: 1px solid lighten(#323030, 25%);
 
-      .Icon
-        margin-top: 0;
+  .Dropdown
+    .Icon
+      margin-top: 0;
 
-  .Sidebar-item
-    input
-      @extends .input
-      box-sizing: border-box;
-      width: 100%;
-      flex: 1;
+.Sidebar-item
+  input
+    @extends .input
+    box-sizing: border-box;
+    width: 100%;
+    flex: 1;
+
+.Sidebar-profile
+  display: flex;
+  align-items: center;
+  padding: 16px 8px 16px 16px;
+  background: darken(sidebar-background-color, 5%);
+  border-bottom: 1px solid lighten(#323030, 5%);
+
+.Sidebar-profile-avatar
+  width: 40px;
+  height: 40px;
+  background: url(https://df0179xsabjj8.cloudfront.net/small/216592_OF0nnnFk4FmyxPxQ_737780.jpg);
+  background-size: cover;
+  border-radius: 50%;
+  border: 2px solid lighten(#323030, 5%);
+
+  &.default
+    background: #dedede;
+
+.Sidebar-profile-username
+  margin-left: 8px;
+  flex: 1;
+  border-right: 1px solid lighten(#323030, 25%);

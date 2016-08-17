@@ -75,7 +75,7 @@ const ListItem = connect((state) => ({
 
         props.playlistCreate(`${props.track.artist} - ${props.track.name}`, [props.track]);
       }}
-      items={[{ name: "Add to new playlist" }, null].concat(props.playlists.map(list => ({ name: list.name, data: list.id })))}
+      items={[{ name: "Add to new playlist" }, null].concat(props.playlists.map(list => ({ name: <span><Icons.Music />{list.name}</span>, data: list.id })))}
     />
     <Dropdown
       icon={<Icons.Down />}

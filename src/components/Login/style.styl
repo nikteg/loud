@@ -7,43 +7,70 @@
   justify-content: center;
   flex-direction: column;
   height: 100%;
-  background: black-color;
+  background: login-background-color;
 
-  .Login-form
-    color: #fff;
+.Login-form
+  display: flex;
+  flex-direction: column;
+  width: 320px;
+  padding: 16px;
+  background: login-form-background-color;
+  border-radius: 4px;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  text-align: center;
+
+  .buttons
     display: flex;
-    flex-direction: column;
-    width: 320px;
-    padding: 16px;
-    background: #000;
-    border-radius: 4px;
+    justify-content: center;
 
-    .Login-form-title
-      text-align: center;
-      font-size: 2rem;
-      padding: 16px;
-      text-transform: uppercase;
+  input
+    @extends .input
+    margin: 8px;
 
-    .Login-form-status
-      text-align: center;
-      margin: 8px;
-      border: 1px solid #fff;
-      padding: 4px;
-      border-radius: 4px;
+  button
+    @extends .button
+    margin: 8px;
+    flex: 1;
 
-      &.error
-        border-color: accent-color;
-        color: accent-color;
+.Login-form-title
+  text-align: center;
+  font-size: 2rem;
+  padding: 16px;
+  text-transform: uppercase;
 
-    .vertical
-      display: flex;
-      justify-content: center;
+  em
+    color: accent-color;
+    font-style: normal;
 
-    input
-      @extends .input
-      margin: 8px;
+  sub
+    color: #c5c1c0;
+    font-size: 1rem;
 
-    button
-      @extends .button
-      margin: 8px;
-      flex: 1;
+.Login-form-status
+  text-align: center;
+  margin: 8px;
+  border: 1px solid #fff;
+  padding: 4px;
+  border-radius: 4px;
+
+  &.error
+    border-color: accent-color;
+    color: accent-color;
+
+.Login-form-or
+  align-items: center;
+  display: flex;
+  margin: 8px 0;
+
+  &:before, &:after
+    display: block;
+    content: "";
+    background: #e8e4e3
+    height: 1px;
+    flex: 1;
+
+  &:before
+    margin-right: 8px;
+
+  &:after
+    margin-left: 8px;

@@ -81,7 +81,7 @@ const ListItem = connect((state) => ({
 
         props.playlistCreate(`${props.track.artist} - ${props.track.name}`, [props.track]);
       }}
-      items={[{ name: "Add to new playlist" }, null].concat(props.playlists.map(list => ({ name: list.name, data: list.id })))}
+      items={[{ name: "Add to new playlist" }, null].concat(props.playlists.map(list => ({ name: <span><Icons.Music />{list.name}</span>, data: list.id })))}
     />
     <Dropdown
       icon={<Icons.Down />}
@@ -116,7 +116,7 @@ const List = connect(state => ({
       ))}
       {!props.loading && props.playlist && props.playlist.tracks.length === 0 && <li className="ListItem">Nothing here yet...</li>}
       {!props.loading && !props.playlist && <li className="ListItem">Could not find playlist</li>}
-      {props.loading && [1, 2, 3, 4].map((v, i) => <li key={i} className="ListItem"><div className="loading" /></li>)}
+      {props.loading && <li className="ListItem">Loading...</li>}
     </ul>
   </div>
 ));

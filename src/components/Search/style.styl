@@ -1,43 +1,46 @@
 @require "../../style/variables"
 
 .Search
-
-  ul
+  > ul
     list-style: none;
     padding: 8px;
     margin: 0;
 
-    .ListItem
-      padding: 4px;
-      display: flex;
-      align-items: center;
-      border-radius: 4px;
+.ListItem
+  padding: 8px 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  border-bottom: 1px solid #e8e4e3;
 
-      &.active
-        background: gray-light-color;
-        font-weight: bold;
+  &:first-child
+    border-top: 1px solid #e8e4e3;
 
-      .loading
-        flex: 1;
-        background: gray-light-color;
-        height: 1rem;
+  &.active
+    background: gray-light-color;
+    font-weight: bold;
 
-      a
-        color: inherit;
+  .loading
+    flex: 1;
+    background: gray-light-color;
+    height: 1rem;
 
-      .ListItem-button
-        display: block;
-        width: 24px;
-        height: 24px;
-        margin-right: 8px;
-        border: none;
-        background: accent-color;
-        border-radius: 50%;
-        padding: 4px;
-        cursor: pointer;
-        fill: white;
-        outline: none;
+  a
+    color: inherit;
 
-      .ListItem-title
-        flex: 1;
-        text-decoration: none;
+.ListItem-button
+  display: block;
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  border: none;
+  background: accent-color;
+  border-radius: 50%;
+  padding: 4px;
+  cursor: pointer;
+  fill: white;
+  outline: none;
+
+.ListItem-title
+  flex: 1;
+  text-decoration: none;

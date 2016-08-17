@@ -1,6 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { replace } from "redux-router";
+import { Link } from "react-router";
 
 import fnComp from "../../lib/fncomp";
 
@@ -39,15 +40,17 @@ class Login extends React.Component {
     return (
       <div className="Login">
         <form className="Login-form" onSubmit={this.onLogin}>
-          <div className="Login-form-title">Loud</div>
+          <div className="Login-form-title">Loud<em>Music</em><sub>Beta</sub></div>
           <input type="text" placeholder="Username" ref={node => (this.username = node)} />
           <input type="password" placeholder="Password" ref={node => (this.password = node)} />
-          <div className="vertical">
+          <div className="buttons">
             <button type="submit">Login</button>
             <button onClick={this.onRegister}>Register</button>
           </div>
           {this.props.error && <div className="Login-form-status error">{this.props.error}</div>}
           {this.props.loading && <div className="Login-form-status">Loading...</div>}
+          <div className="Login-form-or">or</div>
+          <Link to="/search">...just take a look.</Link>
         </form>
       </div>
     );

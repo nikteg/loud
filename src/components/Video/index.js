@@ -16,6 +16,7 @@ const Video = (props) => (
             rel: 0,
             controls: 0,
             showinfo: 0,
+            disablekb: 1,
           },
         }}
         videoId={props.id}

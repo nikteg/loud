@@ -110,8 +110,7 @@ class Playlists extends React.Component {
           />
         )}
         {this.props.playlists.length === 0 && <li className="Sidebar-item">Nothing here yet...</li>}
-        {this.props.loading && [1, 2, 3, 4].map((v, i) =>
-          <li key={i} className="Sidebar-item"><div className="loading" /></li>)}
+        {this.props.loading && <li className="Sidebar-item">Loading...</li>}
         <li className="Sidebar-item">
           {!this.state.adding && <a onClick={this.onAdd}><Icons.Plus />Add playlist</a>}
           {this.state.adding && <form onSubmit={this.onAdd}>

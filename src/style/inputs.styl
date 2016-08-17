@@ -3,16 +3,18 @@
 .input
   padding: 4px 8px;
   font-size: 1em;
-  border: 1px solid #000;
+  border: 1px solid darken(#f3efee, 25%);
+  background: #f3efee;
   border-radius: 4px;
   outline: 0;
+  box-shadow: inset 0 4px 4px rgba(0, 0, 0, 0.05);
 
   &:focus
     border: 1px solid accent-color;
 
 .button
   background: accent-color;
-  border: none;
+  border: 1px solid darken(accent-color, 25%);
   border-radius: 4px;
   text-transform: uppercase;
   padding: 4px 8px;

@@ -2,109 +2,129 @@
 
 .Player
   position: fixed;
-  bottom: 8px;
-  left: 8px;
-  right: 8px;
-  background: #000;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: player-background-color;
   display: flex;
   color: white;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
-  border-radius: 4px;
+  z-index: 2;
+  border-top: 1px solid lighten(#323030, 25%);
 
 .Controls
   display: flex;
   width: 100%;
 
-  .Controls-buttons
-    display: flex;
+.Controls-buttons
+  display: flex;
+  padding: 8px;
+  align-items: center;
+
+.Controls-buttons-button
+  width: 40px;
+  height: 40px;
+  fill: #fff;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 8px;
+  background: transparent;
+  margin: 0 4px;
+
+  &.PlayPauseButton
+    width: 40px;
+    height: 40px;
+    fill: white;
+    background: accent-color;
+    border-radius: 50%;
     padding: 8px;
-    align-items: center;
 
-    .Controls-buttons-button
-      width: 40px;
-      height: 40px;
-      fill: white;
-      cursor: pointer;
-      border: none;
-      outline: none;
-      padding: 8px;
-      background: transparent;
-      margin: 0 4px;
+    &:hover
+      fill: #fff;
 
-    .PlayPauseButton
-       width: 40px;
-       height: 40px;
-       fill: white;
-       background: accent-color;
-       border-radius: 50%;
-       padding: 8px;
+  &.active
+    fill: accent-color;
 
-    .active
-      fill: accent-color;
+  &:hover
+    fill: accent-color;
 
-    .Volume
-      position: relative;
+.Controls-info
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  flex: 1;
+  justify-content: center;
 
-      &:hover
-        .Volume-popup
-          display: block;
-          transform: scaleY(1);
+.Controls-info-title
+  font-size: 1.5rem;
 
-      .Volume-popup
-        background: #000;
-        padding: 20px;
-        position: absolute;
-        height: 128px;
-        bottom: 40px;
-        left: 0px;
-        border-radius: 4px;
-        transform-origin: 50% 100%;
-        transform: scaleY(0);
-        transition: all .1s;
+.Controls-info-progress
+  display: flex;
+  align-items: center;
 
-        .Volume-popup-slider
-          display: flex;
-          align-items: flex-end;
-          width: 6px;
-          height: 100%;
+.Controls-info-progress-time
+  width: 2.5em;
 
-          .rc-slider-track
-            border-radius: 2px;
-            background: accent-color;
-            width: 100%;
+  &.left
+    text-align: left;
 
-          .rc-slider-handle
-            margin-left: -3px;
-            margin-bottom: -5px;
+  &.right
+    text-align: right;
 
-  .Controls-info
-    display: flex;
-    flex-direction: column;
-    padding: 8px;
-    flex: 1;
-    justify-content: center;
+.Controls-info-progress-bar
+  flex: 1;
+  margin: 0 24px;
+  height: 6px;
 
-    .Controls-info-title
-      font-size: 1.5rem;
+  .rc-slider-handle
+    margin-left: -6px;
+    margin-top: -3px;
 
-    .Controls-info-progress
-      display: flex;
-      align-items: center;
+.Volume
+  position: relative;
 
-      .Controls-info-progress-time
-        width: 2.5em;
+  &:hover
+    .Volume-popup
+      display: block;
+      transform: scaleY(1);
 
-        &.left
-          text-align: left;
+.Volume-popup
+  background: player-background-color;
+  padding: 20px;
+  position: absolute;
+  height: 128px;
+  bottom: 44px;
+  left: 0px;
+  border-radius: 4px;
+  transform-origin: 50% 100%;
+  transform: scaleY(0);
+  transition: all .1s;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
 
-        &.right
-          text-align: right;
+  &:after
+    content: "";
+    position: absolute;
+    border: 6px solid player-background-color;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    height: 6px;
+    width: 6px;
+    bottom: -18px;
+    margin-left: -6px;
 
-      .Controls-info-progress-bar
-        flex: 1;
-        margin: 0 24px;
-        height: 6px;
+.Volume-popup-slider
+  display: flex;
+  align-items: flex-end;
+  width: 6px;
+  height: 100%;
 
-        .rc-slider-handle
-          margin-left: -6px;
-          margin-top: -3px;
+  .rc-slider-track
+    border-radius: 2px;
+    background: accent-color;
+    width: 100%;
+
+  .rc-slider-handle
+    margin-left: -3px;
+    margin-bottom: -5px;
