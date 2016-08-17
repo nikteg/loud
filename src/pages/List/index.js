@@ -30,8 +30,6 @@ const trackSource = {
     const playlist = monitor.getDropResult();
 
     component.props.playlistTrackAdd(playlist.id, track);
-
-    console.log(track, playlist);
   },
 };
 

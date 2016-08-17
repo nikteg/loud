@@ -83,7 +83,6 @@ export const videoQueueLoad = (tracks, index = 0) => withPlayer((player, dispatc
     if (getState().Video.playlistIndex === index) {
       return dispatch(videoPlayPause());
     } else if (getState().Video.playlistIndex !== -1) {
-      console.log("playvideo at")
       return player.playVideoAt(index);
     }
   }
