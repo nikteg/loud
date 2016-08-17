@@ -30,11 +30,12 @@ const translation = translator({
 
 export default function configureStore(initialState, routes) {
   const composers = [
+    applyMiddleware(thunk, translation),
     reduxReactRouter({
       routes,
       createHistory,
     }),
-    applyMiddleware(thunk, translation, windowTitle),
+    applyMiddleware(windowTitle),
   ];
 
   if (window.devToolsExtension) {
