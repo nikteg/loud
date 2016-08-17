@@ -28,7 +28,7 @@ import { authToken, authUnauthenticated } from "./reducers/Auth";
 import "normalize.css";
 import "./style/global.styl";
 
-const store = configureStore({}, routes);
+const store = configureStore({});
 
 window.redux = store;
 

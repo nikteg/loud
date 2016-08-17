@@ -26,7 +26,7 @@ const translation = translator({
   },
 });
 
-export default function configureStore(initialState, routes) {
+export default function configureStore(initialState) {
   const composers = [
     applyMiddleware(thunk, routerMiddleware(browserHistory), translation),
   ];
