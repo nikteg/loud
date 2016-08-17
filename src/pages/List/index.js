@@ -5,13 +5,13 @@ import bindClosures from "react-bind-closures";
 import { DragSource } from "react-dnd";
 import cx from "classnames";
 
-import { videoQueueLoad } from "../../reducers/Video";
-import { playlistTrackAdd, playlistCreate } from "../../reducers/Playlist";
+import { videoListLoad } from "../../reducers/Video";
+import { playlistTrackAdd, playlistTrackRemove, playlistCreate } from "../../reducers/Playlist";
 import { notificationShow } from "../../reducers/Notification";
 
 import { formatTime } from "../../lib/utils";
-import * as Icons from "../Icons";
-import Dropdown from "../Dropdown";
+import * as Icons from "../../components/Icons";
+import Dropdown from "../../components/Dropdown";
 
 import "./style.styl";
 
@@ -48,14 +48,20 @@ const ListItem = connect((state) => ({
   playlists: state.Playlist.playlists,
   isPlaying: state.Video.state === "play",
   index: state.Video.playlistIndex,
-}), { videoQueueLoad, playlistTrackAdd, playlistCreate, notificationShow }, (stateProps, dispatchProps, ownProps) => ({
+}), {
+  videoListLoad,
+  playlistTrackAdd,
+  playlistTrackRemove,
+  notificationShow,
+  playlistCreate,
+}, (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
-  playlists: stateProps.playlists,
+  playlists: stateProps.playlists.filter(list => list.id !== ownProps.playlistId),
 }))(DragSource("TRACK", trackSource, collect)(bindClosures({
   onClick(props) {
-    props.videoQueueLoad(props.tracks, props.index);
+    props.videoListLoad(props.playlistId, props.index);
   },
 })(props => props.connectDragSource(
   <li className={cx("ListItem", { active: props.isPlaying })}>
@@ -79,33 +85,40 @@ const ListItem = connect((state) => ({
     />
     <Dropdown
       icon={<Icons.Down />}
-      onChoose={() => props.notificationShow("Not implemented yet")}
+      onChoose={data => {
+        if (data) {
+          return props.playlistTrackRemove(props.playlistId, data);
+        }
+
+        props.notificationShow("Not implemented yet");
+      }}
       items={[{ name: "Add to queue" }, null, { name: "Remove from playlist", data: props.track }]}
     />
   </li>, { dropEffect: "copy" }
 ))));
 
-const Search = connect(state => ({
-  loading: false,
-  tracks: state.Search.tracks,
-  isInCurrentPlaylist: state.Playlist.playlistId === -1,
-}))((props) => (
-  <div className="Search page">
-    <div className="Search-title header-title">All tracks</div>
+const List = connect(state => ({
+  loading: state.Playlist.loading,
+  playlist: state.Playlist.playlists.find(list => list.id === +state.router.params.id),
+  isInCurrentPlaylist: state.Playlist.playlist.id === +state.router.params.id,
+}))(props => (
+  <div className="List page">
+    <div className="List-title header-title">{props.playlist && props.playlist.name}</div>
     <ul>
-      {!props.loading && props.tracks.map((track, i) => (
+      {!props.loading && props.playlist && props.playlist.tracks.map((track, i) => (
         <ListItem
           key={i}
           index={i}
           track={track}
-          tracks={props.tracks}
+          playlistId={props.playlist.id}
           isInCurrentPlaylist={props.isInCurrentPlaylist}
         />
       ))}
-      {!props.loading && props.tracks.length === 0 && <li className="ListItem">Nothing here yet...</li>}
-      {props.loading && [1, 2, 3, 4].map((v, i) => <li key={i} className="ListItem"><div className="loading" /></li>)}
+      {!props.loading && props.playlist && props.playlist.tracks.length === 0 && <li className="ListItem">Nothing here yet...</li>}
+      {!props.loading && !props.playlist && <li className="ListItem">Could not find playlist</li>}
+      {props.loading && <li className="ListItem">Loading...</li>}
     </ul>
   </div>
 ));
 
-export default Search;
+export default List;

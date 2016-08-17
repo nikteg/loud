@@ -2,12 +2,12 @@ import React from "react";
 import { Route, IndexRoute } from "react-router";
 
 import App from "./components/App";
-import Welcome from "./components/Welcome";
-import Preview from "./components/Preview";
-import List from "./components/List";
-import Login from "./components/Login";
-import Profile from "./components/Profile";
-import Search from "./components/Search";
+import Welcome from "./pages/Welcome";
+import Preview from "./pages/Preview";
+import List from "./pages/List";
+import Login from "./pages/Login";
+import Profile from "./pages/Profile";
+import Search from "./pages/Search";
 
 export const routes = (
   <Route>
