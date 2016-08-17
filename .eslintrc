@@ -14,7 +14,8 @@
     "max-len": [1, 120],
     "quote-props": 0,
     "no-param-reassign": [1, { "props": false }],
-    "new-cap": 0
+    "new-cap": 0,
+    "react/prefer-stateless-function": [1]
   },
   "globals": {
     "API_URL": false
