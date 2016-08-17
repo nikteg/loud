@@ -81,15 +81,22 @@ class Playlists extends React.Component {
     this.resetInput = this.resetInput.bind(this);
     this.onRename = this.onRename.bind(this);
     this.onRenamePlaylist = this.onRenamePlaylist.bind(this);
+    this.onBodyClick = this.onBodyClick.bind(this);
   }
 
   componentDidMount() {
-    document.body.addEventListener("click", e => {
-      console.log(e.target);
-      if ((this.state.adding || this.state.renamePlaylist !== null) && e.target !== document.getElementById("playlist-rename")) {
-        this.resetInput();
-      }
-    });
+    document.body.addEventListener("click", this.onBodyClick);
+  }
+
+  componentWillUnmount() {
+    document.body.removeEventListener("click", this.onBodyClick);
+  }
+
+  onBodyClick(e) {
+    if ((this.state.adding || this.state.renamePlaylist !== null)
+      && e.target !== document.getElementById("playlist-rename")) {
+      this.resetInput();
+    }
   }
 
   onAdd(e) {
