@@ -52,9 +52,5 @@ export default function configureStore(initialState, routes) {
     }));
   }
 
-  const store = compose(
-    ...composers
-  )(createStore)(reducers, initialState);
-
-  return store;
+  return createStore(reducers, initialState, compose(...composers));
 }
