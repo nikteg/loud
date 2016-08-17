@@ -2,7 +2,6 @@ import { createAction, handleActions } from "redux-actions";
 
 import { search } from "../lib/api";
 import { createNetworkAction } from "../lib/utils";
-// import { ROUTER_DID_CHANGE } from "redux-router/lib/constants";
 
 export const searchActions = createNetworkAction("SEARCH");
 

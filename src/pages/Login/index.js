@@ -1,9 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
-import { replace } from "redux-router";
 import { Link } from "react-router";
-
-import fnComp from "../../lib/fncomp";
 
 import { authLogin, authRegister } from "../../reducers/Auth";
 
@@ -50,7 +47,7 @@ class Login extends React.Component {
           {this.props.error && <div className="Login-form-status error">{this.props.error}</div>}
           {this.props.loading && <div className="Login-form-status">Loading...</div>}
           <div className="Login-form-or">or</div>
-          <Link to="/search">...just take a look.</Link>
+          <Link to="/search">Take a look as guest...</Link>
         </form>
       </div>
     );
@@ -61,10 +58,4 @@ export default connect(state => ({
   error: state.Auth.error,
   loading: state.Auth.loading,
   loggedIn: state.Auth.token != null,
-}), { authLogin, authRegister, replace })(fnComp(Login, props => {
-  if (props.loggedIn) {
-    props.replace("/");
-
-    return true;
-  }
-}));
+}), { authLogin, authRegister })(Login);

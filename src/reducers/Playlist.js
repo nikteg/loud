@@ -1,5 +1,4 @@
 import { createAction, handleActions } from "redux-actions";
-// import { ROUTER_DID_CHANGE } from "redux-router/lib/constants";
 
 import { notificationNew } from "./Notification";
 import { authLogoutActions } from "./Auth";

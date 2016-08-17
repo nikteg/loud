@@ -95,10 +95,15 @@ const ListItem = connect((state) => ({
   </li>, { dropEffect: "copy" }
 ))));
 
-const List = connect(state => ({
+const List = connect((state, ownProps) => ({
   loading: state.Playlist.loading,
-  playlist: state.Playlist.playlists.find(list => list.id === +state.router.params.id),
-  isInCurrentPlaylist: state.Playlist.playlist.id === +state.router.params.id,
+  playlists: state.Playlist.playlists,
+  playlist: state.Playlist.playlist,
+}), null, (stateProps, dispatchProps, ownProps) => ({
+  ...dispatchProps,
+  loading: stateProps.loading,
+  playlist: stateProps.playlists.find(list => list.id === +ownProps.params.playlistId),
+  isInCurrentPlaylist: stateProps.playlist.id === +ownProps.params.playlistId,
 }))(props => (
   <div className="List page">
     <div className="List-title header-title">{props.playlist && props.playlist.name}</div>

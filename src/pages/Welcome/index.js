@@ -1,8 +1,5 @@
 import React from "react";
 import { connect } from "react-redux";
-import { replace } from "redux-router";
-
-import fnComp from "../../lib/fncomp";
 
 import "./style.styl";
 
@@ -15,11 +12,4 @@ const Welcome = (props) => (
 
 export default connect(state => ({
   loggedIn: state.Auth.token != null,
-}), { replace })(fnComp(Welcome, props => {
-  if (!props.loggedIn) {
-    props.replace("/login");
-
-    return true;
-  }
-}));
-
+}))(Welcome);

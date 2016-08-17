@@ -3,11 +3,11 @@ import { createAction, handleActions } from "redux-actions";
 
 import { login, register, logout } from "../lib/api";
 import { createNetworkAction } from "../lib/utils";
-// import { ROUTER_DID_CHANGE } from "redux-router/lib/constants";
 
 export const authLoginActions = createNetworkAction("AUTH_LOGIN");
 export const authLogoutActions = createNetworkAction("AUTH_LOGOUT");
 export const authToken = createAction("AUTH_TOKEN", token => token);
+export const authUnauthenticated = createAction("AUTH_UNAUTHENTICATED");
 
 export const authRegister = (loginUsername, password) => (dispatch, getState) => {
   dispatch(authLoginActions.start());

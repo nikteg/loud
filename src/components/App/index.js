@@ -17,7 +17,11 @@ class App extends React.Component {
         <Video />
         <div className="App-wrapper">
           <Notifications />
-          <Sidebar activeItem={this.props.params.id} />
+          <Sidebar
+            params={this.props.params}
+            location={this.props.location}
+            activeItem={this.props.params.id}
+          />
           <div className="App-wrapper-content">
             {this.props.children}
           </div>

@@ -166,7 +166,7 @@ class Playlists extends React.Component {
               <PlaylistDropTarget
                 key={i}
                 list={list}
-                active={this.props.selectedPlaylist === list.id}
+                active={+this.props.playlistId === list.id}
                 playlistRemove={this.props.playlistRemove}
                 notificationShow={this.props.notificationShow}
                 onRename={this.onRename(list)}
@@ -184,5 +184,4 @@ class Playlists extends React.Component {
 export default connect(state => ({
   loading: state.Playlist.loading,
   playlists: state.Playlist.playlists,
-  selectedPlaylist: +state.router.params.id,
 }), { playlistCreate, playlistRemove, playlistRename, notificationShow })(Playlists);

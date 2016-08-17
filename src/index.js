@@ -5,7 +5,8 @@ require("core-js");
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";
-import { ReduxRouter } from "redux-router";
+import { Router, browserHistory } from "react-router";
+import { syncHistoryWithStore } from "react-router-redux";
 import decode from "jwt-decode";
 
 import configureStore from "./configureStore";
@@ -20,10 +21,9 @@ import {
   videoMuteToggle,
   videoListPrev,
   videoListNext,
-  videoPause,
 } from "./reducers/Video";
 
-import { authToken, authLogoutActions } from "./reducers/Auth";
+import { authToken, authUnauthenticated } from "./reducers/Auth";
 
 import "normalize.css";
 import "./style/global.styl";
@@ -40,11 +40,12 @@ if (localStorage.getItem("token") != null) {
   try {
     const { id, username } = decode(token);
     store.dispatch(authToken({ id, username, token }));
+    console.log("token");
   } catch (err) {
     localStorage.removeItem("token");
-    console.error(err);
     console.error("Could not decode token", token);
-    store.dispatch(authLogoutActions.complete());
+    console.error(err);
+    store.dispatch(authUnauthenticated());
   }
 }
 
@@ -96,10 +97,12 @@ window.addEventListener("keydown", e => {
   }
 });
 
+const history = syncHistoryWithStore(browserHistory, store);
+
 render((
   <Provider store={store}>
-    <ReduxRouter>
-      {routes}
-    </ReduxRouter>
+    <Router history={history}>
+      {routes(store)}
+    </Router>
   </Provider>
 ), document.getElementById("app"));

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { routerStateReducer as router } from "redux-router";
+import { routerReducer } from "react-router-redux";
 
 import Video from "./Video";
 import Playlist from "./Playlist";
@@ -8,7 +8,7 @@ import Notification from "./Notification";
 import Search from "./Search";
 
 export default combineReducers({
-  router,
+  routing: routerReducer,
   Video,
   Playlist,
   Auth,

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
-import { push } from "redux-router";
 import { Link } from "react-router";
+import { push } from "react-router-redux";
 import cx from "classnames";
 import bindClosures from "react-bind-closures";
 
@@ -55,16 +55,15 @@ const Sidebar = bindClosures({
     </div>}
     <div className="Sidebar-subtitle">Navigation</div>
     <ul>
-      <li className={cx("Sidebar-item", { active: props.pathname.startsWith("/search") })}>
+      <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/search") })}>
         <Link to="/search"><Icons.Search />All tracks</Link>
       </li>
     </ul>
-    {props.loggedIn && <Playlists />}
+    {props.loggedIn && <Playlists playlistId={props.params.playlistId} />}
   </div>
 ));
 
 export default connect(state => ({
   username: state.Auth.username,
   loggedIn: state.Auth.token != null,
-  pathname: state.router.location.pathname,
 }), { authLogout, notificationShow, push })(Sidebar);

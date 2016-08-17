@@ -9,17 +9,31 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Search from "./pages/Search";
 
-export const routes = (
-  <Route>
-    <Route path="/login" component={Login} />
-    <Route path="/" component={App}>
-      <IndexRoute component={Welcome} />
-      <Route path="/search" component={Search} />
-      <Route path="/profile/:username" component={Profile} />
-      <Route path="/list/:id" component={List} />
-      <Route path=":id" component={Preview} />
+export const routes = store => {
+  const requireAuth = (nextState, replace) => {
+    if (!store.getState().Auth.token) {
+      replace(`/login?redirect=${nextState.location.pathname}`);
+    }
+  };
+
+  const requireUnAuth = (nextState, replace) => {
+    if (store.getState().Auth.token) {
+      replace("/");
+    }
+  };
+
+  return (
+    <Route>
+      <Route path="/login" component={Login} onEnter={requireUnAuth} />
+      <Route path="/" component={App}>
+        <IndexRoute component={Welcome} onEnter={requireAuth} />
+        <Route path="/search" component={Search} />
+        <Route path="/profile/:username" component={Profile} />
+        <Route path="/list/:playlistId" component={List} />
+        <Route path=":id" component={Preview} />
+      </Route>
     </Route>
-  </Route>
-);
+  );
+};
 
 export default routes;

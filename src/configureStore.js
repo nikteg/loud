@@ -1,26 +1,24 @@
 import { applyMiddleware, compose, createStore } from "redux";
-import { reduxReactRouter, replace } from "redux-router";
-import { createHistory } from "history";
+import { replace, routerMiddleware, LOCATION_CHANGE } from "react-router-redux";
+import { browserHistory } from "react-router";
 import thunk from "redux-thunk";
 import translator from "redux-action-translator";
-import { ROUTER_DID_CHANGE } from "redux-router/lib/constants";
 
 import reducers from "./reducers";
-import { authLoginActions, authLogoutActions, authToken } from "./reducers/Auth";
+import { authLoginActions, authLogoutActions, authToken, authUnauthenticated } from "./reducers/Auth";
 import { playlistsLoad } from "./reducers/Playlist";
 import { videoError } from "./reducers/Video";
 import { notificationShow } from "./reducers/Notification";
 import { searchQuery } from "./reducers/Search";
 
-import windowTitle from "./middleware/windowTitle";
-
 const translation = translator({
   [authLoginActions.complete]: [replace("/"), playlistsLoad()],
   [authToken]: [playlistsLoad()],
   [authLogoutActions.complete]: [replace("/login")],
+  [authUnauthenticated]: [replace(`/login?redirect=${window.location.pathname}`)],
   [videoError]: a => [notificationShow(`Video error. Code: ${a.payload}`)],
-  [ROUTER_DID_CHANGE]: a => {
-    if (a.payload.location.pathname.startsWith("/search")) {
+  [LOCATION_CHANGE]: a => {
+    if (a.payload.pathname.startsWith("/search")) {
       return [searchQuery()];
     }
 
@@ -30,12 +28,7 @@ const translation = translator({
 
 export default function configureStore(initialState, routes) {
   const composers = [
-    applyMiddleware(thunk, translation),
-    reduxReactRouter({
-      routes,
-      createHistory,
-    }),
-    applyMiddleware(windowTitle),
+    applyMiddleware(thunk, routerMiddleware(browserHistory), translation),
   ];
 
   if (window.devToolsExtension) {
