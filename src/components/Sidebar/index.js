@@ -26,7 +26,7 @@ const Sidebar = bindClosures({
       <Dropdown
         icon={<Icons.Down />}
         onChoose={() => props.push("/login")}
-        items={[{ name: "Login" }]}
+        items={[{ name: <span><Icons.Logout />Logout</span> }]}
       />
     </div>}
     {props.loggedIn && <div className="Sidebar-profile">
