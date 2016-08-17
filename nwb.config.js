@@ -1,4 +1,5 @@
 module.exports = {
+  polyfill: false,
   webpack: {
     extra: {
       output: {
