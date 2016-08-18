@@ -66,3 +66,19 @@ export function Down(props) {
     </svg>
   );
 }
+
+export function Play(props) {
+  return (
+    <svg viewBox="0 0 16 16" className="Icon Icon-Play">
+      <path d="M4.5 2l10 6-10 6z" />
+    </svg>
+  );
+}
+
+export function Pause(props) {
+  return (
+    <svg viewBox="0 0 16 16" className="Icon Icon-Pause">
+      <path d="M3.5 2h3v12h-3zM9.5 2h3v12h-3z" />
+    </svg>
+  );
+}

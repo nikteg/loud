@@ -12,7 +12,7 @@ import Dropdown from "../Dropdown";
 
 const Playlist = (props) => props.connectDropTarget(
   <li className={cx("Playlists-item Sidebar-item", { active: props.active, isOver: props.isOver })}>
-    <Link className="Playlist-item-link" to={`/list/${props.list.id}`}><Icons.Music />{props.list.name}</Link>
+    <Link className="Playlist-item-link" to={`/playlist/${props.list.id}`}><Icons.Music />{props.list.name}</Link>
     <Dropdown
       icon={<Icons.Down />}
       onChoose={data => {
