@@ -3,11 +3,11 @@ const Spotify = require("spotify-web-api-node");
 const squel = require("squel");
 
 function time(str) {
-  const m = str.match(/(\d+)M(\d+)S/);
+  const m = str.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
 
-  const [_, minutes, seconds] = m;
+  const [_, hours, minutes, seconds] = m;
 
-  return parseInt(minutes, 10) * 60 + parseInt(seconds, 10);
+  return (hours | 0) * 3600 + (minutes | 0) * 60 + (seconds | 0);
 }
 
 function artistName(title) {
@@ -52,56 +52,84 @@ const sp = new Spotify({
 });
 
 const ids = [
-  "7Ktv8bQUjZt0rr16qgB4h2",
-  "23L5CiUhw2jV1OIMwthR3S",
-  "5BIjJP1zlOa3iY65RSkXkr",
-  "12mGwph2YzDIlChtq3EdXP",
-  "1DMjHWLTn2adWTlvRWFRHX",
-  "4SN6lrnjMbxCP5gv6Kdv4W",
-  "0jV2HSzU144aRkPJ198PpC",
-  "558dmcqBAPeA7q4GvaunHy",
-  "65sl2r11jL24d45nJa7CYr",
-  "5DgZ5uQmCuLLkZhDnI5YKI",
-  "2NpCp7UTgReqxSDlziI9A1",
-  "6jHFpBtdFgxjpCkJpIVfAS",
-  "0DBE3yeqV3exhYv6rG0C6w",
-  "2QtUFjtiqu0dQsHzxMQA72",
-  "648JcXIBXOgO4Tz2cIj9vm",
-  "1yInsvKbKrDHP59jQRhjKP",
-  "0FOOUOoRByaS21U4ugSAxJ",
-  "2lweusZXHxg30xywFKuoo2",
-  "3zGnmBVqExzsr6T9AttZIe",
-  "0HJBrdktMripVW4LkyM7Ch",
-  "64HH8QusEYZYm3wZEplgn9",
-  "5dSFlPDHjAuYU1apyrRgqV",
-  "1KxpxksJCa4IbaLeM7MsjZ",
-  "3GiN9yJB8t7mlbJk0EAq68",
-  "528D0o9LY71zQbjEL1vkwr",
-  "7wT8K8VyhtJZeei3eS6kcP",
-  "2ZCMqo7JeI7XtWTUy9W0VH",
-  "0jPU39bL0SrCmYc1RwbFkX",
-  "7Ct0Q46k5PkXzYiNE5D2dn",
-  "6zocM6REm0LnGYxul6p4oe",
-  "79IZKAygtVmTcVnJ2mlaIS",
-  "13HEIb4DeOsMN8x8SxhzN8",
-  "3x0S58XYhXuGhy5k7IW9u5",
-  "1G8yVHxDLlEjDAt02Dfbmi",
-  "2POSuQsl1kR3kqaJIuLooH",
-  "1sZnQFDHBNr3BRa89NnKo9",
-  "7zsXy7vlHdItvUSH8EwQss",
-  "2I0Q1wxFRdnDYtG6Q8W47S",
-  "0icXJsRd0hU7mAgNuulESd",
-  "4g3zYgAu9aqljVDQziTX8c",
-  "3jmxVk1zqPoUpXLKr7MJfw",
-  "2qFxaqBT4rHl3Nzs4mgUE7",
-  "149kdyQwLdqHBjXbbNS7FY",
-  "3BOzUXGMEmPU2F84fD4GO8",
-  "7cakSyQJf4SAjyqdSUO9p1",
-  "6OqCKehHh5tTNSZYh8bS8B",
-  "20UdW4qyeOmKa9YaOcv9WX",
-  "04xv54hUEufXk0GVTSQ5C9",
-  "3YlrH4ydAKkxuej6F4Nnkl",
-  "6NSjdFYF2zxgQ7UvsKoRxy",
+  "5icQPWnFDC6NwMG3WxHbWA",
+  "54eMQtMWx6v3oSO5NQ8eFk",
+  "50uaVi1LyFRFh5G31ekOEH",
+  "1JUfgsFPWjXT3ZzzV77v5u",
+  "68ngtC3pGiTjXcFwxYCJ7Z",
+  "11Z2LPIMeL9c2JewVQqm3x",
+  "3qfzns5jryamL2L8oiZKJS",
+  "6FuGdbjGbdd6dRdDytiTdP",
+  "6UxQzqbzPMJsyNiWwMXGsI",
+  "2N9Es6fUoyHgyqoOFwj96m",
+  "7pxpEfYqCMM4H8tTJUdRwo",
+  "15ytCRCtcC4vBpKE0v75YD",
+  "6b5uymxUFq8cv2LPm8hUST",
+  "1kU76lMtgVz6vvZ3dPyuJk",
+  "4Q7fEjeCZgU8oxjbLWrm7L",
+  "3e6pMd60bzt4Kd72qmPRfA",
+  "2yWhs145kB7QBm5L4F6SF5",
+  "5fewE5pYDUDXzAkdNPn4dC",
+  "4l3oImI8p6k6YXoGkRuJon",
+  "7hrDA2n8BVGLyHra0rBiFd",
+  "2EyKwj4tMJY2Ai7LhXP9Ss",
+  "5ZnzVZrSja6miEOxZIV8Q6",
+  "2WEAygIAmaPDrjWcXKpnYY",
+  "0ZG7CssB5lM2ILgJhMGNVE",
+  "0fkgNje097R3eszeV59iTI",
+  "4ed5Ght2TLCxgRoYNTJ8pV",
+  "10oBaGT7m8jMpX41dg8lrX",
+  "5369NKuQ1IHLM8mFYOAjwv",
+  "6a1DLpMBCk8vxnsqbAQjxK",
+  "6Wnj1xQ4gupa1ZnNQEq13H",
+  "2UOBqxv5GVMHAV3ef3NZlb",
+  "7oBK9lfHxvB9cd9W8MjswT",
+  "4aLIXKvoljW1Pf0ZZqLY2s",
+  "3sMleqdCDalZ6xsAQe8xuY",
+  "717lZxxn53x2B0eucGiD1Z",
+  "7GVMQa516ocresqjZ7XrfJ",
+  "1bInwFd6cSbvcEDsDqHBBY",
+  "3M0azGyGXdRxpQpoVxwwIO",
+  "4iFIR2kpNw8yvmZr1o4SJP",
+  "3F6mZ61oIQJobfg2qRPK4j",
+  "3cSaidFaQ0gbHIh3uNRiKQ",
+  "0sLY54A1FeIX94DwO8KK2B",
+  "7vZmRkmFIcn6SXah40jN3n",
+  "1RDQPsbR7hTKqBt1INYFHW",
+  "52VIj0Dst4MxsEzTQyCjl0",
+  "2WGa8iiHkdtpXcdeAP7nmo",
+  "6K4pVhJMJjZDdm0mIqOluO",
+  "1fJKGxYNWqfhemh6wTQvQQ",
+  "7sJH9YMJbJBPsXnPtK0Hys",
+  "20ztml2STRF7Sq1UaBB6ox",
+  // "5QyvmZYiOuK0saTv6J77Yg",
+  // "7kbLgu3ZU8wdigWyxtqOAB",
+  // "2QO9NYp1GJlHU3lrIgsW4e",
+  // "1gCd3CXppXSYCIM4SNAMmR",
+  // "3v2jc9yGbSKKgVEn3k51AZ",
+  // "38rMZCtAPuRgOuV3pyFDmF",
+  // "5UFXAE1QXIGnmALcrQ4DgZ",
+  // "2bHpNAMEsB3Wc00y87JTdn",
+  // "5diYEPXX1eogo6iEuSgUQw",
+  // "4eiTSqoxOWExDu57OSQWgr",
+  // "19Oy2pBYfpz7OhraQQgUn8",
+  // "6HO10cDh5hVY4JWARqWhH7",
+  // "5RH1TvXCPnk8z10KbKCzmW",
+  // "1SWex8tlZonAMKH262YQYd",
+  // "4oRbtetfRzeik7KJ3JGBhH",
+  // "3MXK7jlM09rfJ4mmzBVvzn",
+  // "0aMvY2MmWBo7mjVGTBqlut",
+  // "4WJqhO1zvtdj5mV8MB3dCm",
+  // "5MvnLMIXoDZAcchH0UGb1P",
+  // "4aFBzrtYYKrvjjyn3esqXg",
+  // "3p8GZk4Lcc02CJSSo9q1WV",
+  // "5T2lM2r829axVNboY722j0",
+  // "65x4VYXS7D8MLYFQT2yiWA",
+  // "5HE9nTNTJQeb0DdDHx7H53",
+  // "2wA6QFTkf08csvx0lSdUxK",
+  // "0P7lnn81aNwdv2kYWkCFLK",
+  // "4iO6QiHMJUr6Mh1L17BMar",
+  // "1vPIYyQhm7dC9I50HlZVsw",
 ];
 
 sp.getTracks(ids)
@@ -124,14 +152,22 @@ sp.getTracks(ids)
     const item = data.items[0];
 
     resolve({
-      key: item.id.videoId,
+      key: item && item.id.videoId || null,
       artist: track.artist,
       name: track.name,
     });
   })))))
   .then(tracks => new Promise((resolve, reject) => Youtube.videos.list({
     part: "contentDetails",
-    id: tracks.map(t => t.key).join(","),
+    id: tracks.filter(t => {
+      const missing = t.key === null;
+
+      if (missing) {
+        console.log("Missing", t);
+      }
+
+      return !missing;
+    }).map(t => t.key).join(","),
     maxResults: 50,
   }, (err, data) => {
     if (err) {
@@ -153,7 +189,7 @@ sp.getTracks(ids)
     inserted_at: squel.str("NOW()"),
     updated_at: squel.str("NOW()"),
   })))
-  .then(res => console.log(squel.insert()
+  .then(res => console.log("\n" + squel.insert()
     .into("tracks")
     .setFieldsRows(res)
     .toString()))
