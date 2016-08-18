@@ -30,8 +30,8 @@ const Sidebar = bindClosures({
       />
     </div>}
     {props.loggedIn && <div className="Sidebar-profile">
-      <div className="Sidebar-profile-avatar" />
-      <div className="Sidebar-profile-username">{props.username}</div>
+      <Link className="Sidebar-profile-avatar" to={`/profile/${props.username}`} />
+      <Link className="Sidebar-profile-username" to={`/profile/${props.username}`}>{props.username}</Link>
       <Dropdown
         icon={<Icons.Down />}
         onChoose={data => {
