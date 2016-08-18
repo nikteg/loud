@@ -68,6 +68,6 @@ export function removePlaylist(token, id) {
 
 // Search
 
-export function search(token) {
-  return request("/tracks", token, "GET");
+export function search(token, query) {
+  return request("/tracks/search", token, "POST", { query });
 }

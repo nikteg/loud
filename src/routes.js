@@ -8,6 +8,7 @@ import Playlist from "./pages/Playlist";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Search from "./pages/Search";
+import Browse from "./pages/Browse";
 
 export const routes = store => {
   const requireAuth = (nextState, replace) => {
@@ -27,6 +28,7 @@ export const routes = store => {
       <Route path="/login" component={Login} onEnter={requireUnAuth} />
       <Route path="/" component={App}>
         <IndexRoute component={Welcome} onEnter={requireAuth} />
+        <Route path="/browse" component={Browse} />
         <Route path="/search" component={Search} />
         <Route path="/profile/:username" component={Profile} />
         <Route path="/playlist/:playlistId" component={Playlist} />

@@ -7,6 +7,7 @@ import bindClosures from "react-bind-closures";
 
 import { authLogout } from "../../reducers/Auth";
 import { notificationShow } from "../../reducers/Notification";
+import { searchQuery } from "../../reducers/Search";
 
 import * as Icons from "../Icons";
 import Playlists from "./Playlists";
@@ -17,6 +18,14 @@ import "./style.styl";
 const Sidebar = bindClosures({
   notImplementedNotification(props) {
     props.notificationShow("Not implemented yet");
+  },
+  onSearch(props, e) {
+    e.preventDefault();
+
+    const query = document.getElementById("search-query").value.trim();
+    if (query !== "") {
+      props.searchQuery(query);
+    }
   },
 })(props => (
   <div className="Sidebar">
@@ -53,10 +62,20 @@ const Sidebar = bindClosures({
         ]}
       />
     </div>}
+    <form className="Sidebar-search" onSubmit={props.onSearch}>
+      <input
+        type="text"
+        placeholder="Search for music"
+        id="search-query"
+      />
+    </form>
     <div className="Sidebar-subtitle">Navigation</div>
     <ul>
-      <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/search") })}>
-        <Link to="/search"><Icons.Search />All tracks</Link>
+      <li className={cx("Sidebar-item", { active: props.location.pathname === "/" })}>
+        <Link to="/"><Icons.Home />Home</Link>
+      </li>
+      <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/browse") })}>
+        <Link to="/browse"><Icons.Browse />Browse</Link>
       </li>
     </ul>
     {props.loggedIn && <Playlists playlistId={props.params.playlistId} />}
@@ -66,4 +85,4 @@ const Sidebar = bindClosures({
 export default connect(state => ({
   username: state.Auth.username,
   loggedIn: state.Auth.token != null,
-}), { authLogout, notificationShow, push })(Sidebar);
+}), { authLogout, notificationShow, push, searchQuery })(Sidebar);

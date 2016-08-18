@@ -9,21 +9,17 @@ import { authLoginActions, authLogoutActions, authToken, authUnauthenticated } f
 import { playlistsLoad } from "./reducers/Playlist";
 import { videoError } from "./reducers/Video";
 import { notificationShow } from "./reducers/Notification";
-import { searchQuery } from "./reducers/Search";
+import { searchActions } from "./reducers/Search";
 
 const translation = translator({
   [authLoginActions.complete]: [replace("/"), playlistsLoad()],
   [authToken]: [playlistsLoad()],
   [authLogoutActions.complete]: [replace("/login")],
+  [searchActions.complete]: [replace("/search")],
+  [searchActions.error]: a => [notificationShow(`Search error. ${a.payload}.`)],
   [authUnauthenticated]: [replace(`/login?redirect=${window.location.pathname}`)],
   [videoError]: a => [notificationShow(`Video error. Code: ${a.payload}`)],
-  [LOCATION_CHANGE]: a => {
-    if (a.payload.pathname.startsWith("/search")) {
-      return [searchQuery()];
-    }
-
-    return [];
-  },
+  [LOCATION_CHANGE]: a => [],
 });
 
 export default function configureStore(initialState) {

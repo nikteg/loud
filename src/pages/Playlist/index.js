@@ -29,13 +29,14 @@ const Playlist = connect((state, ownProps) => ({
       {props.playlist && props.playlist.name}
       <div className="num-tracks">{props.trackCount()}</div>
     </div>
-    <List
+    {props.playlist && props.playlist.tracks.length > 0 && <List
       tracks={props.playlist && props.playlist.tracks}
       loading={props.loading}
       isInCurrentPlaylist={props.isInCurrentPlaylist}
       onPlay={props.onPlay}
       playlist={props.playlist}
-    />
+    />}
+    {props.playlist && props.playlist.tracks.length === 0 && <div className="Playlist-content content">Empty</div>}
   </div>
 )));
 
