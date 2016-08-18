@@ -95,6 +95,8 @@ class Playlists extends React.Component {
   onBodyClick(e) {
     if ((this.state.adding || this.state.renamePlaylist !== null)
       && e.target !== document.getElementById("playlist-rename")) {
+      e.preventDefault();
+      e.stopPropagation();
       this.resetInput();
     }
   }
