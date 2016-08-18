@@ -16,8 +16,8 @@ const Search = connect((state, ownProps) => ({
     props.videoQueueLoad(props.tracks, index);
   },
 })(props => (
-  <div className="List page">
-    <div className="List-title header-title">All tracks</div>
+  <div className="Search page">
+    <div className="Search-title header-title">All tracks</div>
     <List
       tracks={props.tracks}
       loading={props.loading}
