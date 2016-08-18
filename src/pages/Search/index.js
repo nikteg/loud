@@ -15,9 +15,15 @@ const Search = connect((state, ownProps) => ({
   onPlay(props, index) {
     props.videoQueueLoad(props.tracks, index);
   },
+  trackCount(props) {
+    return props.tracks ? props.tracks.length : 0;
+  },
 })(props => (
   <div className="Search page">
-    <div className="Search-title header-title">All tracks</div>
+    <div className="Search-title header-title">
+      All tracks
+      <div className="num-tracks">{props.trackCount()}</div>
+    </div>
     <List
       tracks={props.tracks}
       loading={props.loading}

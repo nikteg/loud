@@ -20,9 +20,15 @@ const Playlist = connect((state, ownProps) => ({
   onPlay(props, index) {
     props.videoListLoad(props.playlist.id, index);
   },
+  trackCount(props) {
+    return props.playlist ? props.playlist.tracks.length : 0;
+  },
 })(props => (
-  <div className="List page">
-    <div className="List-title header-title">{props.playlist && props.playlist.name}</div>
+  <div className="Playlist page">
+    <div className="Playlist-title header-title">
+      {props.playlist && props.playlist.name}
+      <div className="num-tracks">{props.trackCount()}</div>
+    </div>
     <List
       tracks={props.playlist && props.playlist.tracks}
       loading={props.loading}
