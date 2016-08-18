@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "react run src/index.js --reload --fallback",
+    "dev": "react run src/index.js --reload --fallback --host 0.0.0.0",
     "build": "react build src/index.js --vendor"
   },
   "author": "",
