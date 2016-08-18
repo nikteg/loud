@@ -103,7 +103,7 @@ const ListItem = connect((state) => ({
 
 const List = (props) => (
   <ul className="List">
-    {!props.loading && props.tracks.map((track, i) => (
+    {!props.loading && props.tracks && props.tracks.map((track, i) => (
       <ListItem
         key={i}
         index={i}
