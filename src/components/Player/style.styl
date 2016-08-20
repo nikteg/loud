@@ -84,10 +84,9 @@
 .Volume
   position: relative;
 
-  &:hover
-    .Volume-popup
-      display: block;
-      transform: scaleY(1);
+  &:hover .Volume-popup, .Volume-popup.seeking
+    display: block;
+    transform: scaleY(1);
 
 .Volume-popup
   background: player-background-color;
