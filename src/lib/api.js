@@ -71,3 +71,9 @@ export function removePlaylist(token, id) {
 export function search(token, query) {
   return request("/tracks/search", token, "POST", { query });
 }
+
+// Profiles
+
+export function getUser(token, username) {
+  return request(`/users/${username}`, token, "GET");
+}

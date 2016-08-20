@@ -6,6 +6,7 @@ import Playlist from "./Playlist";
 import Auth from "./Auth";
 import Notification from "./Notification";
 import Search from "./Search";
+import User from "./User";
 
 export default combineReducers({
   routing: routerReducer,
@@ -14,4 +15,5 @@ export default combineReducers({
   Auth,
   Notification,
   Search,
+  User,
 });
