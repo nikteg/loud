@@ -9,6 +9,7 @@ import { notificationShow } from "../../reducers/Notification";
 
 import * as Icons from "../Icons";
 import Dropdown from "../Dropdown";
+import Loader from "../Loader";
 
 const Playlist = (props) => props.connectDropTarget(
   <li className={cx("Playlists-item Sidebar-item", { active: props.active, isOver: props.isOver })}>
@@ -175,8 +176,7 @@ class Playlists extends React.Component {
               />
             );
           })}
-          {this.props.playlists.length === 0 && <li className="Sidebar-item">Nothing here yet...</li>}
-          {this.props.loading && <li className="Sidebar-item">Loading...</li>}
+          {this.props.loading && <li className="Sidebar-item"><Loader show /></li>}
         </ul>
       </div>
     );
