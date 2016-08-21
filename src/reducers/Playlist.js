@@ -4,15 +4,15 @@ import { notificationNew } from "./Notification";
 import { authLogoutActions } from "./Auth";
 import {
   getPlaylists,
+  getPlaylist,
   createPlaylist,
   updatePlaylist,
   removePlaylist,
 } from "../lib/api";
 import { createNetworkAction } from "../lib/utils";
 
-export const playlistSelect = createAction("PLAYLIST_SELECT", key => key);
-export const playlistSelectCustom = createAction("PLAYLIST_SELECT_CUSTOM", tracks => tracks);
 export const playlistsLoadActions = createNetworkAction("PLAYLISTS_LOAD");
+export const playlistLoadActions = createNetworkAction("PLAYLIST_LOAD");
 export const playlistCreateActions = createNetworkAction("PLAYLIST_CREATE");
 export const playlistUpdateActions = createNetworkAction("PLAYLIST_UPDATE");
 export const playlistRemoveActions = createNetworkAction("PLAYLIST_REMOVE");
@@ -22,6 +22,20 @@ export const playlistsLoad = () => (dispatch, getState) => {
 
   getPlaylists(getState().Auth.token)
     .then(playlists => dispatch(playlistsLoadActions.complete(playlists)))
+    .catch(err => dispatch(notificationNew(err.message)));
+};
+
+export const playlistLoad = (id) => (dispatch, getState) => {
+  const localPlaylist = getState().Playlist.playlists.find(l => l.id === id);
+
+  if (localPlaylist) {
+    return dispatch(playlistLoadActions.complete(localPlaylist));
+  }
+
+  dispatch(playlistLoadActions.start());
+
+  getPlaylist(getState().Auth.token, id)
+    .then(playlist => dispatch(playlistLoadActions.complete(playlist)))
     .catch(err => dispatch(notificationNew(err.message)));
 };
 
@@ -75,30 +89,29 @@ export const playlistRemove = (id) => (dispatch, getState) => {
 
 const initialState = {
   playlists: [],
-  playlistId: -1,
-  playlist: [],
-  loading: false,
+  playlist: null,
+  playlistsLoading: false,
+  playlistLoading: false,
 };
 
 export default handleActions({
-  [playlistSelect]: (state, action) => ({
-    ...state,
-    playlistId: action.payload,
-    playlist: state.playlists.find(list => list.id === action.payload) || [],
-  }),
-  [playlistSelectCustom]: (state, action) => ({
-    ...state,
-    playlistId: -1,
-    playlist: action.payload,
-  }),
   [playlistsLoadActions.start]: (state, action) => ({
     ...state,
-    loading: true,
+    playlistsLoading: true,
   }),
   [playlistsLoadActions.complete]: (state, action) => ({
     ...state,
     playlists: action.payload,
-    loading: false,
+    playlistsLoading: false,
+  }),
+  [playlistLoadActions.start]: (state, action) => ({
+    ...state,
+    playlistLoading: true,
+  }),
+  [playlistLoadActions.complete]: (state, action) => ({
+    ...state,
+    playlist: action.payload,
+    playlistLoading: false,
   }),
   [playlistCreateActions.complete]: (state, action) => ({
     ...state,

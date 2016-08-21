@@ -7,7 +7,7 @@ import translator from "redux-action-translator";
 import reducers from "./reducers";
 import { authLoginActions, authLogoutActions, authToken, authUnauthenticated } from "./reducers/Auth";
 import { playlistsLoad } from "./reducers/Playlist";
-import { videoError, videoListIndex } from "./reducers/Video";
+import { videoError } from "./reducers/Video";
 import { notificationShow } from "./reducers/Notification";
 import { searchActions } from "./reducers/Search";
 
@@ -15,7 +15,7 @@ const translation = translator({
   [authLoginActions.complete]: [replace("/"), playlistsLoad()],
   [authToken]: [playlistsLoad()],
   [authLogoutActions.complete]: [replace("/login")],
-  [searchActions.complete]: [replace("/search"), videoListIndex(-1)],
+  [searchActions.complete]: [replace("/search")],
   [searchActions.error]: a => [notificationShow(`Search error. ${a.payload}.`)],
   [authUnauthenticated]: [replace(`/login?redirect=${window.location.pathname}`)],
   [videoError]: a => [notificationShow(`Video error. Code: ${a.payload}`)],

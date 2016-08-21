@@ -104,14 +104,12 @@
   &:after
     content: "";
     position: absolute;
-    border: 6px solid player-background-color;
+    border: 8px solid player-background-color;
     border-left-color: transparent;
     border-right-color: transparent;
     border-bottom-color: transparent;
-    height: 6px;
-    width: 6px;
-    bottom: -18px;
-    margin-left: -6px;
+    bottom: -16px;
+    right: 15px;
 
 .Volume-popup-slider
   display: flex;
@@ -127,3 +125,40 @@
   .rc-slider-handle
     margin-left: -3px;
     margin-bottom: -5px;
+
+.QueueButton
+  position: relative;
+
+.QueueButton-popup
+  display: flex;
+  flex-direction: column;
+  background: player-background-color;
+  padding: 20px;
+  position: absolute;
+  bottom: 44px;
+  right: 9px;
+  border-radius: 4px;
+  transform-origin: 50% 100%;
+  // transform: scaleY(0);
+  // transition: all .1s;
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  list-style: none;
+  padding: 8px;
+  margin: 0;
+  width: 320px;
+
+  &:after
+    content: "";
+    position: absolute;
+    border: 8px solid player-background-color;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    bottom: -16px;
+    right: 8px;
+
+.QueueButton-popup-item
+  padding: 2px 8px;
+
+  &.top
+    color: accent-color;

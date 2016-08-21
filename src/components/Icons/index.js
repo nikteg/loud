@@ -98,3 +98,11 @@ export function Browse(props) {
     </svg>
   );
 }
+
+export function Queue(props) {
+  return (
+    <svg viewBox="0 0 16 16" className="Icon Icon-Queue">
+      <path d="M1 2.5h14v3h-14zM1 6.5h14v3h-14zM1 10.5h14v3h-14z" />
+    </svg>
+  );
+}

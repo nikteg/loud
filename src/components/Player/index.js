@@ -7,6 +7,7 @@ import ProgressBar, { CurrentTime, Duration } from "./ProgressBar";
 import VolumeButton from "./VolumeButton";
 import NextButton from "./NextButton";
 import PrevButton from "./PrevButton";
+import QueueButton from "./QueueButton";
 
 import "./style.styl";
 
@@ -27,6 +28,7 @@ const Player = connect()((props) => (
       </div>
       <div className="Controls-buttons">
         <VideoButton />
+        <QueueButton />
         <VolumeButton />
       </div>
     </div>

@@ -1,43 +1,54 @@
 import React from "react";
 import { connect } from "react-redux";
-import bindClosures from "react-bind-closures";
 
-import { videoListLoad } from "../../reducers/Video";
+import { playlistLoad } from "../../reducers/Playlist";
+import { videoLoadPlaylist } from "../../reducers/Video";
 import List from "../../components/List";
 
 import "./style.styl";
 
-const Playlist = connect((state, ownProps) => ({
-  loading: state.Playlist.loading,
-  playlists: state.Playlist.playlists,
-  playlist: state.Playlist.playlist,
-}), { videoListLoad }, (stateProps, dispatchProps, ownProps) => ({
-  ...dispatchProps,
-  loading: stateProps.loading,
-  playlist: stateProps.playlists.find(list => list.id === +ownProps.params.playlistId),
-  isInCurrentPlaylist: stateProps.playlist.id === +ownProps.params.playlistId,
-}))(bindClosures({
-  onPlay(props, index) {
-    props.videoListLoad(props.playlist.id, index);
-  },
-  trackCount(props) {
-    return props.playlist ? props.playlist.tracks.length : 0;
-  },
-})(props => (
-  <div className="Playlist page">
-    <div className="Playlist-title header-title">
-      {props.playlist && props.playlist.name}
-      <div className="num-tracks">{props.trackCount()}</div>
-    </div>
-    {props.playlist && props.playlist.tracks.length > 0 && <List
-      tracks={props.playlist && props.playlist.tracks}
-      loading={props.loading}
-      isInCurrentPlaylist={props.isInCurrentPlaylist}
-      onPlay={props.onPlay}
-      playlist={props.playlist}
-    />}
-    {props.playlist && props.playlist.tracks.length === 0 && <div className="Playlist-content content">Empty</div>}
-  </div>
-)));
+class Playlist extends React.Component {
 
-export default Playlist;
+  constructor(props) {
+    super(props);
+
+    this.onPlay = this.onPlay.bind(this);
+  }
+
+  componentWillMount() {
+    this.props.playlistLoad(+this.props.params.playlistId);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.params.playlistId !== this.props.params.playlistId) {
+      this.props.playlistLoad(+nextProps.params.playlistId);
+    }
+  }
+
+  onPlay(index) {
+    this.props.videoLoadPlaylist(this.props.playlist, index);
+  }
+
+  render() {
+    return (
+      <div className="Playlist page">
+        <div className="Playlist-title header-title">
+          {this.props.playlist && this.props.playlist.name}
+        </div>
+        {this.props.playlist && this.props.playlist.tracks.length > 0 && <List
+          tracks={this.props.playlist.tracks}
+          loading={this.props.loading}
+          isInCurrentPlaylist={+this.props.params.playlistId === this.props.playlistId}
+          onPlay={this.onPlay}
+          playlist={this.props.playlist}
+        />}
+      </div>
+    );
+  }
+}
+
+export default connect(state => ({
+  loading: state.Playlist.playlistLoading,
+  playlist: state.Playlist.playlist,
+  playlistId: state.Video.playlistId,
+}), { playlistLoad, videoLoadPlaylist })(Playlist);

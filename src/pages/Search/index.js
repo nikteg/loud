@@ -2,20 +2,20 @@ import React from "react";
 import { connect } from "react-redux";
 import bindClosures from "react-bind-closures";
 
-import { videoQueueLoad } from "../../reducers/Video";
+import { videoLoadPlaylist } from "../../reducers/Video";
 import List from "../../components/List";
 
 import "./style.styl";
 
-const Search = connect((state, ownProps) => ({
+const Search = connect(state => ({
   loading: state.Search.loading,
   error: state.Search.error,
   query: state.Search.query,
   tracks: state.Search.tracks,
-  isInCurrentPlaylist: state.Playlist.playlistId === -1,
-}), { videoQueueLoad })(bindClosures({
+  isInCurrentPlaylist: state.Video.playlistId === "search",
+}), { videoLoadPlaylist })(bindClosures({
   onPlay(props, index) {
-    props.videoQueueLoad(props.tracks, index);
+    props.videoLoadPlaylist({ id: "search", tracks: props.tracks }, index);
   },
   trackCount(props) {
     return props.tracks ? props.tracks.length : 0;

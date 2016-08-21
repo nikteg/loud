@@ -44,7 +44,7 @@ function collect(conn, monitor) {
 const ListItem = connect((state) => ({
   playlists: state.Playlist.playlists,
   isPlaying: state.Video.state === "play",
-  playlistIndex: state.Video.playlistIndex,
+  index: state.Video.tracksIndex,
 }), {
   playlistTrackAdd,
   playlistTrackRemove,
@@ -53,7 +53,7 @@ const ListItem = connect((state) => ({
 }, (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
-  isPlaying: stateProps.isPlaying && ownProps.index === stateProps.playlistIndex && ownProps.isInCurrentPlaylist,
+  isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
   playlists: stateProps.playlists,
 }))(DragSource("TRACK", trackSource, collect)(bindClosures({
   dropdownPlaylists(props) {

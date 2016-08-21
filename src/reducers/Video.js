@@ -1,7 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 
-import { playlistSelect, playlistSelectCustom } from "./Playlist";
 import { authLogoutActions } from "./Auth";
+import { searchActions } from "./Search";
 
 export const videoInit = createAction("VIDEO_INIT", player => player);
 export const videoState = createAction("VIDEO_STATE", state => state);
@@ -9,11 +9,11 @@ export const videoProgress = createAction("VIDEO_PROGRESS", progress => progress
 export const videoDuration = createAction("VIDEO_DURATION", duration => duration);
 export const videoMuted = createAction("VIDEO_MUTED", muted => muted);
 export const videoVolume = createAction("VIDEO_VOLUME", volume => volume);
-export const videoListLoaded = createAction("VIDEO_LIST_LOADED", ids => ids);
-export const videoListIndex = createAction("VIDEO_LIST_INDEX", index => index);
 export const videoPopup = createAction("VIDEO_POPUP", show => show);
 export const videoError = createAction("VIDEO_ERROR", code => code);
 export const videoSeeking = createAction("VIDEO_SEEKING", seeking => seeking);
+export const videoTracksIndex = createAction("VIDEO_TRACKS_INDEX", index => index);
+export const videoPlaylist = createAction("VIDEO_PLAYLIST", (playlist, index) => ({ playlist, index }));
 
 export const videoSeekingStart = () => videoSeeking(true);
 
@@ -25,7 +25,8 @@ function withPlayer(fn) {
   };
 }
 
-export const videoPopupToggle = () => (dispatch, getState) => dispatch(videoPopup(!getState().Video.popup));
+export const videoPopupToggle = () => (dispatch, getState) =>
+  dispatch(videoPopup(!getState().Video.popup));
 
 export const videoVolumeSet = percent => withPlayer((player, dispatch, getState) => {
   const muted = getState().Video.player.isMuted();
@@ -52,50 +53,45 @@ export const videoPlayPause = () => withPlayer((player, dispatch, getState) => {
   }
 });
 
-export const videoLoad = (id) => withPlayer((player, dispatch, getState) => {
-  player.loadVideoById(id);
-  dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
-  // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
-});
+// export const videoLoad = (id) => withPlayer((player, dispatch, getState) => {
+//   player.loadVideoById(id);
+//   dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
+//   // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
+// });
 
-export const videoListLoad = (playlistId, index = 0) => withPlayer((player, dispatch, getState) => {
-  if (getState().Playlist.playlistId === playlistId) {
-    if (getState().Video.playlistIndex === index) {
+export const videoLoadPlaylist = (playlist, index = 0) => withPlayer((player, dispatch, getState) => {
+  if (getState().Video.playlistId === playlist.id) {
+    if (getState().Video.tracksIndex === index) {
       return dispatch(videoPlayPause());
     }
 
     return player.playVideoAt(index);
   }
 
-  const playlist = getState().Playlist.playlists.find(list => list.id === playlistId);
-  const ids = playlist.tracks.map(track => track.key);
+  player.loadPlaylist(playlist.tracks.map(track => track.key), index);
+  dispatch(videoPlaylist(playlist, index));
 
-  player.loadPlaylist(ids, index);
-  dispatch(playlistSelect(playlistId));
-  dispatch(videoListIndex(index));
-
-  dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
+  // dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
   // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
 });
 
-export const videoQueueLoad = (tracks, index = 0) => withPlayer((player, dispatch, getState) => {
-  if (getState().Playlist.playlistId === -1) {
-    if (getState().Video.playlistIndex === index) {
-      return dispatch(videoPlayPause());
-    } else if (getState().Video.playlistIndex !== -1) {
-      return player.playVideoAt(index);
-    }
-  }
+// export const videoQueueLoad = (tracks, index = 0) => withPlayer((player, dispatch, getState) => {
+//   if (getState().Playlist.playlistId === -1) {
+//     if (getState().Video.playlistIndex === index) {
+//       return dispatch(videoPlayPause());
+//     } else if (getState().Video.playlistIndex !== -1) {
+//       return player.playVideoAt(index);
+//     }
+//   }
 
-  const ids = tracks.map(track => track.key);
+//   const ids = tracks.map(track => track.key);
 
-  player.loadPlaylist(ids, index);
-  dispatch(playlistSelectCustom(tracks));
-  dispatch(videoListIndex(index));
+//   player.loadPlaylist(ids, index);
+//   dispatch(playlistSelectCustom(tracks));
 
-  dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
-  // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
-});
+//   dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
+//   // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
+// });
 
 export const videoListNext = () => withPlayer(player => player.nextVideo());
 export const videoListPrev = () => withPlayer(player => player.previousVideo());
@@ -119,7 +115,7 @@ export const videoStatePlay = () => withPlayer((player, dispatch, getState) => {
   }
 
   if (getState().Video.playlistIndex !== playlistIndex) {
-    dispatch(videoListIndex(playlistIndex));
+    dispatch(videoTracksIndex(playlistIndex));
   }
 
   dispatch(videoState("play"));
@@ -131,7 +127,7 @@ export const videoStateError = code => (dispatch, getState) => {
   dispatch(videoError(code));
 
   // Go to next video
-  if (getState().Video.playlistIndex < getState().Playlist.playlist.length - 1) {
+  if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
     dispatch(videoListNext());
   }
 };
@@ -162,7 +158,9 @@ export const videoMuteToggle = () => withPlayer((player, dispatch, getState) => 
 });
 
 const initialState = {
-  playlistIndex: -1,
+  tracks: [],
+  tracksIndex: 0,
+  playlistId: null,
   state: null,
   progress: 0,
   duration: 1,
@@ -178,6 +176,20 @@ export default handleActions({
     ...state,
     player: action.payload,
     state: "init",
+  }),
+  [videoTracksIndex]: (state, action) => ({
+    ...state,
+    tracksIndex: action.payload,
+  }),
+  [videoPlaylist]: (state, action) => ({
+    ...state,
+    tracksIndex: action.payload.index,
+    tracks: action.payload.playlist.tracks,
+    playlistId: action.payload.playlist.id,
+  }),
+  [searchActions.complete]: (state, action) => ({
+    ...state,
+    playlistId: null,
   }),
   [videoDuration]: (state, action) => ({
     ...state,
@@ -199,10 +211,6 @@ export default handleActions({
     ...state,
     volume: action.payload,
   }),
-  [videoListIndex]: (state, action) => ({
-    ...state,
-    playlistIndex: action.payload,
-  }),
   [videoPopup]: (state, action) => ({
     ...state,
     popup: action.payload,
@@ -214,10 +222,6 @@ export default handleActions({
   [videoSeeking]: (state, action) => ({
     ...state,
     seeking: action.payload,
-  }),
-  [videoLoad]: (state, action) => ({
-    ...state,
-    playlistIndex: -1,
   }),
   [authLogoutActions.complete]: (state, action) => initialState,
 }, initialState);
