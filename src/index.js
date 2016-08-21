@@ -40,7 +40,6 @@ if (localStorage.getItem("token") != null) {
   try {
     const { id, username } = decode(token);
     store.dispatch(authToken({ id, username, token }));
-    console.log("token");
   } catch (err) {
     localStorage.removeItem("token");
     console.error("Could not decode token", token);
