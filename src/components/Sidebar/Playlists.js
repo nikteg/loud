@@ -184,6 +184,6 @@ class Playlists extends React.Component {
 }
 
 export default connect(state => ({
-  loading: state.Playlist.loading,
+  loading: state.Playlist.playlistsLoading,
   playlists: state.Playlist.playlists,
 }), { playlistCreate, playlistRemove, playlistRename, notificationShow })(Playlists);
