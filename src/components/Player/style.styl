@@ -133,7 +133,6 @@
   display: flex;
   flex-direction: column;
   background: player-background-color;
-  padding: 20px;
   position: absolute;
   bottom: 44px;
   right: 9px;
@@ -142,10 +141,14 @@
   // transform: scaleY(0);
   // transition: all .1s;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
-  list-style: none;
-  padding: 8px;
-  margin: 0;
   width: 320px;
+  max-height: 75vh;
+
+  ul
+    list-style: none;
+    padding: 8px;
+    margin: 0;
+    overflow: scroll;
 
   &:after
     content: "";

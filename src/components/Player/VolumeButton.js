@@ -59,7 +59,7 @@ const VolumeButton = props => (
     <div className={cx("Volume-popup", { seeking: props.seeking })}>
       <VolumeSlider />
     </div>
-    <button onClick={props.videoMuteToggle} className="Controls-buttons-button">
+    <button title="Volume" onClick={props.videoMuteToggle} className="Controls-buttons-button">
       {volumeIcons[props.iconState]}
     </button>
   </div>

@@ -27,17 +27,23 @@ class QueueButton extends React.Component {
   render() {
     return (
       <div className="QueueButton">
-        {this.state.popup && <ul className="QueueButton-popup">
-          {this.props.queue.map((track, i) => {
-            if (i === 0) {
-              return <li key={i} className="QueueButton-popup-item top">{track.name}</li>;
-            }
+        {this.state.popup && <div className="QueueButton-popup">
+          <ul>
+            {this.props.queue.map((track, i) => {
+              if (i === 0) {
+                return <li key={i} className="QueueButton-popup-item top">{track.name}</li>;
+              }
 
-            return <li key={i} className="QueueButton-popup-item">{track.name}</li>;
-          })}
-          {this.props.queue.length === 0 && <li className="QueueButton-popup-item">Queue empty</li>}
-        </ul>}
-        <button onClick={this.onToggle} className={cx("Controls-buttons-button", { active: this.state.popup })}>
+              return <li key={i} className="QueueButton-popup-item">{track.name}</li>;
+            })}
+            {this.props.queue.length === 0 && <li className="QueueButton-popup-item">Queue empty</li>}
+          </ul>
+        </div>}
+        <button
+          title="Queue"
+          onClick={this.onToggle}
+          className={cx("Controls-buttons-button", { active: this.state.popup })}
+        >
           <Icons.Queue />
         </button>
       </div>

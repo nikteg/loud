@@ -11,7 +11,11 @@ const icon = <path d="M15.331 2.502c-2.244-0.323-4.724-0.502-7.331-0.502s-5.087 
 const VideoButton = connect(state => ({
   active: state.Video.popup,
 }), { videoPopupToggle })(props => (
-  <button onClick={props.videoPopupToggle} className={cx("Controls-buttons-button", { active: props.active })}>
+  <button
+    title="Video"
+    onClick={props.videoPopupToggle}
+    className={cx("Controls-buttons-button", { active: props.active })}
+  >
     <svg viewBox="0 0 16 16">
       {icon}
     </svg>
