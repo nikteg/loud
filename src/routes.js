@@ -28,7 +28,7 @@ export const routes = store => {
     <Route>
       <Route path="/login" component={Login} onEnter={requireUnAuth} />
       <Route path="/" component={App}>
-        <IndexRoute component={Welcome} onEnter={requireAuth} />
+        <IndexRoute component={Welcome} />
         <Route path="/browse" component={Browse} />
         <Route path="/search" component={Search} />
         <Route path="/queue" component={Queue} />
