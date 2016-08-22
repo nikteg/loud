@@ -129,6 +129,7 @@ export default handleActions({
     return {
       ...state,
       playlists,
+      playlist: playlists[playlist],
     };
   },
   [authLogoutActions.complete]: (state, action) => initialState,
