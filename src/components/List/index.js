@@ -41,7 +41,7 @@ function collect(conn, monitor) {
   };
 }
 
-const ListItem = connect((state) => ({
+export const ListItem = connect((state) => ({
   playlists: state.Playlist.playlists,
   isPlaying: state.Video.state === "play",
   index: state.Video.tracksIndex,

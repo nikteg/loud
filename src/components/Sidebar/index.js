@@ -77,6 +77,9 @@ const Sidebar = bindClosures({
       <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/browse") })}>
         <Link to="/browse"><Icons.Browse />Browse</Link>
       </li>
+      <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/queue") })}>
+        <Link to="/queue"><Icons.Queue />Queue</Link>
+      </li>
     </ul>
     {props.loggedIn && <Playlists playlistId={props.params.playlistId} />}
   </div>

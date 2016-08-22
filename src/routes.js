@@ -9,6 +9,7 @@ import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Search from "./pages/Search";
 import Browse from "./pages/Browse";
+import Queue from "./pages/Queue";
 
 export const routes = store => {
   const requireAuth = (nextState, replace) => {
@@ -30,6 +31,7 @@ export const routes = store => {
         <IndexRoute component={Welcome} onEnter={requireAuth} />
         <Route path="/browse" component={Browse} />
         <Route path="/search" component={Search} />
+        <Route path="/queue" component={Queue} />
         <Route path="/profile/:username" component={Profile} />
         <Route path="/playlist/:playlistId" component={Playlist} />
         <Route path=":id" component={Preview} />
