@@ -48,22 +48,37 @@ const VolumeSlider = connect(state => ({
   className: "Volume-popup-slider",
   tipFormatter: null,
   vertical: true,
-}), {
-  onBeforeChange: videoSeeking.bind(null, true),
-  onChange: videoVolumeSet,
-  onAfterChange: videoSeeking.bind(null, false),
-})(Slider);
+}), { onChange: videoVolumeSet })(Slider);
 
-const VolumeButton = props => (
-  <div className="Volume">
-    <div className={cx("Volume-popup", { seeking: props.seeking })}>
-      <VolumeSlider />
-    </div>
-    <button title="Volume" onClick={props.videoMuteToggle} className="Controls-buttons-button">
-      {volumeIcons[props.iconState]}
-    </button>
-  </div>
-);
+class VolumeButton extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      changing: false,
+    };
+
+    this.setChange = this.setChange.bind(this);
+  }
+
+  setChange(changing) {
+    return () => this.setState({ changing });
+  }
+
+  render() {
+    return (
+      <div className="Volume">
+        <div className={cx("Volume-popup", { changing: this.state.changing })}>
+          <VolumeSlider onBeforeChange={this.setChange(true)} onAfterChange={this.setChange(false)} />
+        </div>
+        <button title="Volume" onClick={this.props.videoMuteToggle} className="Controls-buttons-button">
+          {volumeIcons[this.props.iconState]}
+        </button>
+      </div>
+    );
+  }
+}
 
 export default connect(state => {
   let iconState = volumeIconStates.LOW;
@@ -80,6 +95,5 @@ export default connect(state => {
 
   return {
     iconState,
-    seeking: state.Video.seeking,
   };
 }, { videoMuteToggle, videoVolumeSet })(VolumeButton);
