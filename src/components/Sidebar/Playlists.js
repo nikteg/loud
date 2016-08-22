@@ -13,7 +13,10 @@ import Loader from "../Loader";
 
 const Playlist = (props) => props.connectDropTarget(
   <li className={cx("Playlists-item Sidebar-item", { active: props.active, isOver: props.isOver })}>
-    <Link className="Playlist-item-link" to={`/playlist/${props.list.id}`}><Icons.Music />{props.list.name}</Link>
+    <Link className="Playlist-item-link" to={`/playlist/${props.list.id}`}>
+      {props.currentlyPlaying ? <Icons.Speaker /> : <Icons.Music />}
+      {props.list.name}
+    </Link>
     <Dropdown
       icon={<Icons.Down />}
       onChoose={data => {
@@ -173,6 +176,7 @@ class Playlists extends React.Component {
                 playlistRemove={this.props.playlistRemove}
                 notificationShow={this.props.notificationShow}
                 onRename={this.onRename(list)}
+                currentlyPlaying={this.props.currentPlaylistId === list.id}
               />
             );
           })}
@@ -186,4 +190,5 @@ class Playlists extends React.Component {
 export default connect(state => ({
   loading: state.Playlist.playlistsLoading,
   playlists: state.Playlist.playlists,
+  currentPlaylistId: state.Video.playlistId,
 }), { playlistCreate, playlistRemove, playlistRename, notificationShow })(Playlists);
