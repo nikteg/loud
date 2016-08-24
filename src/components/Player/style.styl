@@ -84,13 +84,20 @@
 .Volume
   position: relative;
 
+  &:before // Ugly fix to get rid of gap between volume button and volume popup
+    content: "";
+    position: absolute;
+    width: 100%;
+    top: -8px;
+    height: 8px;
+
   &:hover .Volume-popup, .Volume-popup.changing
     display: block;
     transform: scaleY(1);
 
 .Volume-popup
-  background: player-background-color;
-  padding: 20px;
+  background: accent-color;
+  padding: 20px 20px 12px;
   position: absolute;
   height: 128px;
   bottom: 44px;
@@ -100,15 +107,16 @@
   transform: scaleY(0);
   transition: all .1s;
   box-shadow: 0 0 16px rgba(0, 0, 0, 0.5);
+  border-bottom: 8px solid transparent;
 
   &:after
     content: "";
     position: absolute;
-    border: 8px solid player-background-color;
+    border: 8px solid accent-color;
     border-left-color: transparent;
     border-right-color: transparent;
     border-bottom-color: transparent;
-    bottom: -16px;
+    bottom: -24px;
     right: 15px;
 
 .Volume-popup-slider
@@ -116,12 +124,14 @@
   align-items: flex-end;
   width: 6px;
   height: 100%;
+  background: darken(accent-color, 25%) !important;
 
   .rc-slider-track
     border-radius: 2px;
-    background: accent-color;
+    background: gray-lighter-color !important;
     width: 100%;
 
   .rc-slider-handle
+    background: #fff !important;
     margin-left: -3px;
     margin-bottom: -5px;
