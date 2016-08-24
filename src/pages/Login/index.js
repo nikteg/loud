@@ -4,6 +4,8 @@ import { Link } from "react-router";
 
 import { authLogin, authRegister } from "../../reducers/Auth";
 
+import Notifications from "../../components/Notifications";
+
 import "./style.styl";
 
 class Login extends React.Component {
@@ -36,9 +38,10 @@ class Login extends React.Component {
   render() {
     return (
       <div className="Login">
+        <Notifications />
         <form className="Login-form" onSubmit={this.onLogin}>
           <div className="Login-form-title">Loud<em>Music</em><sub>Beta</sub></div>
-          <input type="text" placeholder="Username" ref={node => (this.username = node)} />
+          <input type="text" placeholder="Username" defaultValue={this.props.username} ref={node => (this.username = node)} />
           <input type="password" placeholder="Password" ref={node => (this.password = node)} />
           <div className="buttons">
             <button type="submit">Login</button>
@@ -58,4 +61,5 @@ export default connect(state => ({
   error: state.Auth.error,
   loading: state.Auth.loading,
   loggedIn: state.Auth.token != null,
+  username: state.Auth.username,
 }), { authLogin, authRegister })(Login);

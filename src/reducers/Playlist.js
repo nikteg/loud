@@ -9,7 +9,7 @@ import {
   updatePlaylist,
   removePlaylist,
 } from "../lib/api";
-import { createNetworkAction } from "../lib/utils";
+import { createNetworkAction, checkAuth } from "../lib/utils";
 
 export const playlistsLoadActions = createNetworkAction("PLAYLISTS_LOAD");
 export const playlistLoadActions = createNetworkAction("PLAYLIST_LOAD");
@@ -22,7 +22,7 @@ export const playlistsLoad = () => (dispatch, getState) => {
 
   getPlaylists(getState().Auth.token)
     .then(playlists => dispatch(playlistsLoadActions.complete(playlists)))
-    .catch(err => dispatch(notificationNew(err.message)));
+    .catch(err => dispatch(playlistsLoadActions.error(err.message)));
 };
 
 export const playlistLoad = (id) => (dispatch, getState) => {
@@ -36,7 +36,7 @@ export const playlistLoad = (id) => (dispatch, getState) => {
 
   getPlaylist(getState().Auth.token, id)
     .then(playlist => dispatch(playlistLoadActions.complete(playlist)))
-    .catch(err => dispatch(notificationNew(err.message)));
+    .catch(err => dispatch(playlistLoadActions.error(err.message)));
 };
 
 export const playlistCreate = (name, tracks = []) => (dispatch, getState) => {
@@ -44,7 +44,7 @@ export const playlistCreate = (name, tracks = []) => (dispatch, getState) => {
 
   createPlaylist(getState().Auth.token, name, tracks.map(t => t.id))
     .then(playlist => dispatch(playlistCreateActions.complete(playlist)))
-    .catch(err => dispatch(notificationNew(err.message)));
+    .catch(err => dispatch(playlistCreateActions.error(err.message)));
 };
 
 export const playlistUpdate = (id, name, tracks) => (dispatch, getState) => {
@@ -52,7 +52,7 @@ export const playlistUpdate = (id, name, tracks) => (dispatch, getState) => {
 
   updatePlaylist(getState().Auth.token, id, name, tracks)
     .then(playlist => dispatch(playlistUpdateActions.complete(playlist)))
-    .catch(err => dispatch(notificationNew(err.message)));
+    .catch(err => dispatch(playlistUpdateActions.error(err.message)));
 };
 
 export const playlistRename = (id, name) => (dispatch, getState) => {

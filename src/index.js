@@ -10,6 +10,7 @@ import { syncHistoryWithStore } from "react-router-redux";
 import decode from "jwt-decode";
 
 import configureStore from "./configureStore";
+import { setStore as setApiStore } from "./lib/api";
 import routes from "./routes";
 
 import {
@@ -29,6 +30,8 @@ import "normalize.css";
 import "./style/global.styl";
 
 const store = configureStore({});
+
+setApiStore(store);
 
 window.redux = store;
 

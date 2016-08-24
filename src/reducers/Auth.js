@@ -73,6 +73,12 @@ export default handleActions({
     loading: false,
     error: null,
   }),
+  [authUnauthenticated]: (state, action) => ({
+    ...state,
+    token: null,
+    loading: false,
+    error: null,
+  }),
 }, {
   id: 0,
   username: null,

@@ -1,3 +1,17 @@
+import { authUnauthenticated } from "../reducers/Auth";
+
+let store;
+
+export function setStore(s) {
+  store = s;
+}
+
+export function dispatch(action) {
+  if (store) {
+    store.dispatch(action);
+  }
+}
+
 export function request(route, token, method, params) {
   const options = {};
 
@@ -19,6 +33,11 @@ export function request(route, token, method, params) {
 
   return fetch(`${API_URL}${route}`, options).then(res => res.json()).then(json => {
     if (json.error) {
+      if (json.error === "Unauthenticated") {
+        localStorage.removeItem("token");
+        dispatch(authUnauthenticated());
+      }
+
       throw new Error(json.error);
     }
 

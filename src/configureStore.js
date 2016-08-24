@@ -17,7 +17,8 @@ const translation = translator({
   [authLogoutActions.complete]: [replace("/login")],
   [searchActions.complete]: [replace("/search")],
   [searchActions.error]: a => [notificationShow(`Search error. ${a.payload}.`)],
-  [authUnauthenticated]: [replace(`/login?redirect=${window.location.pathname}`)],
+  [authUnauthenticated]: [replace(`/login?redirect=${window.location.pathname}`),
+    notificationShow("Unauthenticated. Please login again.")],
   [videoError]: a => [notificationShow(`Video error. Code: ${a.payload}`)],
   [LOCATION_CHANGE]: a => [],
 });
