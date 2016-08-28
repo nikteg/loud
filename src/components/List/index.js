@@ -62,7 +62,7 @@ export const ListItem = connect((state) => ({
   },
 })(props => (
   <li className={cx("ListItem", { active: props.isPlaying })}>
-    <label onDoubleClick={props.onPlay}>
+    <label>
       <input className="ListItem-checkbox" type="checkbox" />
       <button className="ListItem-button" onClick={props.onPlay}>
         {props.isPlaying ? <Icons.Pause /> : <Icons.Play />}
