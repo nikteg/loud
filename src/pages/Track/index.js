@@ -39,7 +39,7 @@ class Track extends React.Component {
           tracks={this.props.track && [this.props.track]}
           loading={this.props.loading}
           isInCurrentPlaylist
-          onPlay={this.props.onPlay}
+          onPlay={this.onPlay}
           playlist={{ id: "track", tracks: [this.props.track] }}
         />}
       </div>
