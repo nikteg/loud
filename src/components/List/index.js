@@ -1,7 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
-import { DragSource } from "react-dnd";
 import cx from "classnames";
 import bindClosures from "react-bind-closures";
 
@@ -13,33 +12,6 @@ import * as Icons from "../../components/Icons";
 import Dropdown from "../../components/Dropdown";
 
 import "./style.styl";
-
-const trackSource = {
-  beginDrag(props, monitor, component) {
-    return props.track;
-  },
-  endDrag(props, monitor, component) {
-    if (!monitor.didDrop()) {
-      // You can check whether the drop was successful
-      // or if the drag ended but nobody handled the drop
-      return;
-    }
-
-    const track = monitor.getItem();
-    const playlist = monitor.getDropResult();
-
-    component.props.playlistTrackAdd(playlist.id, track);
-  },
-};
-
-function collect(conn, monitor) {
-  return {
-    // Call this function inside render()
-    // to let React DnD handle the drag events:
-    connectDragSource: conn.dragSource(),
-    connectDragPreview: conn.dragPreview(),
-  };
-}
 
 export const ListItem = connect((state) => ({
   playlists: state.Playlist.playlists,
@@ -55,7 +27,7 @@ export const ListItem = connect((state) => ({
   ...ownProps,
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
   playlists: stateProps.playlists,
-}))(DragSource("TRACK", trackSource, collect)(bindClosures({
+}))(bindClosures({
   dropdownPlaylists(props) {
     const add = { name: "Add to new playlist" };
 
@@ -88,7 +60,7 @@ export const ListItem = connect((state) => ({
 
     props.notificationShow("Not implemented yet");
   },
-})(props => props.connectDragSource(
+})(props => (
   <li className={cx("ListItem", { active: props.isPlaying })}>
     <button className="ListItem-button" onClick={props.onPlay}>
       {props.isPlaying ? <Icons.Pause /> : <Icons.Play />}
@@ -98,8 +70,8 @@ export const ListItem = connect((state) => ({
     <div>{formatTime(props.track.duration)}</div>
     <Dropdown icon={<Icons.Plus />} onChoose={props.onDropdownPlaylistsChoose} items={props.dropdownPlaylists()} />
     <Dropdown icon={<Icons.Down />} onChoose={props.onDropdownActionsChoose} items={props.dropdownActions()} />
-  </li>, { dropEffect: "copy" }
-))));
+  </li>
+)));
 
 const List = (props) => (
   <ul className="List">

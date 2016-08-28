@@ -2,7 +2,6 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import cx from "classnames";
-import { DropTarget } from "react-dnd";
 
 import { playlistCreate, playlistRemove, playlistRename } from "../../reducers/Playlist";
 import { notificationShow } from "../../reducers/Notification";
@@ -11,7 +10,7 @@ import * as Icons from "../Icons";
 import Dropdown from "../Dropdown";
 import Loader from "../Loader";
 
-const Playlist = (props) => props.connectDropTarget(
+const Playlist = (props) => (
   <li className={cx("Playlists-item Sidebar-item", { active: props.active, isOver: props.isOver })}>
     <Link className="Playlist-item-link" to={`/playlist/${props.list.id}`}>
       {props.currentlyPlaying ? <Icons.Speaker /> : <Icons.Music />}
@@ -47,27 +46,6 @@ const PlaylistRename = (props) => (
     </form>
   </li>
 );
-
-const trackTarget = {
-  drop(props, monitor, component) {
-    return { id: props.list.id };
-  },
-};
-
-function collect(conn, monitor) {
-  return {
-    // Call this function inside render()
-    // to let React DnD handle the drag events:
-    connectDropTarget: conn.dropTarget(),
-    // You can ask the monitor about the current drag state:
-    isOver: monitor.isOver(),
-    isOverCurrent: monitor.isOver({ shallow: true }),
-    canDrop: monitor.canDrop(),
-    itemType: monitor.getItemType(),
-  };
-}
-
-const PlaylistDropTarget = DropTarget("TRACK", trackTarget, collect)(Playlist);
 
 class Playlists extends React.Component {
 
@@ -169,7 +147,7 @@ class Playlists extends React.Component {
             }
 
             return (
-              <PlaylistDropTarget
+              <Playlist
                 key={i}
                 list={list}
                 active={+this.props.playlistId === list.id}
