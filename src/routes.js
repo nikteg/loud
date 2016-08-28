@@ -3,7 +3,7 @@ import { Route, IndexRoute } from "react-router";
 
 import App from "./components/App";
 import Welcome from "./pages/Welcome";
-import Preview from "./pages/Preview";
+import Track from "./pages/Track";
 import Playlist from "./pages/Playlist";
 import Login from "./pages/Login";
 import Profile from "./pages/Profile";
@@ -34,7 +34,7 @@ export const routes = store => {
         <Route path="/queue" component={Queue} />
         <Route path="/profile/:username" component={Profile} />
         <Route path="/playlist/:playlistId" component={Playlist} />
-        <Route path=":id" component={Preview} />
+        <Route path="/track/:trackId/(:trackSlug)" component={Track} />
       </Route>
     </Route>
   );

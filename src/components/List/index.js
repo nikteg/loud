@@ -7,7 +7,7 @@ import bindClosures from "react-bind-closures";
 import { playlistTrackAdd, playlistTrackRemove, playlistCreate } from "../../reducers/Playlist";
 import { notificationShow } from "../../reducers/Notification";
 
-import { formatTime } from "../../lib/utils";
+import { formatTime, trackSlug } from "../../lib/utils";
 import * as Icons from "../../components/Icons";
 import Dropdown from "../../components/Dropdown";
 
@@ -62,14 +62,18 @@ export const ListItem = connect((state) => ({
   },
 })(props => (
   <li className={cx("ListItem", { active: props.isPlaying })}>
-    <button className="ListItem-button" onClick={props.onPlay}>
-      {props.isPlaying ? <Icons.Pause /> : <Icons.Play />}
-    </button>
-    <Link to={`/${props.track.key}`} className="ListItem-title name">{props.track.name}</Link>
-    <Link to={`/${props.track.key}`} className="ListItem-title artist">{props.track.artist}</Link>
-    <div>{formatTime(props.track.duration)}</div>
-    <Dropdown icon={<Icons.Plus />} onChoose={props.onDropdownPlaylistsChoose} items={props.dropdownPlaylists()} />
-    <Dropdown icon={<Icons.Down />} onChoose={props.onDropdownActionsChoose} items={props.dropdownActions()} />
+    <label onDoubleClick={props.onPlay}>
+      <input className="ListItem-checkbox" type="checkbox" />
+      <button className="ListItem-button" onClick={props.onPlay}>
+        {props.isPlaying ? <Icons.Pause /> : <Icons.Play />}
+      </button>
+      <div className="ListItem-title name">{props.track.name}</div>
+      <div className="ListItem-title artist">{props.track.artist}</div>
+      <div>{formatTime(props.track.duration)}</div>
+      <Dropdown icon={<Icons.Plus />} onChoose={props.onDropdownPlaylistsChoose} items={props.dropdownPlaylists()} />
+      <Dropdown icon={<Icons.Down />} onChoose={props.onDropdownActionsChoose} items={props.dropdownActions()} />
+      <Link className="ListItem-share" to={`/track/${props.track.id}/${trackSlug(props.track)}`}><Icons.Share /></Link>
+    </label>
   </li>
 )));
 
@@ -77,7 +81,7 @@ const List = (props) => (
   <ul className="List">
     {!props.loading && props.tracks && props.tracks.map((track, i) => (
       <ListItem
-        key={i}
+        key={`${props.playlist.id}${i}`}
         index={i}
         track={track}
         onPlay={() => props.onPlay(i)}

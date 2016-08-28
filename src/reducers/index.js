@@ -7,6 +7,7 @@ import Auth from "./Auth";
 import Notification from "./Notification";
 import Search from "./Search";
 import User from "./User";
+import Track from "./Track";
 
 export default combineReducers({
   routing: routerReducer,
@@ -16,4 +17,5 @@ export default combineReducers({
   Notification,
   Search,
   User,
+  Track,
 });

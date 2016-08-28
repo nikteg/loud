@@ -21,3 +21,12 @@ export function formatTime(s) {
   // Omit hours atm.
   return `${minutes}:${seconds}`;
 }
+
+export function trackSlug(track) {
+  const artist = track.artist.toLowerCase().replace(/([^a-z0-9_ ])+/g, "").replace(/\s+/g, "-");
+  const name = track.name.toLowerCase().replace(/([^a-z0-9_ ])+/g, "").replace(/\s+/g, "-");
+
+  console.log(track.artist.toLowerCase(), "|", artist);
+
+  return `${artist}-${name}`;
+}

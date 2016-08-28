@@ -6,9 +6,6 @@
   margin: 0;
 
 .ListItem
-  padding: 8px 4px;
-  display: flex;
-  align-items: center;
   border-radius: 4px;
   border-bottom: 1px solid #e8e4e3;
 
@@ -23,8 +20,17 @@
     background: gray-light-color;
     height: 1rem;
 
+  label
+    padding: 8px 4px;
+    display: block;
+    display: flex;
+    align-items: center;
+
   a
     color: inherit;
+
+.ListItem-checkbox
+  margin-right: 8px;
 
 .ListItem-button
   display: block;
@@ -45,3 +51,12 @@
 .ListItem-title
   flex: 1;
   text-decoration: none;
+
+.ListItem-share
+  width: 1em;
+  height: 1em;
+  margin: 0 4px;
+  padding: 4px;
+
+  .Icon
+    vertical-align: top;

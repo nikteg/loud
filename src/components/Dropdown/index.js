@@ -19,6 +19,8 @@ export default class Dropdown extends React.Component {
   }
 
   onClick(e) {
+    e.preventDefault();
+
     if (this.state.dropdown) {
       document.body.removeEventListener("click", this.onBodyClick);
       this.setState({ dropdown: false });
