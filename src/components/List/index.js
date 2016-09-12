@@ -81,7 +81,7 @@ const List = (props) => (
   <ul className="List">
     {!props.loading && props.tracks && props.tracks.map((track, i) => (
       <ListItem
-        key={`${props.playlist.id}${i}`}
+        key={`${props.playlist && props.playlist.id}${i}`}
         index={i}
         track={track}
         onPlay={() => props.onPlay(i)}
