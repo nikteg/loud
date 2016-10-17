@@ -12,11 +12,13 @@ import Browse from "./pages/Browse";
 import Queue from "./pages/Queue";
 
 export const routes = store => {
+  /* eslint-disable no-unused-vars */
   const requireAuth = (nextState, replace) => {
     if (!store.getState().Auth.token) {
       replace(`/login?redirect=${nextState.location.pathname}`);
     }
   };
+  /* eslint-enable no-unused-vars */
 
   const requireUnAuth = (nextState, replace) => {
     if (store.getState().Auth.token) {

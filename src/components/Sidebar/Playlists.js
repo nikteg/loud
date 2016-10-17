@@ -127,7 +127,10 @@ class Playlists extends React.Component {
   render() {
     return (
       <div className="Playlists">
-        <div className="Sidebar-subtitle">Playlists<a className="Playlists-add" onClick={this.onAdd}><Icons.Plus /></a></div>
+        <div className="Sidebar-subtitle">
+          Playlists
+          <a className="Playlists-add" onClick={this.onAdd}><Icons.Plus /></a>
+        </div>
         <ul>
           {this.state.adding && <PlaylistRename
             onRename={this.onAddPlaylist}

@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Slider from "rc-slider";
 import cx from "classnames";
 
-import { videoMuteToggle, videoVolumeSet, videoSeeking } from "../../reducers/Video";
+import { videoMuteToggle, videoVolumeSet } from "../../reducers/Video";
 
 const volumeIconStates = {
   HIGH: "HIGH",

@@ -1,5 +1,5 @@
 import { applyMiddleware, compose, createStore } from "redux";
-import { replace, routerMiddleware, LOCATION_CHANGE } from "react-router-redux";
+import { replace, routerMiddleware } from "react-router-redux";
 import { browserHistory } from "react-router";
 import thunk from "redux-thunk";
 import translator from "redux-action-translator";
@@ -19,8 +19,7 @@ const translation = translator({
   [searchActions.error]: a => [notificationShow(`Search error. ${a.payload}.`)],
   [authUnauthenticated]: [replace(`/login?redirect=${window.location.pathname}`),
     notificationShow("Unauthenticated. Please login again.")],
-  [videoError]: a => [notificationShow(`Video error. Code: ${a.payload}`)],
-  [LOCATION_CHANGE]: a => [],
+  [videoError]: a => [notificationShow(`Video error. Code: ${a.payload}`)]
 });
 
 export default function configureStore(initialState) {

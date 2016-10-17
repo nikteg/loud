@@ -1,7 +1,3 @@
-// Polyfill shit
-require("whatwg-fetch");
-require("core-js");
-
 import React from "react";
 import { render } from "react-dom";
 import { Provider } from "react-redux";

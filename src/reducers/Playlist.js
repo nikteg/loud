@@ -1,4 +1,4 @@
-import { createAction, handleActions } from "redux-actions";
+import { handleActions } from "redux-actions";
 
 import { notificationNew } from "./Notification";
 import { authLogoutActions } from "./Auth";
@@ -9,7 +9,7 @@ import {
   updatePlaylist,
   removePlaylist,
 } from "../lib/api";
-import { createNetworkAction, checkAuth } from "../lib/utils";
+import { createNetworkAction } from "../lib/utils";
 
 export const playlistsLoadActions = createNetworkAction("PLAYLISTS_LOAD");
 export const playlistLoadActions = createNetworkAction("PLAYLIST_LOAD");

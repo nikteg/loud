@@ -23,7 +23,7 @@ const Search = connect(state => ({
 })(props => (
   <div className="Search page">
     <div className="Search-title header-title">
-      {props.query !== "" && `Search results for '${props.query}'` || "Search"}
+      {(props.query !== "" && `Search results for '${props.query}'`) || "Search"}
       <div className="num-tracks">{props.trackCount()}</div>
     </div>
     {!props.loading && props.tracks.length > 0 && <List

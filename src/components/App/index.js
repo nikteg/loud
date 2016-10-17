@@ -7,6 +7,7 @@ import Notifications from "../Notifications";
 
 import "./style.styl";
 
+/* eslint-disable react/prefer-stateless-function */
 class App extends React.Component {
   render() {
     return (
@@ -28,6 +29,7 @@ class App extends React.Component {
     );
   }
 }
+/* eslint-enable react/prefer-stateless-function */
 
 App.propTypes = {
   children: React.PropTypes.node,

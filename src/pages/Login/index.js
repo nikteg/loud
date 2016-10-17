@@ -41,8 +41,17 @@ class Login extends React.Component {
         <Notifications />
         <form className="Login-form" onSubmit={this.onLogin}>
           <div className="Login-form-title">Loud<em>Music</em><sub>Beta</sub></div>
-          <input type="text" placeholder="Username" defaultValue={this.props.username} ref={node => (this.username = node)} />
-          <input type="password" placeholder="Password" ref={node => (this.password = node)} />
+          <input
+            type="text"
+            placeholder="Username"
+            defaultValue={this.props.username}
+            ref={node => (this.username = node)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            ref={node => (this.password = node)}
+          />
           <div className="buttons">
             <button type="submit">Login</button>
             <button onClick={this.onRegister}>Register</button>

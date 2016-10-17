@@ -2,6 +2,8 @@ import React from "react";
 
 import "./style.styl";
 
+/* eslint-disable max-len */
+
 export function User(props) {
   return (
     <svg viewBox="0 0 16 16" className="Icon Icon-User">
@@ -123,3 +125,5 @@ export function Share(props) {
     </svg>
   );
 }
+
+/* eslint-enable max-len */

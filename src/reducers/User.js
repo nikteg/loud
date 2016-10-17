@@ -1,4 +1,4 @@
-import { createAction, handleActions } from "redux-actions";
+import { handleActions } from "redux-actions";
 
 import { getUser } from "../lib/api";
 import { createNetworkAction } from "../lib/utils";

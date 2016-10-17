@@ -31,7 +31,7 @@ export function request(route, token, method, params) {
     options.body = JSON.stringify(params);
   }
 
-  return fetch(`${API_URL}${route}`, options).then(res => res.json()).then(json => {
+  return fetch(`${process.env.API_URL}${route}`, options).then(res => res.json()).then(json => {
     if (json.error) {
       if (json.error === "Unauthenticated") {
         localStorage.removeItem("token");
