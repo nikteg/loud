@@ -3,6 +3,15 @@ import { createAction, handleActions } from "redux-actions";
 import { authLogoutActions } from "./Auth";
 import { searchActions } from "./Search";
 
+// Helper function
+function withPlayer(fn) {
+  return (dispatch, getState) => {
+    const { Video: { player } } = getState();
+
+    return fn(player, dispatch, getState);
+  };
+}
+
 export const videoInit = createAction("VIDEO_INIT", player => player);
 export const videoState = createAction("VIDEO_STATE", state => state);
 export const videoProgress = createAction("VIDEO_PROGRESS", progress => progress);
@@ -16,14 +25,6 @@ export const videoTracksIndex = createAction("VIDEO_TRACKS_INDEX", index => inde
 export const videoPlaylist = createAction("VIDEO_PLAYLIST", (playlist, index) => ({ playlist, index }));
 
 export const videoSeekingStart = () => videoSeeking(true);
-
-function withPlayer(fn) {
-  return (dispatch, getState) => {
-    const { Video: { player } } = getState();
-
-    return fn(player, dispatch, getState);
-  };
-}
 
 export const videoPopupToggle = () => (dispatch, getState) =>
   dispatch(videoPopup(!getState().Video.popup));
@@ -172,6 +173,7 @@ const initialState = {
 };
 
 export default handleActions({
+  [authLogoutActions.complete]: (state, action) => initialState, // Reset to inital state on logout
   [videoInit]: (state, action) => ({
     ...state,
     player: action.payload,
@@ -223,5 +225,4 @@ export default handleActions({
     ...state,
     seeking: action.payload,
   }),
-  [authLogoutActions.complete]: (state, action) => initialState,
 }, initialState);
