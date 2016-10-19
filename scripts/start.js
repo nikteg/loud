@@ -220,7 +220,7 @@ function runDevServer(host, port, protocol) {
     }
 
     clearConsole();
-    console.log(chalk.cyan("Starting the development server..."));
+    console.log(chalk.cyan("Starting the development server on", `http://${host}:${port}`));
     console.log();
   });
 }
