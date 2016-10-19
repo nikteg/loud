@@ -64,7 +64,7 @@ export const playlistRename = (id, name) => (dispatch, getState) => {
 export const playlistTrackAdd = (id, track) => (dispatch, getState) => {
   const playlists = getState().Playlist.playlists.slice();
   const playlist = playlists.find(list => list.id === id);
-  const trackIds = playlist.tracks.concat([track]).map(t => t.id);
+  const trackIds = [...playlist.tracks, track].map(t => t.id);
   dispatch(playlistUpdate(id, playlist.name, trackIds));
 };
 
@@ -115,7 +115,7 @@ export default handleActions({
   }),
   [playlistCreateActions.complete]: (state, action) => ({
     ...state,
-    playlists: [action.payload].concat(state.playlists),
+    playlists: [action.payload, ...state.playlists],
   }),
   [playlistRemoveActions.complete]: (state, action) => ({
     ...state,

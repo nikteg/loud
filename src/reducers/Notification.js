@@ -11,7 +11,7 @@ export const notificationShow = (message) => (dispatch, getState) => {
 
 export default handleActions({
   [notificationNew]: (state, action) => ({
-    messages: state.messages.concat([action.payload]),
+    messages: [...state.messages, action.payload],
   }),
   [notificationDismiss]: (state, action) => ({
     messages: state.messages.slice(1),
