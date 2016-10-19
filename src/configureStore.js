@@ -15,7 +15,6 @@ const translation = translator({
   [authLoginActions.complete]: [replace("/"), playlistsLoad()],
   [authToken]: [playlistsLoad()],
   [authLogoutActions.complete]: [replace("/login")],
-  [searchActions.complete]: [replace("/search")],
   [searchActions.error]: a => [notificationShow(`Search error. ${a.payload}.`)],
   [authUnauthenticated]: [replace(`/login?redirect=${window.location.pathname}`),
     notificationShow("Unauthenticated. Please login again.")],

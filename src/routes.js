@@ -11,6 +11,8 @@ import Search from "./pages/Search";
 import Browse from "./pages/Browse";
 import Queue from "./pages/Queue";
 
+import { searchQuery } from "./reducers/Search";
+
 export const routes = store => {
   /* eslint-disable no-unused-vars */
   const requireAuth = (nextState, replace) => {
@@ -32,7 +34,20 @@ export const routes = store => {
       <Route path="/" component={App}>
         <IndexRoute component={Welcome} />
         <Route path="/browse" component={Browse} />
-        <Route path="/search" component={Search} />
+        <Route path="/search" component={Search} onEnter={(nextState) => {
+          const query = nextState.location.query.q;
+
+          if (query && store.getState().Search.query !== query) {
+            store.dispatch(searchQuery(query));
+          }
+        }} onChange={(prevState, nextState) => {
+          const oldQuery = prevState.location.query.q;
+          const query = nextState.location.query.q;
+
+          if (query && oldQuery !== query) {
+            store.dispatch(searchQuery(query));
+          }
+        }} />
         <Route path="/queue" component={Queue} />
         <Route path="/profile/:username" component={Profile} />
         <Route path="/playlist/:playlistId" component={Playlist} />

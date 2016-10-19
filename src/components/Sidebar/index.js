@@ -24,7 +24,7 @@ const Sidebar = bindClosures({
 
     const query = document.getElementById("search-query").value.trim();
     if (query !== "") {
-      props.searchQuery(query);
+      props.push(`/search?q=${query}`);
     }
   },
 })(props => (
@@ -67,6 +67,7 @@ const Sidebar = bindClosures({
         type="text"
         placeholder="Search for music"
         id="search-query"
+        defaultValue={props.query}
       />
     </form>
     <div className="Sidebar-subtitle">Navigation</div>
@@ -88,4 +89,5 @@ const Sidebar = bindClosures({
 export default connect(state => ({
   username: state.Auth.username,
   loggedIn: state.Auth.token != null,
+  query: state.Search.query,
 }), { authLogout, notificationShow, push, searchQuery })(Sidebar);
