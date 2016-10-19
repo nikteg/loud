@@ -1,0 +1,77 @@
+@require "../../style/variables"
+
+thumbnailSize = 192px;
+
+.Track {
+  &.Thumbnail {
+    width: thumbnailSize;
+    margin: 1rem;
+
+    &:hover, &.playing {
+      .Thumbnail-hover {
+        display: flex;
+      }
+    }
+
+    &:hover {
+      .Dropdown {
+        visibility: visible;
+      }
+    }
+  }
+
+  .Thumbnail-hover {
+    justify-content: space-around;
+    align-items: center;
+    display: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0, 0, 0, .75);
+    border-radius: 4px;
+
+    .Dropdown {
+      margin: 16px;
+      fill: white;
+      visibility: hidden;
+    }
+  }
+
+  .Thumbnail-button {
+    display: block;
+    width: 48px;
+    height: 48px;
+    border: none;
+    background: accent-color;
+    border-radius: 50%;
+    padding: 8px;
+    cursor: pointer;
+    fill: white;
+    outline: none;
+    box-shadow: 0 0 16px rgba(0, 0, 0, .5);
+  }
+
+  .Thumbnail-image {
+    position: relative;
+    width: thumbnailSize;
+    height: thumbnailSize;
+    background-size: ceil(thumbnailSize*(16/9));
+    background-position: center, center;
+    border-radius: 4px;
+  }
+
+  .Thumbnail-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: .5em .25rem .25rem;
+  }
+
+  .Thumbnail-artist {
+    color: lighten(theme-dark, 25%);
+    margin: 0 .25rem;
+    font-size: .75rem;
+  }
+}

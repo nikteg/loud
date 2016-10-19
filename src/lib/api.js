@@ -99,6 +99,10 @@ export function getUser(token, username) {
 
 // Tracks
 
+export function getTracks(token) {
+  return request("/tracks", token, "GET");
+}
+
 export function getTrack(token, id) {
   return request(`/tracks/${id}`, token, "GET")
     .then(json => json.data); // Temporary because of the API format.

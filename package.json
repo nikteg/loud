@@ -77,7 +77,9 @@
     "redux-action-translator": "^1.0.3",
     "redux-actions": "^0.10.1",
     "redux-thunk": "^2.1.0",
-    "whatwg-fetch": "^1.0.0"
+    "stylus": "^0.54.5",
+    "whatwg-fetch": "^1.0.0",
+    "youtube-api": "^2.0.4"
   },
   "jest": {
     "moduleFileExtensions": [

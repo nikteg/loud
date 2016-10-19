@@ -8,6 +8,7 @@ import Notification from "./Notification";
 import Search from "./Search";
 import User from "./User";
 import Track from "./Track";
+import Browse from "./Browse";
 
 export default combineReducers({
   routing: routerReducer,
@@ -18,4 +19,5 @@ export default combineReducers({
   Search,
   User,
   Track,
+  Browse,
 });

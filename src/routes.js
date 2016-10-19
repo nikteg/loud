@@ -11,6 +11,7 @@ import Search from "./pages/Search";
 import Browse from "./pages/Browse";
 import Queue from "./pages/Queue";
 
+import { browseLoad } from "./reducers/Browse";
 import { searchQuery } from "./reducers/Search";
 
 export const routes = store => {
@@ -32,8 +33,9 @@ export const routes = store => {
     <Route>
       <Route path="/login" component={Login} onEnter={requireUnAuth} />
       <Route path="/" component={App}>
-        <IndexRoute component={Welcome} />
-        <Route path="/browse" component={Browse} />
+        <IndexRoute component={Browse} onEnter={() => {
+          store.dispatch(browseLoad());
+        }} />
         <Route path="/search" component={Search} onEnter={(nextState) => {
           const query = nextState.location.query.q;
 

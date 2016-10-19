@@ -73,10 +73,7 @@ const Sidebar = bindClosures({
     <div className="Sidebar-subtitle">Navigation</div>
     <ul>
       <li className={cx("Sidebar-item", { active: props.location.pathname === "/" })}>
-        <Link to="/"><Icons.Home />Home</Link>
-      </li>
-      <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/browse") })}>
-        <Link to="/browse"><Icons.Browse />Browse</Link>
+        <Link to="/"><Icons.Browse />Browse</Link>
       </li>
       <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/queue") })}>
         <Link to="/queue"><Icons.Queue />Queue</Link>
