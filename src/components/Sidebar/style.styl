@@ -6,8 +6,8 @@
   background: sidebar-background-color;
   color: #c5c1c0;
   border-right: 1px solid lighten(#323030, 25%);
-  overflow: auto;
-  padding-bottom: 1em;
+  display: flex;
+  flex-direction: column;
 
   .Loader
     margin: 16px auto;
@@ -20,12 +20,28 @@
     padding: 0;
     margin: 0;
 
+.Sidebar-thumbnail {
+  background: darken(sidebar-background-color, 5%);
+  border-top: 1px solid lighten(#323030, 5%);
+  margin-top: auto;
+  padding: 1em;
+
+  .Thumbnail {
+    margin: 0;
+  }
+
+  .Thumbnail-image {
+    border: 1px solid lighten(#323030, 5%);
+  }
+}
+
 .Sidebar-subtitle
   padding: 16px 8px 4px;
   text-transform: uppercase;
   color: #8a8887;
   display: flex;
   justify-content: space-between;
+  flex-shrink: 0;
 
 .Sidebar-item
   padding: 4px;
@@ -53,11 +69,23 @@
     .Icon
       fill: #fff;
 
-.Playlists
-  > ul
+.Sidebar-nav {
+  overflow: scroll;
+
+  > ul {
     list-style: none;
     padding: 0;
     margin: 0;
+  }
+}
+
+.Playlists {
+  > ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+}
 
 .Playlists-add
   padding: 0 4px;
@@ -109,6 +137,7 @@
   padding: 16px 8px 16px 16px;
   background: darken(sidebar-background-color, 5%);
   border-bottom: 1px solid lighten(#323030, 5%);
+  flex-shrink: 0;
 
 .Sidebar-profile-avatar
   width: 40px;
@@ -129,8 +158,8 @@
 .Sidebar-search
   display: flex;
   align-items: center;
-  flex: 1;
   padding: 8px;
+  flex-shrink: 0;
 
   .Icon
     width: 1rem;

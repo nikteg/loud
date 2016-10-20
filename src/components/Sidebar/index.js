@@ -12,6 +12,7 @@ import { searchQuery } from "../../reducers/Search";
 import * as Icons from "../Icons";
 import Playlists from "./Playlists";
 import Dropdown from "../Dropdown";
+import { Thumbnail } from "../Track";
 
 import "./style.styl";
 
@@ -70,16 +71,21 @@ const Sidebar = bindClosures({
         defaultValue={props.query}
       />
     </form>
-    <div className="Sidebar-subtitle">Navigation</div>
-    <ul>
-      <li className={cx("Sidebar-item", { active: props.location.pathname === "/" })}>
-        <Link to="/"><Icons.Browse />Browse</Link>
-      </li>
-      <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/queue") })}>
-        <Link to="/queue"><Icons.Queue />Queue</Link>
-      </li>
-    </ul>
-    {props.loggedIn && <Playlists playlistId={props.params.playlistId} />}
+    <div className="Sidebar-nav">
+      <div className="Sidebar-subtitle">Navigation</div>
+      <ul>
+        <li className={cx("Sidebar-item", { active: props.location.pathname === "/" })}>
+          <Link to="/"><Icons.Browse />Browse</Link>
+        </li>
+        <li className={cx("Sidebar-item", { active: props.location.pathname.startsWith("/queue") })}>
+          <Link to="/queue"><Icons.Queue />Queue</Link>
+        </li>
+      </ul>
+      {props.loggedIn && <Playlists playlistId={props.params.playlistId} />}
+    </div>
+    <div className="Sidebar-thumbnail">
+      <Thumbnail />
+    </div>
   </div>
 ));
 

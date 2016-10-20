@@ -8,6 +8,17 @@ import Dropdown from "../../components/Dropdown";
 import "./style.styl";
 
 export const Thumbnail = connect(state => ({
+  track: state.Video.tracks[state.Video.tracksIndex],
+}))((props) => (
+  props.track ? <div className={cx("Track Thumbnail", { "playing": props.isPlaying })}>
+    <div className="Thumbnail-image"
+      style={{ backgroundImage: `url(https://i.ytimg.com/vi/${props.track.key}/hqdefault.jpg)` }} />
+    <div className="Thumbnail-title">{props.track.name}</div>
+    <div className="Thumbnail-artist">{props.track.artist}</div>
+  </div> : <div />
+));
+
+export const ThumbnailWithControls = connect(state => ({
   isPlaying: state.Video.state === "play",
   track: state.Video.tracks[state.Video.tracksIndex],
 }), {}, (stateProps, dispatchProps, ownProps) => ({
@@ -16,7 +27,8 @@ export const Thumbnail = connect(state => ({
   isPlaying: stateProps.isPlaying && stateProps.track && ownProps.track.id === stateProps.track.id,
 }))((props) => (
   <div className={cx("Track Thumbnail", { "playing": props.isPlaying })}>
-    <div className="Thumbnail-image" style={{ backgroundImage: `url(https://i.ytimg.com/vi/${props.track.key}/hqdefault.jpg)` }}>
+    <div className="Thumbnail-image"
+      style={{ backgroundImage: `url(https://i.ytimg.com/vi/${props.track.key}/hqdefault.jpg)` }}>
       <div className="Thumbnail-hover">
         <Dropdown icon={<Icons.Plus />} items={[{ name: "Nothing here yet" }]} />
         <button className="Thumbnail-button" onClick={props.onPlay}>
