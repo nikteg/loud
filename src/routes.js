@@ -2,7 +2,7 @@ import React from "react";
 import { Route, IndexRoute } from "react-router";
 
 import App from "./components/App";
-import Welcome from "./pages/Welcome";
+// import Welcome from "./pages/Welcome";
 import Track from "./pages/Track";
 import Playlist from "./pages/Playlist";
 import Login from "./pages/Login";
