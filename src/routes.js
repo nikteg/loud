@@ -13,42 +13,56 @@ import Queue from "./pages/Queue";
 import { browseLoad } from "./reducers/Browse";
 import { searchQuery } from "./reducers/Search";
 
-export const routes = store => {
-  /* eslint-disable no-unused-vars */
-  const requireAuth = (nextState, replace) => {
-    if (!store.getState().Auth.token) {
-      replace(`/login?redirect=${nextState.location.pathname}`);
-    }
-  };
-  /* eslint-enable no-unused-vars */
+function onRequireAuthenticated(store, nextState, replace) {
+  if (!store.getState().Auth.token) {
+    replace(`/login?redirect=${nextState.location.pathname}`);
+  }
+}
 
-  const requireUnAuth = (nextState, replace) => {
-    if (store.getState().Auth.token) {
-      replace("/");
+function onRequireUnauthenticated(store, nextState, replace) {
+  if (store.getState().Auth.token) {
+    replace("/");
+  }
+}
+
+function onSearchRouteChange(store, nextState, prevState) {
+  const query = nextState.location.query.q;
+
+  if (!query) {
+    return;
+  }
+
+  if (prevState) {
+    const prevQuery = prevState.location.query.q;
+
+    if (prevQuery === query) {
+      return;
     }
-  };
+  }
+
+  if (store.getState().Search.query === query) {
+    return;
+  }
+
+  store.dispatch(searchQuery(query));
+}
+
+function onBrowseRouteEnter(store) {
+  store.dispatch(browseLoad());
+}
+
+export const routes = store => {
 
   return (
     <Route>
-      <Route path="/login" component={Login} onEnter={requireUnAuth} />
+      <Route path="/login" component={Login}
+        onEnter={(nextState, replace) => onRequireUnauthenticated(store, nextState, replace)} />
       <Route path="/" component={App}>
-        <IndexRoute component={Browse} onEnter={() => {
-          store.dispatch(browseLoad());
-        }} />
-        <Route path="/search" component={Search} onEnter={(nextState) => {
-          const query = nextState.location.query.q;
-
-          if (query && store.getState().Search.query !== query) {
-            store.dispatch(searchQuery(query));
-          }
-        }} onChange={(prevState, nextState) => {
-          const oldQuery = prevState.location.query.q;
-          const query = nextState.location.query.q;
-
-          if (query && oldQuery !== query) {
-            store.dispatch(searchQuery(query));
-          }
-        }} />
+        <IndexRoute component={Browse}
+          onEnter={() => onBrowseRouteEnter(store)} />
+        <Route path="/search" component={Search}
+          onEnter={(nextState) => onSearchRouteChange(store, nextState)}
+          onChange={(prevState, nextState) => onSearchRouteChange(store, nextState, prevState)} />
         <Route path="/queue" component={Queue} />
         <Route path="/profile/:username" component={Profile} />
         <Route path="/playlist/:playlistId" component={Playlist} />
