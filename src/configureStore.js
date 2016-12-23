@@ -30,7 +30,7 @@ export default function configureStore(initialState) {
     // https://github.com/zalmoxisus/redux-devtools-extension
     composers.push(window.devToolsExtension({
       // https://github.com/zalmoxisus/redux-devtools-extension/issues/159
-      statesFilter: state => {
+      stateSanitizer: (state) => {
         if (state.Video.player) {
           return { ...state, Video: { ...state.Video, player: "<<PLAYER>>" } };
         }

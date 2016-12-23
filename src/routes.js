@@ -13,11 +13,13 @@ import Queue from "./pages/Queue";
 import { browseLoad } from "./reducers/Browse";
 import { searchQuery } from "./reducers/Search";
 
+/* eslint-disable no-unused-vars */
 function onRequireAuthenticated(store, nextState, replace) {
   if (!store.getState().Auth.token) {
     replace(`/login?redirect=${nextState.location.pathname}`);
   }
 }
+/* eslint-enable no-unused-vars */
 
 function onRequireUnauthenticated(store, nextState, replace) {
   if (store.getState().Auth.token) {
@@ -51,8 +53,7 @@ function onBrowseRouteEnter(store) {
   store.dispatch(browseLoad());
 }
 
-export const routes = store => {
-
+export default function routes(store) {
   return (
     <Route>
       <Route path="/login" component={Login}
@@ -71,5 +72,3 @@ export const routes = store => {
     </Route>
   );
 };
-
-export default routes;
