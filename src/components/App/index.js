@@ -1,5 +1,6 @@
 import React from "react";
 
+import NoScroll from "../NoScroll";
 import Sidebar from "../Sidebar";
 import Player from "../Player";
 import Video from "../Video";
@@ -12,6 +13,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <NoScroll />
         <Video />
         <div className="App-wrapper">
           <Notifications />

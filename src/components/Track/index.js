@@ -30,14 +30,16 @@ export const ThumbnailWithControls = connect(state => ({
     <div className="Thumbnail-image"
       style={{ backgroundImage: `url(https://i.ytimg.com/vi/${props.track.key}/hqdefault.jpg)` }}>
       <div className="Thumbnail-hover">
-        <Dropdown icon={<Icons.Plus />} items={[{ name: "Nothing here yet" }]} />
         <button className="Thumbnail-button" onClick={props.onPlay}>
           {props.isPlaying ? <Icons.Pause /> : <Icons.Play />}
         </button>
-        <Dropdown icon={<Icons.Down />} items={[{ name: "Nothing here yet" }]} />
       </div>
     </div>
-    <div className="Thumbnail-title">{props.track.name}</div>
+    <div className="Thumbnail-controls">
+      <div className="Thumbnail-title">{props.track.name}</div>
+      <Dropdown icon={<Icons.Plus />} items={[{ name: "Nothing here yet" }]} onChoose={function () {}} />
+      <Dropdown icon={<Icons.Down />} items={[{ name: "Nothing here yet" }]} onChoose={function () {}} />
+    </div>
     <div className="Thumbnail-artist">{props.track.artist}</div>
   </div>
 ));

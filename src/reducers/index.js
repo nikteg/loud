@@ -9,6 +9,7 @@ import Search from "./Search";
 import User from "./User";
 import Track from "./Track";
 import Browse from "./Browse";
+import NoScroll from "./NoScroll";
 
 export default combineReducers({
   routing: routerReducer,
@@ -20,4 +21,5 @@ export default combineReducers({
   User,
   Track,
   Browse,
+  NoScroll,
 });

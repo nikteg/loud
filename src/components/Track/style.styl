@@ -7,15 +7,9 @@ thumbnailSize = 192px;
     width: thumbnailSize;
     margin: 1rem;
 
-    &:hover, &.playing {
+    &.playing {
       .Thumbnail-hover {
         display: flex;
-      }
-    }
-
-    &:hover {
-      .Dropdown {
-        visibility: visible;
       }
     }
   }
@@ -31,12 +25,6 @@ thumbnailSize = 192px;
     left: 0;
     background: rgba(0, 0, 0, .75);
     border-radius: 4px;
-
-    .Dropdown {
-      margin: 16px;
-      fill: white;
-      visibility: hidden;
-    }
   }
 
   .Thumbnail-button {
@@ -60,6 +48,12 @@ thumbnailSize = 192px;
     background-size: ceil(thumbnailSize*(16/9))+1;
     background-position: center, center;
     border-radius: 4px;
+
+    &:hover {
+      .Thumbnail-hover {
+        display: flex;
+      }
+    }
   }
 
   .Thumbnail-title {
@@ -67,11 +61,17 @@ thumbnailSize = 192px;
     text-overflow: ellipsis;
     white-space: nowrap;
     margin: .5em .25rem .25rem;
+    flex: 1;
   }
 
   .Thumbnail-artist {
     color: lighten(theme-dark, 25%);
     margin: 0 .25rem;
     font-size: .75rem;
+  }
+
+  .Thumbnail-controls {
+    display: flex;
+    align-items: center;
   }
 }
