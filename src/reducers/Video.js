@@ -79,6 +79,7 @@ export function videoListNext() {
     if (index < tracks.length - 1) {
       player.loadVideoById(tracks[(index + 1)].key);
       dispatch(videoTracksIndex(index + 1));
+      dispatch(videoProgress(0));
     }
   });
 }
@@ -164,12 +165,17 @@ export function videoSeekTo(seconds) {
   });
 }
 
+let videoSeekTimeout;
+
 export function videoSeekRelative(seconds) {
   return withPlayer((player, dispatch, getState) => {
     const progress = Math.min(getState().Video.duration, Math.max(0, getState().Video.progress + seconds));
 
     player.seekTo(progress);
     dispatch(videoProgress(progress));
+    dispatch(videoSeeking(true));
+    clearTimeout(videoSeekTimeout);
+    videoSeekTimeout = setTimeout(() => dispatch(videoSeeking(false)), 200);
   });
 }
 
