@@ -15,7 +15,8 @@
     "quote-props": 0,
     "no-param-reassign": [1, { "props": false }],
     "new-cap": 0,
-    "react/prefer-stateless-function": [1]
+    "react/prefer-stateless-function": [1],
+    "semi": [1, "always"]
   },
   "globals": {
     "API_URL": false
