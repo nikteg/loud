@@ -6,8 +6,8 @@ import { noScrollSetCallback } from "../../reducers/NoScroll";
 
 import "./style.styl";
 
-const MIN_DROPDOWN_WIDTH = 128;
-const MIN_DROPDOWN_HEIGHT = 32;
+const DROPDOWN_ELEMENT_WIDTH = 128;
+const DROPDOWN_ELEMENT_HEIGHT = 30;
 
 class Dropdown extends React.Component {
 
@@ -41,14 +41,15 @@ class Dropdown extends React.Component {
       let anchorHorizontal = "left";
       let position = { top: bottom, left };
 
-      if (right + MIN_DROPDOWN_WIDTH > document.body.clientWidth) {
+
+      if (right + DROPDOWN_ELEMENT_WIDTH > document.body.clientWidth) {
         anchorHorizontal = "right";
         position = { ...position, right: document.body.clientWidth - right, left: undefined };
-
-        console.log("yep, go to the left");
       }
 
-      if (bottom + MIN_DROPDOWN_HEIGHT > document.body.clientHeight) {
+      const height = this.props.items.reduce((sum) => (sum + DROPDOWN_ELEMENT_HEIGHT), 0);
+
+      if (bottom + height > document.body.clientHeight) {
         anchorVertical = "bottom";
         position = { ...position, bottom: document.body.clientHeight - top, top: undefined };
       }
@@ -72,10 +73,10 @@ class Dropdown extends React.Component {
 
   render() {
     return (
-      <div className={cx("Dropdown", { "active": this.state.show })}>
+      <div className={cx("Dropdown", this.state.anchor, { "active": this.state.show })}>
         <a className="Dropdown-button" onClick={this.onClick}
           ref={node => this.dropdownButtonEl = node}>{this.props.icon}</a>
-        {this.state.show && <ul style={this.state.position} className={this.state.anchor}>
+        {this.state.show && <ul style={this.state.position}>
           {this.props.items.map((item, i) => {
             if (item) {
               return <li key={i}><a onClick={this.onChoose(item.data)}>{item.name}</a></li>;

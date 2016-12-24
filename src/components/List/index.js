@@ -29,7 +29,7 @@ export const ListItem = connect((state) => ({
   playlists: stateProps.playlists,
 }))(bindClosures({
   dropdownPlaylists(props) {
-    const add = { name: "Add to new playlist" };
+    const add = { name: "Add to new playlist..." };
 
     if (props.playlists.length > 0) {
       return [add, null, ...props.playlists.map(l => ({ name: <span><Icons.Music />{l.name}</span>, data: l.id }))];
@@ -38,7 +38,7 @@ export const ListItem = connect((state) => ({
     return [add];
   },
   dropdownActions(props) {
-    const add = { name: "Add to queue" };
+    const add = { name: "Add to queue..." };
 
     if (props.playlist) {
       return [add, null, { name: "Remove from playlist", data: props.track }];

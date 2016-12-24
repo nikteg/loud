@@ -9,20 +9,68 @@
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   user-select: none;
+  overflow: auto;
 
-  &.active
+  &.active {
     background: accent-color;
 
-    .Dropdown-button
-
-      .Icon
+    .Dropdown-button {
+      .Icon {
         fill: #fff;
+      }
 
-      &:hover
-        .Icon
+      &:hover {
+        .Icon {
           fill: #323030 !important;
+        }
+      }
+    }
+  }
+
+  &.bottom-left, &.bottom-right {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  &.top-right ul {
+    border-top-left-radius: 4px;
+    border-top-right-radius: 0;
+  }
+
+  &.bottom-left ul {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 4px;
+    border-top-left-radius: 4px;
+
+    &:before {
+      content: "";
+      width: 22px;
+      height: 2px;
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      background: accent-color;
+    }
+  }
+
+  &.bottom-right ul {
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 0;
+    border-top-left-radius: 4px;
+
+    &:before {
+      content: "";
+      width: 22px;
+      height: 2px;
+      position: absolute;
+      bottom: -2px;
+      right: 0;
+      background: accent-color;
+    }
+  }
 
   ul
+    font-size: .9em;
     color: #fff;
     background: accent-color;
     position: fixed;
@@ -36,21 +84,6 @@
     list-style: none;
     min-width: 128px;
     box-shadow: 0 2px 0 darken(accent-color, 25%);
-
-    &.top-right {
-      border-top-left-radius: 4px;
-      border-top-right-radius: 0;
-    }
-
-    &.bottom-left {
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 4px;
-    }
-
-    &.bottom-right {
-      border-bottom-left-radius: 4px;
-      border-bottom-right-radius: 0;
-    }
 
     li
       white-space: nowrap;
