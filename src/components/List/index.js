@@ -84,7 +84,10 @@ const List = (props) => (
         key={`${props.playlist && props.playlist.id}${i}`}
         index={i}
         track={track}
-        onPlay={() => props.onPlay(i)}
+        onPlay={(e) => {
+          e.preventDefault();
+          props.onPlay(i);
+        }}
         isInCurrentPlaylist={props.isInCurrentPlaylist}
         playlist={props.playlist}
       />
