@@ -37,6 +37,7 @@ export default function configureStore(initialState) {
 
         return state;
       },
+      actionsBlacklist: ["VIDEO_PROGRESS"],
     }));
   }
 
