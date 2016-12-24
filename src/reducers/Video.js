@@ -24,139 +24,168 @@ export const videoSeeking = createAction("VIDEO_SEEKING", seeking => seeking);
 export const videoTracksIndex = createAction("VIDEO_TRACKS_INDEX", index => index);
 export const videoPlaylist = createAction("VIDEO_PLAYLIST", (playlist, index) => ({ playlist, index }));
 
-export const videoSeekingStart = () => videoSeeking(true);
+export function videoSeekingStart() {
+  return videoSeeking(true);
+}
 
-export const videoPopupToggle = () => (dispatch, getState) =>
-  dispatch(videoPopup(!getState().Video.popup));
+export function videoPopupToggle() {
+  return (dispatch, getState) => dispatch(videoPopup(!getState().Video.popup));
+}
 
-export const videoVolumeSet = percent => withPlayer((player, dispatch, getState) => {
-  const muted = getState().Video.player.isMuted();
-  const percentFixed = Math.min(100, Math.max(0, percent));
+export function videoVolumeSet(percent) {
+  return withPlayer((player, dispatch, getState) => {
+    const muted = getState().Video.player.isMuted();
+    const percentFixed = Math.min(100, Math.max(0, percent));
 
-  player.setVolume(percentFixed);
-  dispatch(videoVolume(percentFixed));
+    player.setVolume(percentFixed);
+    dispatch(videoVolume(percentFixed));
 
-  if (muted) {
-    player.unMute();
-    dispatch(videoMuted(false));
-  }
-});
+    if (muted) {
+      player.unMute();
+      dispatch(videoMuted(false));
+    }
+  });
+}
 
-export const videoPlayPause = () => withPlayer((player, dispatch, getState) => {
-  const state = getState();
+export function videoPlayPause() {
+  return withPlayer((player, dispatch, getState) => {
+    if (getState().Video.state === "play") {
+      player.pauseVideo();
+    }
 
-  if (state.Video.state === "play") {
-    player.pauseVideo();
-  }
+    if (getState().Video.state === "pause" || getState().Video.state === "end") {
+      player.playVideo();
+    }
+  });
+}
 
-  if (state.Video.state === "pause" || state.Video.state === "end") {
-    player.playVideo();
-  }
-});
-
-// export const videoLoad = (id) => withPlayer((player, dispatch, getState) => {
-//   player.loadVideoById(id);
-//   dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
-//   // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
-// });
-
-export const videoLoadPlaylist = (playlist, index = 0) => withPlayer((player, dispatch, getState) => {
-  if (getState().Video.playlistId === playlist.id) {
-    if (getState().Video.tracksIndex === index) {
+export function videoLoadPlaylist(playlist, index = 0) {
+  return withPlayer((player, dispatch, getState) => {
+    if (getState().Video.playlistId === playlist.id &&
+      getState().Video.tracksIndex === index) {
       return dispatch(videoPlayPause());
     }
 
-    return player.playVideoAt(index);
-  }
+    player.loadVideoById(playlist.tracks[index].key);
+    dispatch(videoPlaylist(playlist, index));
+  });
+}
 
-  player.loadPlaylist(playlist.tracks.map(track => track.key), index);
-  dispatch(videoPlaylist(playlist, index));
+export function videoListNext() {
+  return withPlayer((player, dispatch, getState) => {
+    const index = getState().Video.tracksIndex;
+    const tracks = getState().Video.tracks;
 
-  // dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
-  // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
-});
+    if (index < tracks.length - 1) {
+      player.loadVideoById(tracks[(index + 1)].key);
+      dispatch(videoTracksIndex(index + 1));
+    }
+  });
+}
 
-// export const videoQueueLoad = (tracks, index = 0) => withPlayer((player, dispatch, getState) => {
-//   if (getState().Playlist.playlistId === -1) {
-//     if (getState().Video.playlistIndex === index) {
-//       return dispatch(videoPlayPause());
-//     } else if (getState().Video.playlistIndex !== -1) {
-//       return player.playVideoAt(index);
-//     }
-//   }
+export function videoListPrev() {
+  return withPlayer((player, dispatch, getState) => {
+    const index = getState().Video.tracksIndex;
+    const tracks = getState().Video.tracks;
 
-//   const ids = tracks.map(track => track.key);
+    if (index === 0) {
+      dispatch(videoSeekTo(0));
 
-//   player.loadPlaylist(ids, index);
-//   dispatch(playlistSelectCustom(tracks));
+      return;
+    }
 
-//   dispatch(videoVolumeSet(20)); // TODO: Temporary for my ears sake.
-//   // player.setPlaybackQuality("hd720"); // Only way to force a higher quality than the video iframe allows
-// });
+    if (index > 0) {
+      player.loadVideoById(tracks[(index - 1)].key);
+      dispatch(videoTracksIndex(index - 1));
+    }
+  });
+}
 
-export const videoListNext = () => withPlayer(player => player.nextVideo());
-export const videoListPrev = () => withPlayer(player => player.previousVideo());
+export function videoPlay() {
+  return withPlayer(player => player.playVideo());
+}
 
-export const videoPlay = () => withPlayer(player => player.playVideo());
-export const videoPause = () => withPlayer(player => player.pauseVideo());
+export function videoPause() {
+  return withPlayer(player => player.pauseVideo());
+}
 
-export const videoProgressTick = () => withPlayer((player, dispatch, getState) => {
-  if (!getState().Video.seeking && getState().Video.state === "play") {
-    dispatch(videoProgress(player.getCurrentTime()));
-  }
-});
+export function videoProgressTick() {
+  return withPlayer((player, dispatch, getState) => {
+    if (!getState().Video.seeking && getState().Video.state === "play") {
+      dispatch(videoProgress(player.getCurrentTime()));
+    }
+  });
+}
 
-export const videoStatePlay = () => withPlayer((player, dispatch, getState) => {
-  // Hooking into the play state seems to be the easiest way to determine the video duration
-  const duration = player.getDuration();
-  const playlistIndex = player.getPlaylistIndex();
+export function videoStatePlay() {
+  return withPlayer((player, dispatch, getState) => {
+    dispatch(videoState("play"));
 
-  if (getState().Video.duration !== duration) {
-    dispatch(videoDuration(duration));
-  }
+    // Hooking into the play state seems to be the easiest way to determine the video duration
+    const duration = player.getDuration();
 
-  if (getState().Video.playlistIndex !== playlistIndex) {
-    dispatch(videoTracksIndex(playlistIndex));
-  }
+    if (getState().Video.duration !== duration) {
+      dispatch(videoDuration(duration));
+    }
+  });
+}
 
-  dispatch(videoState("play"));
-});
+export function videoStatePause() {
+  return videoState("pause");
+}
 
-export const videoStatePause = () => videoState("pause");
-export const videoStateEnd = () => videoState("end");
-export const videoStateError = code => (dispatch, getState) => {
-  dispatch(videoError(code));
+export function videoStateEnd() {
+  return withPlayer((player, dispatch, getState) => {
+    dispatch(videoState("end"));
 
-  // Go to next video
-  if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
-    dispatch(videoListNext());
-  }
-};
+    // Go to next video
+    if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
+      dispatch(videoListNext());
+    }
+  });
+}
 
-export const videoSeekTo = seconds => withPlayer((player, dispatch, getState) => {
-  player.seekTo(seconds);
-  dispatch(videoProgress(seconds));
-  dispatch(videoSeeking(false));
-});
+export function videoStateError(code) {
+  return withPlayer((player, dispatch, getState) => {
+    dispatch(videoError(code));
 
-export const videoSeekRelative = seconds => withPlayer((player, dispatch, getState) => {
-  const progress = Math.min(getState().Video.duration, Math.max(0, getState().Video.progress + seconds));
+    // Go to next video
+    if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
+      dispatch(videoListNext());
+    }
+  });
+}
 
-  player.seekTo(progress);
-  dispatch(videoProgress(progress));
-});
+export function videoSeekTo(seconds) {
+  return withPlayer((player, dispatch, getState) => {
+    player.seekTo(seconds);
+    dispatch(videoProgress(seconds));
+    dispatch(videoSeeking(false));
+  });
+}
 
-export const videoMuteToggle = () => withPlayer((player, dispatch, getState) => {
-  const muted = getState().Video.player.isMuted();
+export function videoSeekRelative(seconds) {
+  return withPlayer((player, dispatch, getState) => {
+    const progress = Math.min(getState().Video.duration, Math.max(0, getState().Video.progress + seconds));
 
-  if (muted) {
-    player.unMute();
-  } else {
-    player.mute();
-  }
+    player.seekTo(progress);
+    dispatch(videoProgress(progress));
+  });
+}
 
-  dispatch(videoMuted(!muted));
-});
+export function videoMuteToggle() {
+  return withPlayer((player, dispatch, getState) => {
+    const muted = getState().Video.player.isMuted();
+
+    if (muted) {
+      player.unMute();
+    } else {
+      player.mute();
+    }
+
+    dispatch(videoMuted(!muted));
+  });
+}
 
 const initialState = {
   tracks: [],
@@ -220,6 +249,7 @@ export default handleActions({
   [videoError]: (state, action) => ({
     ...state,
     error: action.payload,
+    state: "error",
   }),
   [videoSeeking]: (state, action) => ({
     ...state,

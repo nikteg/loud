@@ -9,8 +9,7 @@ import "./style.styl";
 
 const Browse = bindClosures({
   onPlay(props, index) {
-    // TODO: This loads the 149 first tracks.
-    props.videoLoadPlaylist({ id: "browse", tracks: props.tracks.slice(0, 145) }, index);
+    props.videoLoadPlaylist({ id: "browse", tracks: props.tracks }, index);
   }
 })((props) => (
   <div className="Browse page">
