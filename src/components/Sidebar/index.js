@@ -12,7 +12,7 @@ import { searchQuery } from "../../reducers/Search";
 import * as Icons from "../Icons";
 import Playlists from "./Playlists";
 import Dropdown from "../Dropdown";
-import { Thumbnail } from "../Track";
+import { ThumbnailSide } from "../Track";
 
 import "./style.styl";
 
@@ -84,7 +84,7 @@ const Sidebar = bindClosures({
       {props.loggedIn && <Playlists playlistId={props.params.playlistId} />}
     </div>
     <div className="Sidebar-thumbnail">
-      <Thumbnail />
+      <ThumbnailSide />
     </div>
   </div>
 ));

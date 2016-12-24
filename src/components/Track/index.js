@@ -7,14 +7,16 @@ import Dropdown from "../../components/Dropdown";
 
 import "./style.styl";
 
-export const Thumbnail = connect(state => ({
+export const ThumbnailSide = connect(state => ({
   track: state.Video.tracks[state.Video.tracksIndex],
 }))((props) => (
-  props.track ? <div className={cx("Track Thumbnail", { "playing": props.isPlaying })}>
-    <div className="Thumbnail-image"
+  props.track ? <div className="Track ThumbnailSide">
+    <div className="ThumbnailSide-image"
       style={{ backgroundImage: `url(https://i.ytimg.com/vi/${props.track.key}/hqdefault.jpg)` }} />
-    <div className="Thumbnail-title">{props.track.name}</div>
-    <div className="Thumbnail-artist">{props.track.artist}</div>
+    <div className="ThumbnailSide-info">
+      <div className="ThumbnailSide-title" title={props.track.name}>{props.track.name}</div>
+      <div className="ThumbnailSide-artist" title={props.track.artist}>{props.track.artist}</div>
+    </div>
   </div> : <div />
 ));
 
@@ -36,10 +38,10 @@ export const ThumbnailWithControls = connect(state => ({
       </div>
     </div>
     <div className="Thumbnail-controls">
-      <div className="Thumbnail-title">{props.track.name}</div>
+      <div className="Thumbnail-title" title={props.track.name}>{props.track.name}</div>
       <Dropdown icon={<Icons.Plus />} items={[{ name: "Nothing here yet" }]} onChoose={function () {}} />
       <Dropdown icon={<Icons.Down />} items={[{ name: "Nothing here yet" }]} onChoose={function () {}} />
     </div>
-    <div className="Thumbnail-artist">{props.track.artist}</div>
+    <div className="Thumbnail-artist" title={props.track.artist}>{props.track.artist}</div>
   </div>
 ));

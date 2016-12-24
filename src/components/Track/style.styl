@@ -1,8 +1,46 @@
 @require "../../style/variables"
 
 thumbnailSize = 192px;
+thumbnailSideSize = 48px;
 
 .Track {
+  &.ThumbnailSide {
+    display: flex;
+    align-items: center;
+  }
+
+  .ThumbnailSide-image {
+    height: thumbnailSideSize;
+    background-size: ceil(thumbnailSideSize*(16/9))+1;
+    background-position: center, center;
+    border-radius: 4px;
+    margin-right: .5em;
+    flex: 0 0 thumbnailSideSize;
+  }
+
+  .ThumbnailSide-info {
+    font-size: .8rem;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .ThumbnailSide-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: .5em .25rem .1rem;
+  }
+
+  .ThumbnailSide-artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: lighten(theme-dark, 25%);
+    margin: 0 .25rem;
+    font-size: .75rem;
+  }
+
   &.Thumbnail {
     width: thumbnailSize;
     margin: 1rem;
