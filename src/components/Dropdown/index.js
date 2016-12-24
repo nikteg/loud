@@ -8,6 +8,7 @@ import "./style.styl";
 
 const DROPDOWN_ELEMENT_WIDTH = 128;
 const DROPDOWN_ELEMENT_HEIGHT = 30;
+const PLAYER_HEIGHT = 56;
 
 class Dropdown extends React.Component {
 
@@ -47,7 +48,7 @@ class Dropdown extends React.Component {
         position = { ...position, right: document.body.clientWidth - right, left: undefined };
       }
 
-      const height = this.props.items.reduce((sum) => (sum + DROPDOWN_ELEMENT_HEIGHT), 0);
+      const height = this.props.items.reduce((sum) => (sum + DROPDOWN_ELEMENT_HEIGHT), PLAYER_HEIGHT);
 
       if (bottom + height > document.body.clientHeight) {
         anchorVertical = "bottom";
