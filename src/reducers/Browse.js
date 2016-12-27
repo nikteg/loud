@@ -15,7 +15,7 @@ export const Actions = {
     Api.getTracks(getState().Auth.token)
       .then(tracks => dispatch(Actions.browse.complete(tracks)))
       .catch(err => dispatch(Actions.browse.error(err.message)));
-    }
+    };
   },
 };
 

@@ -12,13 +12,13 @@ export default handleActions({
       return {
         enabled: true,
         callback: action.payload,
-      }
+      };
     }
 
     return {
       enabled: false,
       callback: function() {},
-    }
+    };
   }
 }, {
   enabled: false,

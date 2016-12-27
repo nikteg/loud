@@ -37,7 +37,7 @@ export const Actions = {
           dispatch(Actions.loginActions.complete({ id, username, token }));
         })
         .catch(err => dispatch(Actions.loginActions.error(err.message)));
-    }
+    };
   },
   logout() {
     return (dispatch, getState) => {
@@ -47,9 +47,9 @@ export const Actions = {
           localStorage.removeItem("token");
           dispatch(Actions.logoutActions.complete());
         });
-    }
+    };
   },
-}
+};
 
 export default handleActions({
   [Actions.loginActions.start]: (state, action) => ({
