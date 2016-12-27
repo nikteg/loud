@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import Slider from "rc-slider";
 import cx from "classnames";
 
-import { videoMuteToggle, videoVolumeSet } from "../../reducers/Video";
+import { Actions as VideoActions } from "../../reducers/Video";
 
 const volumeIconStates = {
   HIGH: "HIGH",
@@ -48,7 +48,7 @@ const VolumeSlider = connect(state => ({
   className: "Volume-popup-slider",
   tipFormatter: null,
   vertical: true,
-}), { onChange: videoVolumeSet })(Slider);
+}), { onChange: VideoActions.volumeSet })(Slider);
 
 class VolumeButton extends React.Component {
 
@@ -72,7 +72,7 @@ class VolumeButton extends React.Component {
         <div className={cx("Volume-popup", { changing: this.state.changing })}>
           <VolumeSlider onBeforeChange={this.setChange(true)} onAfterChange={this.setChange(false)} />
         </div>
-        <button title="Volume" onClick={this.props.videoMuteToggle} className="Controls-buttons-button">
+        <button title="Volume" onClick={this.props.muteToggle} className="Controls-buttons-button">
           {volumeIcons[this.props.iconState]}
         </button>
       </div>
@@ -96,4 +96,4 @@ export default connect(state => {
   return {
     iconState,
   };
-}, { videoMuteToggle, videoVolumeSet })(VolumeButton);
+}, { muteToggle: VideoActions.muteToggle, volumeSet: VideoActions.volumeSet })(VolumeButton);

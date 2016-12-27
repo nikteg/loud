@@ -5,20 +5,20 @@ import thunk from "redux-thunk";
 import translator from "redux-action-translator";
 
 import reducers from "./reducers";
-import { authLoginActions, authLogoutActions, authToken, authUnauthenticated } from "./reducers/Auth";
-import { playlistsLoad } from "./reducers/Playlist";
-import { videoError } from "./reducers/Video";
-import { notificationShow } from "./reducers/Notification";
-import { searchActions } from "./reducers/Search";
+import { Actions as AuthActions } from "./reducers/Auth";
+import { Actions as PlaylistActions } from "./reducers/Playlist";
+import { Actions as VideoActions } from "./reducers/Video";
+import { Actions as NotificationActions } from "./reducers/Notification";
+import { Actions as SearchActions } from "./reducers/Search";
 
 const translation = translator({
-  [authLoginActions.complete]: [replace("/"), playlistsLoad()],
-  [authToken]: [playlistsLoad()],
-  [authLogoutActions.complete]: [replace("/login")],
-  [searchActions.error]: a => [notificationShow(`Search error. ${a.payload}.`)],
-  [authUnauthenticated]: [replace(`/login?redirect=${window.location.pathname}`),
-    notificationShow("Unauthenticated. Please login again.")],
-  [videoError]: a => [notificationShow(`Video error. Code: ${a.payload}`)]
+  [AuthActions.loginActions.complete]: [replace("/"), PlaylistActions.loadAll()],
+  [AuthActions.token]: [PlaylistActions.loadAll()],
+  [AuthActions.logoutActions.complete]: [replace("/login")],
+  [SearchActions.searchActions.error]: a => [NotificationActions.show(`Search error. ${a.payload}.`)],
+  [AuthActions.unauthenticated]: [replace(`/login?redirect=${window.location.pathname}`),
+    NotificationActions.show("Unauthenticated. Please login again.")],
+  [VideoActions.error]: a => [NotificationActions.show(`Video error. Code: ${a.payload}`)]
 });
 
 export default function configureStore(initialState) {

@@ -1,28 +1,31 @@
 import { handleActions } from "redux-actions";
 
-import { getUser } from "../lib/api";
+import * as Api from "../lib/api";
 import { createNetworkAction } from "../lib/utils";
 
-export const userLoadActions = createNetworkAction("USER_LOAD");
-
-export const userLoad = (username) => (dispatch, getState) => {
-  dispatch(userLoadActions.start());
-  getUser(getState().Auth.token, username)
-    .then(user => dispatch(userLoadActions.complete(user)))
-    .catch(err => dispatch(userLoadActions.error(err.message)));
+export const Actions = {
+  loadActions: createNetworkAction("USER_LOAD"),
+  load(username) {
+    return (dispatch, getState) => {
+      dispatch(Actions.loadActions.start());
+      Api.getUser(getState().Auth.token, username)
+        .then(user => dispatch(Actions.loadActions.complete(user)))
+        .catch(err => dispatch(Actions.loadActions.error(err.message)));
+    };
+  },
 };
 
 export default handleActions({
-  [userLoadActions.start]: (state, action) => ({
+  [Actions.loadActions.start]: (state, action) => ({
     ...state,
     loading: true,
   }),
-  [userLoadActions.error]: (state, action) => ({
+  [Actions.loadActions.error]: (state, action) => ({
     ...state,
     error: action.payload,
     loading: false,
   }),
-  [userLoadActions.complete]: (state, action) => ({
+  [Actions.loadActions.complete]: (state, action) => ({
     ...state,
     user: action.payload,
     loading: false,

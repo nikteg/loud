@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { trackLoad } from "../../reducers/Track";
-import { videoLoadPlaylist } from "../../reducers/Video";
+import { Actions as TrackActions } from "../../reducers/Track";
+import { Actions as VideoActions } from "../../reducers/Video";
 import List from "../../components/List";
 
 import "./style.styl";
@@ -16,17 +16,17 @@ class Track extends React.Component {
   }
 
   componentWillMount() {
-    this.props.trackLoad(+this.props.params.trackId);
+    this.props.load(+this.props.params.trackId);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.trackId !== this.props.params.trackId) {
-      this.props.trackLoad(+nextProps.params.trackId);
+      this.props.load(+nextProps.params.trackId);
     }
   }
 
   onPlay(index) {
-    this.props.videoLoadPlaylist({ id: "track", tracks: [this.props.track] }, index);
+    this.props.playPlaylist({ id: "track", tracks: [this.props.track] }, index);
   }
 
   render() {
@@ -50,4 +50,7 @@ class Track extends React.Component {
 export default connect(state => ({
   loading: state.Track.loading,
   track: state.Track.track,
-}), { videoLoadPlaylist, trackLoad })(Track);
+}), {
+  playPlaylist: VideoActions.playPlaylist,
+  load: TrackActions.load,
+})(Track);

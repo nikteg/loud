@@ -1,19 +1,22 @@
 import { createAction, handleActions } from "redux-actions";
 
-export const notificationNew = createAction("NOTIFICATION_NEW", message => message);
-export const notificationDismiss = createAction("NOTIFICATION_DISMISS");
+export const Actions = {
+  new: createAction("NOTIFICATION_NEW", message => message),
+  dismiss: createAction("NOTIFICATION_DISMISS"),
+  show(message) {
+    return (dispatch, getState) => {
+      dispatch(Actions.new(message));
 
-export const notificationShow = (message) => (dispatch, getState) => {
-  dispatch(notificationNew(message));
-
-  setTimeout(() => dispatch(notificationDismiss()), 5000); // Dismiss error after 5 seconds
+      setTimeout(() => dispatch(Actions.dismiss()), 5000); // Dismiss error after 5 seconds
+    };
+  }
 };
 
 export default handleActions({
-  [notificationNew]: (state, action) => ({
+  [Actions.new]: (state, action) => ({
     messages: [...state.messages, action.payload],
   }),
-  [notificationDismiss]: (state, action) => ({
+  [Actions.dismiss]: (state, action) => ({
     messages: state.messages.slice(1),
   }),
 }, {

@@ -1,4 +1,4 @@
-import { authUnauthenticated } from "../reducers/Auth";
+import { Actions as AuthActions } from "../reducers/Auth";
 
 let store;
 
@@ -35,7 +35,7 @@ export function request(route, token, method, params) {
     if (json.error) {
       if (json.error === "Unauthenticated") {
         localStorage.removeItem("token");
-        dispatch(authUnauthenticated());
+        dispatch(AuthActions.unauthenticated());
       }
 
       throw new Error(json.error);

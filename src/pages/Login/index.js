@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 
-import { authLogin, authRegister } from "../../reducers/Auth";
+import { Actions as AuthActions } from "../../reducers/Auth";
 
 import Notifications from "../../components/Notifications";
 
@@ -23,7 +23,7 @@ class Login extends React.Component {
     const username = this.username.value;
     const password = this.password.value;
 
-    this.props.authLogin(username, password);
+    this.props.login(username, password);
   }
 
   onRegister(e) {
@@ -32,7 +32,7 @@ class Login extends React.Component {
     const username = this.username.value;
     const password = this.password.value;
 
-    this.props.authRegister(username, password);
+    this.props.register(username, password);
   }
 
   render() {
@@ -71,4 +71,7 @@ export default connect(state => ({
   loading: state.Auth.loading,
   loggedIn: state.Auth.token != null,
   username: state.Auth.username,
-}), { authLogin, authRegister })(Login);
+}), {
+  login: AuthActions.login,
+  register: AuthActions.register,
+})(Login);

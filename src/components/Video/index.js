@@ -1,13 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
-import { videoInit, videoStatePlay, videoStatePause, videoStateEnd, videoStateError } from "../../reducers/Video";
+import { Actions as VideoActions } from "../../reducers/Video";
 import cx from "classnames";
 
 import YouTube from "react-youtube";
 
 import "./style.styl";
 
-const Video = (props) => (
+export const Video = (props) => (
   <div className={cx("Video", { none: !props.show })}>
     <div className="Video-content">
       <YouTube
@@ -20,11 +20,11 @@ const Video = (props) => (
           },
         }}
         videoId={props.id}
-        onReady={e => props.videoInit(e.target)}
-        onPlay={props.videoStatePlay}
-        onPause={props.videoStatePause}
-        onEnd={props.videoStateEnd}
-        onError={e => props.videoStateError(e.data)}
+        onReady={e => props.init(e.target)}
+        onPlay={props.statePlay}
+        onPause={props.statePause}
+        onEnd={props.stateEnd}
+        onError={e => props.stateError(e.data)}
       />
     </div>
   </div>
@@ -32,4 +32,10 @@ const Video = (props) => (
 
 export default connect(state => ({
   show: state.Video.popup,
-}), { videoInit, videoStatePlay, videoStatePause, videoStateEnd, videoStateError })(Video);
+}), {
+  init: VideoActions.init,
+  statePlay: VideoActions.statePlay,
+  statePause: VideoActions.statePause,
+  stateEnd: VideoActions.stateEnd,
+  stateError: VideoActions.stateError,
+})(Video);

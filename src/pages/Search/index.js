@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import bindClosures from "react-bind-closures";
 
-import { videoLoadPlaylist } from "../../reducers/Video";
+import { Actions as VideoActions } from "../../reducers/Video";
 import List from "../../components/List";
 
 import "./style.styl";
@@ -13,9 +13,9 @@ const Search = connect(state => ({
   query: state.Search.query,
   tracks: state.Search.tracks,
   isInCurrentPlaylist: state.Video.playlistId === "search",
-}), { videoLoadPlaylist })(bindClosures({
+}), { playPlaylist: VideoActions.playPlaylist })(bindClosures({
   onPlay(props, index) {
-    props.videoLoadPlaylist({ id: "search", tracks: props.tracks }, index);
+    props.playPlaylist({ id: "search", tracks: props.tracks }, index);
   },
   trackCount(props) {
     return props.tracks ? props.tracks.length : 0;

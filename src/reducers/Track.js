@@ -1,28 +1,31 @@
 import { handleActions } from "redux-actions";
 
-import { getTrack } from "../lib/api";
+import * as Api from "../lib/api";
 import { createNetworkAction } from "../lib/utils";
 
-export const trackActions = createNetworkAction("TRACK");
-
-export const trackLoad = (query) => (dispatch, getState) => {
-  dispatch(trackActions.start(query));
-  getTrack(getState().Auth.token, query)
-    .then(track => dispatch(trackActions.complete(track)))
-    .catch(err => dispatch(trackActions.error(err.message)));
+export const Actions = {
+  trackActions: createNetworkAction("TRACK"),
+  load(query) {
+    return (dispatch, getState) => {
+      dispatch(Actions.trackActions.start(query));
+      Api.getTrack(getState().Auth.token, query)
+        .then(track => dispatch(Actions.trackActions.complete(track)))
+        .catch(err => dispatch(Actions.trackActions.error(err.message)));
+    };
+  },
 };
 
 export default handleActions({
-  [trackActions.start]: (state, action) => ({
+  [Actions.trackActions.start]: (state, action) => ({
     ...state,
     loading: true,
   }),
-  [trackActions.error]: (state, action) => ({
+  [Actions.trackActions.error]: (state, action) => ({
     ...state,
     error: action.payload,
     loading: false,
   }),
-  [trackActions.complete]: (state, action) => ({
+  [Actions.trackActions.complete]: (state, action) => ({
     ...state,
     track: action.payload,
     error: null,

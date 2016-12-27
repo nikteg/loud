@@ -1,7 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 
-import { authLogoutActions } from "./Auth";
-import { searchActions } from "./Search";
+import { Actions as AuthActions } from "./Auth";
+import { Actions as SearchActions } from "./Search";
 
 // Helper function
 function withPlayer(fn) {
@@ -12,186 +12,171 @@ function withPlayer(fn) {
   };
 }
 
-export const videoInit = createAction("VIDEO_INIT", player => player);
-export const videoState = createAction("VIDEO_STATE", state => state);
-export const videoProgress = createAction("VIDEO_PROGRESS", progress => progress);
-export const videoDuration = createAction("VIDEO_DURATION", duration => duration);
-export const videoMuted = createAction("VIDEO_MUTED", muted => muted);
-export const videoVolume = createAction("VIDEO_VOLUME", volume => volume);
-export const videoPopup = createAction("VIDEO_POPUP", show => show);
-export const videoError = createAction("VIDEO_ERROR", code => code);
-export const videoSeeking = createAction("VIDEO_SEEKING", seeking => seeking);
-export const videoTracksIndex = createAction("VIDEO_TRACKS_INDEX", index => index);
-export const videoPlaylist = createAction("VIDEO_PLAYLIST", (playlist, index) => ({ playlist, index }));
+let seekTimeout;
 
-export function videoSeekingStart() {
-  return videoSeeking(true);
-}
+export const Actions = {
+  init: createAction("VIDEO_INIT", player => player),
+  state: createAction("VIDEO_STATE", state => state),
+  progress: createAction("VIDEO_PROGRESS", progress => progress),
+  duration: createAction("VIDEO_DURATION", duration => duration),
+  muted: createAction("VIDEO_MUTED", muted => muted),
+  volume: createAction("VIDEO_VOLUME", volume => volume),
+  popup: createAction("VIDEO_POPUP", show => show),
+  error: createAction("VIDEO_ERROR", code => code),
+  seeking: createAction("VIDEO_SEEKING", seeking => seeking),
+  tracksIndex: createAction("VIDEO_TRACKS_INDEX", index => index),
+  playlist: createAction("VIDEO_PLAYLIST", (playlist, index) => ({ playlist, index })),
+  seekingStart() {
+    return Actions.seeking(true);
+  },
+  popupToggle() {
+    return (dispatch, getState) => dispatch(Actions.popup(!getState().Video.popup));
+  },
+  volumeSet(percent) {
+    return withPlayer((player, dispatch, getState) => {
+      const muted = getState().Video.player.isMuted();
+      const percentFixed = Math.min(100, Math.max(0, percent));
 
-export function videoPopupToggle() {
-  return (dispatch, getState) => dispatch(videoPopup(!getState().Video.popup));
-}
+      player.setVolume(percentFixed);
+      dispatch(Actions.volume(percentFixed));
 
-export function videoVolumeSet(percent) {
-  return withPlayer((player, dispatch, getState) => {
-    const muted = getState().Video.player.isMuted();
-    const percentFixed = Math.min(100, Math.max(0, percent));
+      if (muted) {
+        player.unMute();
+        dispatch(Actions.muted(false));
+      }
+    });
+  },
+  playPause() {
+    return withPlayer((player, dispatch, getState) => {
+      if (getState().Video.state === "play") {
+        player.pauseVideo();
+      }
 
-    player.setVolume(percentFixed);
-    dispatch(videoVolume(percentFixed));
+      if (getState().Video.state === "pause" || getState().Video.state === "end") {
+        player.playVideo();
+      }
+    });
+  },
+  playPlaylist(playlist, index = 0) {
+    return withPlayer((player, dispatch, getState) => {
+      if (getState().Video.playlistId === playlist.id &&
+        getState().Video.tracksIndex === index) {
+        return dispatch(Actions.playPause());
+      }
 
-    if (muted) {
-      player.unMute();
-      dispatch(videoMuted(false));
-    }
-  });
-}
+      player.loadVideoById(playlist.tracks[index].key);
+      dispatch(Actions.playlist(playlist, index));
+    });
+  },
+  listNext() {
+    return withPlayer((player, dispatch, getState) => {
+      const index = getState().Video.tracksIndex;
+      const tracks = getState().Video.tracks;
 
-export function videoPlayPause() {
-  return withPlayer((player, dispatch, getState) => {
-    if (getState().Video.state === "play") {
-      player.pauseVideo();
-    }
+      if (index < tracks.length - 1) {
+        player.loadVideoById(tracks[(index + 1)].key);
+        dispatch(Actions.tracksIndex(index + 1));
+        dispatch(Actions.progress(0));
+      }
+    });
+  },
+  listPrev() {
+    return withPlayer((player, dispatch, getState) => {
+      const index = getState().Video.tracksIndex;
+      const tracks = getState().Video.tracks;
 
-    if (getState().Video.state === "pause" || getState().Video.state === "end") {
-      player.playVideo();
-    }
-  });
-}
+      if (index === 0) {
+        dispatch(Actions.seekTo(0));
 
-export function videoLoadPlaylist(playlist, index = 0) {
-  return withPlayer((player, dispatch, getState) => {
-    if (getState().Video.playlistId === playlist.id &&
-      getState().Video.tracksIndex === index) {
-      return dispatch(videoPlayPause());
-    }
+        return;
+      }
 
-    player.loadVideoById(playlist.tracks[index].key);
-    dispatch(videoPlaylist(playlist, index));
-  });
-}
+      if (index > 0) {
+        player.loadVideoById(tracks[(index - 1)].key);
+        dispatch(Actions.tracksIndex(index - 1));
+      }
+    });
+  },
+  play() {
+    return withPlayer(player => player.playVideo());
+  },
+  pause() {
+    return withPlayer(player => player.pauseVideo());
+  },
+  progressTick() {
+    return withPlayer((player, dispatch, getState) => {
+      if (!getState().Video.seeking && getState().Video.state === "play") {
+        dispatch(Actions.progress(player.getCurrentTime()));
+      }
+    });
+  },
+  statePlay() {
+    return withPlayer((player, dispatch, getState) => {
+      dispatch(Actions.state("play"));
 
-export function videoListNext() {
-  return withPlayer((player, dispatch, getState) => {
-    const index = getState().Video.tracksIndex;
-    const tracks = getState().Video.tracks;
+      // Hooking into the play state seems to be the easiest way to determine the video duration
+      const duration = player.getDuration();
 
-    if (index < tracks.length - 1) {
-      player.loadVideoById(tracks[(index + 1)].key);
-      dispatch(videoTracksIndex(index + 1));
-      dispatch(videoProgress(0));
-    }
-  });
-}
+      if (getState().Video.duration !== duration) {
+        dispatch(Actions.duration(duration));
+      }
+    });
+  },
+  statePause() {
+    return Actions.state("pause");
+  },
+  stateEnd() {
+    return withPlayer((player, dispatch, getState) => {
+      dispatch(Actions.state("end"));
 
-export function videoListPrev() {
-  return withPlayer((player, dispatch, getState) => {
-    const index = getState().Video.tracksIndex;
-    const tracks = getState().Video.tracks;
+      // Go to next video
+      if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
+        dispatch(Actions.listNext());
+      }
+    });
+  },
+  stateError(code) {
+    return withPlayer((player, dispatch, getState) => {
+      dispatch(Actions.error(code));
 
-    if (index === 0) {
-      dispatch(videoSeekTo(0));
+      // Go to next video
+      if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
+        dispatch(Actions.listNext());
+      }
+    });
+  },
+  seekTo(seconds) {
+    return withPlayer((player, dispatch, getState) => {
+      player.seekTo(seconds);
+      dispatch(Actions.progress(seconds));
+      dispatch(Actions.seeking(false));
+    });
+  },
+  seekRelative(seconds) {
+    return withPlayer((player, dispatch, getState) => {
+      const progress = Math.min(getState().Video.duration, Math.max(0, getState().Video.progress + seconds));
 
-      return;
-    }
+      player.seekTo(progress);
+      dispatch(Actions.progress(progress));
+      dispatch(Actions.seeking(true));
+      clearTimeout(seekTimeout);
+      seekTimeout = setTimeout(() => dispatch(Actions.seeking(false)), 200);
+    });
+  },
+  muteToggle() {
+    return withPlayer((player, dispatch, getState) => {
+      const muted = getState().Video.player.isMuted();
 
-    if (index > 0) {
-      player.loadVideoById(tracks[(index - 1)].key);
-      dispatch(videoTracksIndex(index - 1));
-    }
-  });
-}
+      if (muted) {
+        player.unMute();
+      } else {
+        player.mute();
+      }
 
-export function videoPlay() {
-  return withPlayer(player => player.playVideo());
-}
-
-export function videoPause() {
-  return withPlayer(player => player.pauseVideo());
-}
-
-export function videoProgressTick() {
-  return withPlayer((player, dispatch, getState) => {
-    if (!getState().Video.seeking && getState().Video.state === "play") {
-      dispatch(videoProgress(player.getCurrentTime()));
-    }
-  });
-}
-
-export function videoStatePlay() {
-  return withPlayer((player, dispatch, getState) => {
-    dispatch(videoState("play"));
-
-    // Hooking into the play state seems to be the easiest way to determine the video duration
-    const duration = player.getDuration();
-
-    if (getState().Video.duration !== duration) {
-      dispatch(videoDuration(duration));
-    }
-  });
-}
-
-export function videoStatePause() {
-  return videoState("pause");
-}
-
-export function videoStateEnd() {
-  return withPlayer((player, dispatch, getState) => {
-    dispatch(videoState("end"));
-
-    // Go to next video
-    if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
-      dispatch(videoListNext());
-    }
-  });
-}
-
-export function videoStateError(code) {
-  return withPlayer((player, dispatch, getState) => {
-    dispatch(videoError(code));
-
-    // Go to next video
-    if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
-      dispatch(videoListNext());
-    }
-  });
-}
-
-export function videoSeekTo(seconds) {
-  return withPlayer((player, dispatch, getState) => {
-    player.seekTo(seconds);
-    dispatch(videoProgress(seconds));
-    dispatch(videoSeeking(false));
-  });
-}
-
-let videoSeekTimeout;
-
-export function videoSeekRelative(seconds) {
-  return withPlayer((player, dispatch, getState) => {
-    const progress = Math.min(getState().Video.duration, Math.max(0, getState().Video.progress + seconds));
-
-    player.seekTo(progress);
-    dispatch(videoProgress(progress));
-    dispatch(videoSeeking(true));
-    clearTimeout(videoSeekTimeout);
-    videoSeekTimeout = setTimeout(() => dispatch(videoSeeking(false)), 200);
-  });
-}
-
-export function videoMuteToggle() {
-  return withPlayer((player, dispatch, getState) => {
-    const muted = getState().Video.player.isMuted();
-
-    if (muted) {
-      player.unMute();
-    } else {
-      player.mute();
-    }
-
-    dispatch(videoMuted(!muted));
-  });
-}
+      dispatch(Actions.muted(!muted));
+    });
+  },
+};
 
 const initialState = {
   tracks: [],
@@ -208,56 +193,56 @@ const initialState = {
 };
 
 export default handleActions({
-  [authLogoutActions.complete]: (state, action) => initialState, // Reset to inital state on logout
-  [videoInit]: (state, action) => ({
+  [AuthActions.logoutActions.complete]: (state, action) => initialState, // Reset to inital state on logout
+  [Actions.init]: (state, action) => ({
     ...state,
     player: action.payload,
     state: "init",
   }),
-  [videoTracksIndex]: (state, action) => ({
+  [Actions.tracksIndex]: (state, action) => ({
     ...state,
     tracksIndex: action.payload,
   }),
-  [videoPlaylist]: (state, action) => ({
+  [Actions.playlist]: (state, action) => ({
     ...state,
     tracksIndex: action.payload.index,
     tracks: action.payload.playlist.tracks,
     playlistId: action.payload.playlist.id,
   }),
-  [searchActions.complete]: (state, action) => ({
+  [SearchActions.searchActions.complete]: (state, action) => ({
     ...state,
     playlistId: null,
   }),
-  [videoDuration]: (state, action) => ({
+  [Actions.duration]: (state, action) => ({
     ...state,
     duration: action.payload,
   }),
-  [videoState]: (state, action) => ({
+  [Actions.state]: (state, action) => ({
     ...state,
     state: action.payload,
   }),
-  [videoProgress]: (state, action) => ({
+  [Actions.progress]: (state, action) => ({
     ...state,
     progress: action.payload,
   }),
-  [videoMuted]: (state, action) => ({
+  [Actions.muted]: (state, action) => ({
     ...state,
     muted: action.payload,
   }),
-  [videoVolume]: (state, action) => ({
+  [Actions.volume]: (state, action) => ({
     ...state,
     volume: action.payload,
   }),
-  [videoPopup]: (state, action) => ({
+  [Actions.popup]: (state, action) => ({
     ...state,
     popup: action.payload,
   }),
-  [videoError]: (state, action) => ({
+  [Actions.error]: (state, action) => ({
     ...state,
     error: action.payload,
     state: "error",
   }),
-  [videoSeeking]: (state, action) => ({
+  [Actions.seeking]: (state, action) => ({
     ...state,
     seeking: action.payload,
   }),

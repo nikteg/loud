@@ -3,8 +3,8 @@ import { connect } from "react-redux";
 import { Link } from "react-router";
 import cx from "classnames";
 
-import { playlistCreate, playlistRemove, playlistRename } from "../../reducers/Playlist";
-import { notificationShow } from "../../reducers/Notification";
+import { Actions as PlaylistActions } from "../../reducers/Playlist";
+import { Actions as NotificationActions } from "../../reducers/Notification";
 
 import * as Icons from "../Icons";
 import Dropdown from "../Dropdown";
@@ -20,7 +20,7 @@ const Playlist = (props) => (
       icon={<Icons.Down />}
       onChoose={data => {
         if (data === "remove") {
-          return props.playlistRemove(props.list.id);
+          return props.remove(props.list.id);
         }
 
         if (data === "rename") {
@@ -94,7 +94,7 @@ class Playlists extends React.Component {
     e.preventDefault();
 
     const name = document.getElementById("playlist-rename").value;
-    this.props.playlistCreate(name);
+    this.props.create(name);
     this.resetInput();
   }
 
@@ -109,7 +109,7 @@ class Playlists extends React.Component {
     e.preventDefault();
 
     const name = document.getElementById("playlist-rename").value;
-    this.props.playlistRename(this.state.renamePlaylist.id, name);
+    this.props.rename(this.state.renamePlaylist.id, name);
     this.resetInput();
   }
 
@@ -154,7 +154,7 @@ class Playlists extends React.Component {
                 key={i}
                 list={list}
                 active={+this.props.playlistId === list.id}
-                playlistRemove={this.props.playlistRemove}
+                playlistRemove={this.props.remove}
                 notificationShow={this.props.notificationShow}
                 onRename={this.onRename(list)}
                 currentlyPlaying={this.props.currentPlaylistId === list.id}
@@ -172,4 +172,9 @@ export default connect(state => ({
   loading: state.Playlist.playlistsLoading,
   playlists: state.Playlist.playlists,
   currentPlaylistId: state.Video.playlistId,
-}), { playlistCreate, playlistRemove, playlistRename, notificationShow })(Playlists);
+}), {
+  create: PlaylistActions.create,
+  remove: PlaylistActions.remove,
+  rename: PlaylistActions.rename,
+  notificationShow: NotificationActions.show,
+})(Playlists);

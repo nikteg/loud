@@ -4,7 +4,7 @@ import Slider from "rc-slider";
 
 import { formatTime } from "../../lib/utils";
 
-import { videoSeekTo, videoProgress, videoSeekingStart } from "../../reducers/Video";
+import { Actions as VideoActions } from "../../reducers/Video";
 
 export const CurrentTime = connect(state => ({
   progress: ["init", null].includes(state.Video.state) ? "---:---" : formatTime(state.Video.progress),
@@ -25,7 +25,7 @@ export default connect(state => ({
   className: "Controls-info-progress-bar",
   tipFormatter: null,
 }), {
-  onAfterChange: videoSeekTo,
-  onChange: videoProgress,
-  onBeforeChange: videoSeekingStart,
+  onAfterChange: VideoActions.seekTo,
+  onChange: VideoActions.progress,
+  onBeforeChange: VideoActions.seekingStart,
 })(Slider);

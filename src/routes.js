@@ -10,8 +10,8 @@ import Search from "./pages/Search";
 import Browse from "./pages/Browse";
 import Queue from "./pages/Queue";
 
-import { browseLoad } from "./reducers/Browse";
-import { searchQuery } from "./reducers/Search";
+import { Actions as BrowseActions } from "./reducers/Browse";
+import { Actions as SearchActions } from "./reducers/Search";
 
 /* eslint-disable no-unused-vars */
 function onRequireAuthenticated(store, nextState, replace) {
@@ -46,11 +46,11 @@ function onSearchRouteChange(store, nextState, prevState) {
     return;
   }
 
-  store.dispatch(searchQuery(query));
+  store.dispatch(SearchActions.search(query));
 }
 
 function onBrowseRouteEnter(store) {
-  store.dispatch(browseLoad());
+  store.dispatch(BrowseActions.load());
 }
 
 export default function routes(store) {

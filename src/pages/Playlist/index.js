@@ -1,8 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { playlistLoad } from "../../reducers/Playlist";
-import { videoLoadPlaylist } from "../../reducers/Video";
+import { Actions as PlaylistActions } from "../../reducers/Playlist";
+import { Actions as VideoActions } from "../../reducers/Video";
 import List from "../../components/List";
 
 import "./style.styl";
@@ -16,17 +16,17 @@ class Playlist extends React.Component {
   }
 
   componentWillMount() {
-    this.props.playlistLoad(+this.props.params.playlistId);
+    this.props.load(+this.props.params.playlistId);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.playlistId !== this.props.params.playlistId) {
-      this.props.playlistLoad(+nextProps.params.playlistId);
+      this.props.load(+nextProps.params.playlistId);
     }
   }
 
   onPlay(index) {
-    this.props.videoLoadPlaylist(this.props.playlist, index);
+    this.props.playPlaylist(this.props.playlist, index);
   }
 
   render() {
@@ -51,4 +51,7 @@ export default connect(state => ({
   loading: state.Playlist.playlistLoading,
   playlist: state.Playlist.playlist,
   playlistId: state.Video.playlistId,
-}), { playlistLoad, videoLoadPlaylist })(Playlist);
+}), {
+  load: PlaylistActions.load,
+  playPlaylist: VideoActions.playPlaylist,
+})(Playlist);

@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { videoLoadPlaylist } from "../../reducers/Video";
+import { Actions as VideoActions } from "../../reducers/Video";
 import { ListItem } from "../../components/List";
 
 import "./style.styl";
@@ -17,7 +17,7 @@ class Queue extends React.Component {
   onPlay(index) {
     return e => {
       e.preventDefault();
-      this.props.videoLoadPlaylist({ id: this.props.playlistId }, index);
+      this.props.playPlaylist({ id: this.props.playlistId }, index);
     };
   }
 
@@ -45,4 +45,4 @@ export default connect(state => ({
   tracks: state.Video.tracks.slice(state.Video.tracksIndex),
   tracksIndex: state.Video.tracksIndex,
   playlistId: state.Video.playlistId,
-}), { videoLoadPlaylist })(Queue);
+}), { playPlaylist: VideoActions.playPlaylist })(Queue);

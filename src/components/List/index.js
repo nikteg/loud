@@ -4,8 +4,8 @@ import { Link } from "react-router";
 import cx from "classnames";
 import bindClosures from "react-bind-closures";
 
-import { playlistTrackAdd, playlistTrackRemove, playlistCreate } from "../../reducers/Playlist";
-import { notificationShow } from "../../reducers/Notification";
+import { Actions as PlaylistActions } from "../../reducers/Playlist";
+import { Actions as NotificationActions } from "../../reducers/Notification";
 
 import { formatTime, trackSlug } from "../../lib/utils";
 import * as Icons from "../../components/Icons";
@@ -18,10 +18,10 @@ export const ListItem = connect((state) => ({
   isPlaying: state.Video.state === "play",
   index: state.Video.tracksIndex,
 }), {
-  playlistTrackAdd,
-  playlistTrackRemove,
-  notificationShow,
-  playlistCreate,
+  trackAdd: PlaylistActions.trackAdd,
+  trackRemove: PlaylistActions.trackRemove,
+  create: PlaylistActions.create,
+  notificationShow: NotificationActions.show,
 }, (stateProps, dispatchProps, ownProps) => ({
   ...dispatchProps,
   ...ownProps,
@@ -48,14 +48,14 @@ export const ListItem = connect((state) => ({
   },
   onDropdownPlaylistsChoose(props, id) {
     if (id) {
-      return props.playlistTrackAdd(id, props.track);
+      return props.trackAdd(id, props.track);
     }
 
-    props.playlistCreate(`${props.track.artist} - ${props.track.name}`, [props.track]);
+    props.create(`${props.track.artist} - ${props.track.name}`, [props.track]);
   },
   onDropdownActionsChoose(props, data) {
     if (data) {
-      return props.playlistTrackRemove(props.playlist.id, data);
+      return props.trackRemove(props.playlist.id, data);
     }
 
     props.notificationShow("Not implemented yet");
