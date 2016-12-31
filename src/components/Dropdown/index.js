@@ -1,8 +1,5 @@
 import React from "react";
-import { connect } from "react-redux";
 import cx from "classnames";
-
-import { noScrollSetCallback } from "../../reducers/NoScroll";
 
 import "./style.styl";
 
@@ -34,7 +31,6 @@ class Dropdown extends React.Component {
     e.preventDefault();
 
     if (this.state.show) {
-      this.props.noScrollSetCallback();
       this.setState({ show: false });
     } else {
       const { top, bottom, left, right } = this.dropdownButtonEl.getBoundingClientRect();
@@ -57,10 +53,6 @@ class Dropdown extends React.Component {
 
       const anchor = `${anchorVertical}-${anchorHorizontal}`;
 
-      this.props.noScrollSetCallback(() => {
-        this.setState({ show: false });
-      });
-
       this.setState({ show: true, anchor, position });
     }
   }
@@ -77,18 +69,21 @@ class Dropdown extends React.Component {
       <div className={cx("Dropdown", this.state.anchor, { "active": this.state.show })}>
         <a className="Dropdown-button" onClick={this.onClick}
           ref={node => this.dropdownButtonEl = node}>{this.props.icon}</a>
-        {this.state.show && <ul style={this.state.position}>
-          {this.props.items.map((item, i) => {
-            if (item) {
-              return <li key={i}><a onClick={this.onChoose(item.data)}>{item.name}</a></li>;
-            }
+        {this.state.show && <div>
+          <div className="Dropdown-overlay" onClick={this.onClick} onTouchMove={(e) => e.preventDefault()} />
+          <ul style={this.state.position}>
+            {this.props.items.map((item, i) => {
+              if (item) {
+                return <li key={i}><a onClick={this.onChoose(item.data)}>{item.name}</a></li>;
+              }
 
-            return <li key={i} className="seperator" />;
-          })}
-        </ul>}
+              return <li key={i} className="seperator" />;
+            })}
+          </ul>
+        </div>}
       </div>
     );
   }
 }
 
-export default connect(undefined, { noScrollSetCallback })(Dropdown);
+export default Dropdown;
