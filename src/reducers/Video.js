@@ -1,4 +1,5 @@
 import { createAction, handleActions } from "redux-actions";
+import { createSelector } from "reselect";
 
 import { Actions as AuthActions } from "./Auth";
 import { Actions as SearchActions } from "./Search";
@@ -13,6 +14,13 @@ function withPlayer(fn) {
 }
 
 let seekTimeout;
+
+export const Selectors = {
+  queuedTracks: createSelector([
+    (state) => state.Video.tracks,
+    (state) => state.Video.tracksIndex,
+  ], (tracks, index) => tracks.slice(index)),
+};
 
 export const Actions = {
   init: createAction("VIDEO_INIT", player => player),
