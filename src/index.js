@@ -11,7 +11,7 @@ import routes from "./routes";
 
 import { Actions as VideoActions } from "./reducers/Video";
 
-import { authToken, authUnauthenticated } from "./reducers/Auth";
+import { Actions as AuthActions } from "./reducers/Auth";
 
 import "normalize.css";
 import "./style/global.styl";
@@ -29,12 +29,12 @@ if (localStorage.getItem("token") != null) {
 
   try {
     const { id, username } = decode(token);
-    store.dispatch(authToken({ id, username, token }));
+    store.dispatch(AuthActions.token({ id, username, token }));
   } catch (err) {
     localStorage.removeItem("token");
     console.error("Could not decode token", token);
     console.error(err);
-    store.dispatch(authUnauthenticated());
+    store.dispatch(AuthActions.unauthenticated());
   }
 }
 

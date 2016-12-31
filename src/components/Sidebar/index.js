@@ -49,7 +49,7 @@ const Sidebar = bindClosures({
           }
 
           if (data === "logout") {
-            return props.authLogout();
+            return props.logout();
           }
 
           props.notificationShow("Not implemented yet");
