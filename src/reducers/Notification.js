@@ -9,7 +9,7 @@ export const Actions = {
 
       setTimeout(() => dispatch(Actions.dismiss()), 5000); // Dismiss error after 5 seconds
     };
-  }
+  },
 };
 
 export default handleActions({

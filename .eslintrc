@@ -16,7 +16,8 @@
     "no-param-reassign": [1, { "props": false }],
     "new-cap": 0,
     "react/prefer-stateless-function": [1],
-    "semi": [1, "always"]
+    "semi": [1, "always"],
+    "comma-dangle": [1, "always-multiline"]
   },
   "globals": {
     "API_URL": false

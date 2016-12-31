@@ -10,7 +10,7 @@ import "./style.styl";
 const Browse = bindClosures({
   onPlay(props, index) {
     props.playPlaylist({ id: "browse", tracks: props.tracks }, index);
-  }
+  },
 })((props) => (
   <div className="Browse page">
     <div className="Browse-title header-title">Browse</div>

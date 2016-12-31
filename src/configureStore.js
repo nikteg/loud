@@ -18,7 +18,7 @@ const translation = translator({
   [SearchActions.searchActions.error]: a => [NotificationActions.show(`Search error. ${a.payload}.`)],
   [AuthActions.unauthenticated]: [replace(`/login?redirect=${window.location.pathname}`),
     NotificationActions.show("Unauthenticated. Please login again.")],
-  [VideoActions.error]: a => [NotificationActions.show(`Video error. Code: ${a.payload}`)]
+  [VideoActions.error]: a => [NotificationActions.show(`Video error. Code: ${a.payload}`)],
 });
 
 export default function configureStore(initialState) {
