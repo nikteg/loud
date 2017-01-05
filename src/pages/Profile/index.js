@@ -8,12 +8,12 @@ import "./style.styl";
 
 class Profile extends React.Component {
   componentWillMount() {
-    this.props.userLoad(this.props.params.username);
+    this.props.load(this.props.params.username);
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.params.username !== this.props.params.username) {
-      this.props.userLoad(nextProps.params.username);
+      this.props.load(nextProps.params.username);
     }
   }
 
