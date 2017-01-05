@@ -30,14 +30,18 @@ window.redux = store;
 if (localStorage.getItem("token") != null) {
   const token = localStorage.getItem("token");
 
+  let id, username;
+
   try {
-    const { id, username } = decode(token);
-    store.dispatch(AuthActions.token({ id, username, token }));
+    ({ id, username } = decode(token));
   } catch (err) {
     localStorage.removeItem("token");
-    console.error("Could not decode token", token);
-    console.error(err);
+    console.error("Could not decode token", token, err);
     store.dispatch(AuthActions.unauthenticated());
+  } finally {
+    if (id && username) {
+      store.dispatch(AuthActions.token({ id, username, token }));
+    }
   }
 }
 
