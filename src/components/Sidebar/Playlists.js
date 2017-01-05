@@ -154,7 +154,7 @@ class Playlists extends React.Component {
                 key={i}
                 list={list}
                 active={+this.props.playlistId === list.id}
-                playlistRemove={this.props.remove}
+                remove={this.props.remove}
                 notificationShow={this.props.notificationShow}
                 onRename={this.onRename(list)}
                 currentlyPlaying={this.props.currentPlaylistId === list.id}
