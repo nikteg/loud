@@ -14,7 +14,7 @@ import Browse from "./Browse";
 export const titleSelector = createSelector([
   (state) => state.Video.state === "play",
   (state) => state.Video.tracks[state.Video.tracksIndex],
-  (state) => state.routing.locationBeforeTransitions.pathname,
+  (state) => state.routing.locationBeforeTransitions.pathname || "",
   (state) => state.Track.track,
   (state) => state.User.user,
   (state) => state.Playlist.playlist,
@@ -37,6 +37,10 @@ export const titleSelector = createSelector([
 
   if (pathname.startsWith("/queue")) {
     return "Queue";
+  }
+
+  if (pathname.startsWith("/login")) {
+    return "Login";
   }
 
   if (pathname === "/") {
