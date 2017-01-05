@@ -12,11 +12,14 @@ import routes from "./routes";
 import { Actions as VideoActions } from "./reducers/Video";
 
 import { Actions as AuthActions } from "./reducers/Auth";
+import { titleSelector } from "./reducers";
 
 import "normalize.css";
 import "./style/global.styl";
 
 const store = configureStore({});
+
+store.subscribe(() => document.title = titleSelector(store.getState()));
 
 setApiStore(store);
 
