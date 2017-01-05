@@ -2,10 +2,10 @@ language: node_js
 node_js:
   - 6
 script:
-  - yarn run build:remote
+  - npm run build:remote
 install:
-  - yarn install
-  - yarn global add firebase-tools
+  - npm install
+  - npm install -g firebase-tools
 after_success:
   - firebase deploy --token ${FIREBASE_TOKEN}
 notifications:
