@@ -59,7 +59,7 @@ class Login extends React.Component {
           {this.props.error && <div className="Login-form-status error">{this.props.error}</div>}
           {this.props.loading && <div className="Login-form-status">Loading...</div>}
           <div className="Login-form-or">or</div>
-          <Link to="/search">Take a look as guest...</Link>
+          <Link to="/">Take a look as guest...</Link>
         </form>
       </div>
     );
