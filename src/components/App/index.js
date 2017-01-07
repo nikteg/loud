@@ -4,6 +4,7 @@ import Sidebar from "../Sidebar";
 import Player from "../Player";
 import Video from "../Video";
 import Notifications from "../Notifications";
+import LoginPopup from "../LoginPopup";
 
 import "./style.styl";
 
@@ -12,6 +13,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
+        <LoginPopup />
         <Video />
         <div className="App-wrapper">
           <Notifications />

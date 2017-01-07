@@ -8,7 +8,7 @@ import YouTube from "react-youtube";
 import "./style.styl";
 
 export const Video = (props) => (
-  <div className={cx("Video", { none: !props.show })}>
+  <div className={cx("Video", { "none": !props.show })}>
     <div className="Video-content">
       <YouTube
         opts={{

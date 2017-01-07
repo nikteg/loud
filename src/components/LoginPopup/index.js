@@ -1,14 +1,11 @@
 import React from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router";
 
 import { Actions as AuthActions } from "../../reducers/Auth";
 
-import Notifications from "../../components/Notifications";
-
 import "./style.styl";
 
-class Login extends React.Component {
+class Form extends React.Component {
 
   constructor(props) {
     super(props);
@@ -37,36 +34,31 @@ class Login extends React.Component {
 
   render() {
     return (
-      <div className="Login">
-        <Notifications />
-        <form className="Login-form" onSubmit={this.onLogin}>
-          <div className="Login-form-title">Loud<em>Music</em><sub>Beta</sub></div>
+      <div className="LoginForm">
+        <form className="LoginForm-form" onSubmit={this.onLogin}>
+          <div className="LoginForm-form-title">Loud<em>Music</em><sub>Beta</sub></div>
           <input
             type="text"
             placeholder="Username"
             defaultValue={this.props.username}
-            ref={node => (this.username = node)}
-          />
+            ref={node => (this.username = node)} />
           <input
             type="password"
             placeholder="Password"
-            ref={node => (this.password = node)}
-          />
+            ref={node => (this.password = node)} />
           <div className="buttons">
             <button type="submit">Login</button>
             <button onClick={this.onRegister}>Register</button>
           </div>
-          {this.props.error && <div className="Login-form-status error">{this.props.error}</div>}
-          {this.props.loading && <div className="Login-form-status">Loading...</div>}
-          <div className="Login-form-or">or</div>
-          <Link to="/">Take a look as guest...</Link>
+          {this.props.error && <div className="LoginForm-form-status error">{this.props.error}</div>}
+          {this.props.loading && <div className="LoginForm-form-status">Loading...</div>}
         </form>
       </div>
     );
   }
 }
 
-export default connect(state => ({
+const LoginForm = connect(state => ({
   error: state.Auth.error,
   loading: state.Auth.loading,
   loggedIn: state.Auth.token != null,
@@ -74,4 +66,17 @@ export default connect(state => ({
 }), {
   login: AuthActions.login,
   register: AuthActions.register,
-})(Login);
+})(Form);
+
+const LoginPopup = connect(state => ({
+  popup: state.Auth.popup,
+}), {
+  dismiss: () => AuthActions.popup(false),
+})((props) => (
+  props.popup && <div className="LoginPopup">
+    <div className="LoginPopup-overlay" onClick={props.dismiss} />
+    <LoginForm />
+  </div>
+));
+
+export default LoginPopup;

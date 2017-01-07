@@ -1,5 +1,5 @@
 import { applyMiddleware, compose, createStore } from "redux";
-import { replace, routerMiddleware } from "react-router-redux";
+import { push, routerMiddleware } from "react-router-redux";
 import { browserHistory } from "react-router";
 import thunk from "redux-thunk";
 import translator from "redux-action-translator";
@@ -12,12 +12,10 @@ import { Actions as NotificationActions } from "./reducers/Notification";
 import { Actions as SearchActions } from "./reducers/Search";
 
 const translation = translator({
-  [AuthActions.loginActions.complete]: [replace("/"), PlaylistActions.loadAll()],
+  [AuthActions.loginActions.complete]: [push("/"), PlaylistActions.loadAll()],
   [AuthActions.token]: [PlaylistActions.loadAll()],
-  [AuthActions.logoutActions.complete]: [replace("/login")],
+  [AuthActions.logoutActions.complete]: [push("/"), VideoActions.stop()],
   [SearchActions.searchActions.error]: a => [NotificationActions.show(`Search error. ${a.payload}.`)],
-  [AuthActions.unauthenticated]: [replace(`/login?redirect=${window.location.pathname}`),
-    NotificationActions.show("Unauthenticated. Please login again.")],
   [VideoActions.error]: a => [NotificationActions.show(`Video error. Code: ${a.payload}`)],
 });
 

@@ -4,7 +4,6 @@ import { Route, IndexRoute } from "react-router";
 import App from "./components/App";
 import Track from "./pages/Track";
 import Playlist from "./pages/Playlist";
-import Login from "./pages/Login";
 import Profile from "./pages/Profile";
 import Search from "./pages/Search";
 import Browse from "./pages/Browse";
@@ -19,13 +18,13 @@ function onRequireAuthenticated(store, nextState, replace) {
     replace(`/login?redirect=${nextState.location.pathname}`);
   }
 }
-/* eslint-enable no-unused-vars */
 
 function onRequireUnauthenticated(store, nextState, replace) {
   if (store.getState().Auth.token) {
     replace("/");
   }
 }
+/* eslint-enable no-unused-vars */
 
 function onSearchRouteChange(store, nextState, prevState) {
   const query = nextState.location.query.q;
@@ -56,8 +55,6 @@ function onBrowseRouteEnter(store) {
 export default function routes(store) {
   return (
     <Route>
-      <Route path="/login" component={Login}
-        onEnter={(nextState, replace) => onRequireUnauthenticated(store, nextState, replace)} />
       <Route path="/" component={App}>
         <IndexRoute component={Browse}
           onEnter={() => onBrowseRouteEnter(store)} />

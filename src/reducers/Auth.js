@@ -9,6 +9,7 @@ export const Actions = {
   logoutActions: createNetworkAction("AUTH_LOGOUT"),
   token: createAction("AUTH_TOKEN", token => token),
   unauthenticated: createAction("AUTH_UNAUTHENTICATED"),
+  popup: createAction("AUTH_POPUP", show => show),
   register(loginUsername, password) {
     return (dispatch, getState) => {
       dispatch(Actions.loginActions.start());
@@ -60,10 +61,12 @@ export default handleActions({
   [Actions.loginActions.complete]: (state, action) => ({
     ...state,
     ...action.payload,
+    popup: false,
   }),
   [Actions.token]: (state, action) => ({
     ...state,
     ...action.payload,
+    popup: false,
   }),
   [Actions.loginActions.error]: (state, action) => ({
     ...state,
@@ -83,6 +86,14 @@ export default handleActions({
     token: null,
     loading: false,
     error: null,
+    popup: true,
+  }),
+  [Actions.popup]: (state, action) => ({
+    ...state,
+    popup: action.payload,
+    token: null,
+    loading: false,
+    error: null,
   }),
 }, {
   id: 0,
@@ -90,4 +101,5 @@ export default handleActions({
   loading: false,
   token: null,
   error: null,
+  popup: false,
 });

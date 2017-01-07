@@ -1,15 +1,30 @@
 @require "../../style/variables"
 @require "../../style/inputs"
 
-.Login
+.LoginPopup {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 12;
+  padding-top: 8rem;
   display: flex;
-  align-items: center;
   justify-content: center;
-  flex-direction: column;
-  height: 100%;
-  background: login-background-color;
+  align-items: flex-start;
+}
 
-.Login-form
+.LoginPopup-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.LoginForm-form
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 320px;
@@ -32,7 +47,7 @@
     margin: 8px;
     flex: 1;
 
-.Login-form-title
+.LoginForm-form-title
   text-align: center;
   font-size: 2rem;
   padding: 16px;
@@ -46,7 +61,7 @@
     color: #c5c1c0;
     font-size: 1rem;
 
-.Login-form-status
+.LoginForm-form-status
   text-align: center;
   margin: 8px;
   border: 1px solid #fff;
@@ -57,7 +72,7 @@
     border-color: accent-color;
     color: accent-color;
 
-.Login-form-or
+.LoginForm-form-or
   align-items: center;
   display: flex;
   margin: 8px 0;

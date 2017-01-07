@@ -27,10 +27,15 @@ const Sidebar = bindClosures({
       props.push(`/search?q=${query}`);
     }
   },
+  onLoginClick(props, e) {
+    e.preventDefault();
+
+    props.showLoginPopup();
+  },
 })(props => (
   <div className="Sidebar">
     {!props.loggedIn && <div className="Sidebar-profile">
-      <Link className="Sidebar-profile-login" to="/login">Login / Register</Link>
+      <a className="Sidebar-profile-login" onClick={props.onLoginClick}>Login / Register</a>
     </div>}
     {props.loggedIn && <div className="Sidebar-profile">
       <Link className="Sidebar-profile-avatar" to={`/profile/${props.username}`} />
@@ -90,4 +95,5 @@ export default connect(state => ({
   push,
   logout: AuthActions.logout,
   notificationShow: NotificationActions.show,
+  showLoginPopup: () => AuthActions.popup(true),
 })(Sidebar);

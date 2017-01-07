@@ -1,7 +1,6 @@
 import { createAction, handleActions } from "redux-actions";
 import { createSelector } from "reselect";
 
-import { Actions as AuthActions } from "./Auth";
 import { Actions as SearchActions } from "./Search";
 
 // Helper function
@@ -9,7 +8,9 @@ function withPlayer(fn) {
   return (dispatch, getState) => {
     const { Video: { player } } = getState();
 
-    return fn(player, dispatch, getState);
+    if (player) {
+      fn(player, dispatch, getState);
+    }
   };
 }
 
@@ -60,6 +61,7 @@ export const Actions = {
   seeking: createAction("VIDEO_SEEKING", seeking => seeking),
   tracksIndex: createAction("VIDEO_TRACKS_INDEX", index => index),
   playlist: createAction("VIDEO_PLAYLIST", (playlist, index) => ({ playlist, index })),
+  reset: createAction("VIDEO_RESET"),
   seekingStart() {
     return Actions.seeking(true);
   },
@@ -90,6 +92,17 @@ export const Actions = {
         player.playVideo();
       }
     });
+  },
+  stop() {
+    return (dispatch, getState) => {
+      const { Video: { player } } = getState();
+
+      if (player) {
+        player.stopVideo();
+      }
+
+      dispatch(Actions.reset());
+    };
   },
   playPlaylist(playlist, index = 0) {
     return withPlayer((player, dispatch, getState) => {
@@ -230,7 +243,10 @@ const initialState = {
 };
 
 export default handleActions({
-  [AuthActions.logoutActions.complete]: (state, action) => initialState, // Reset to inital state on logout
+  [Actions.reset]: (state, action) => ({
+    ...state,
+    ...initialState,
+  }),
   [Actions.init]: (state, action) => ({
     ...state,
     player: action.payload,
