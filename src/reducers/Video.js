@@ -22,6 +22,32 @@ export const Selectors = {
   ], (tracks, index) => tracks.slice(index)),
 };
 
+class RunContiniously {
+
+  constructor(interval) {
+    this.interval = interval;
+    this.runInner = this.runInner.bind(this);
+  }
+
+  run(fn, predicateFn) {
+    this.fn = fn;
+    this.predicateFn = predicateFn;
+
+    clearTimeout(this.timeout);
+
+    this.runInner();
+  }
+
+  runInner() {
+    if (this.predicateFn()) {
+      this.fn();
+      this.timeout = setTimeout(this.runInner, this.interval);
+    }
+  }
+}
+
+let runner = new RunContiniously(500);
+
 export const Actions = {
   init: createAction("VIDEO_INIT", player => player),
   state: createAction("VIDEO_STATE", state => state),
@@ -113,7 +139,7 @@ export const Actions = {
   },
   progressTick() {
     return withPlayer((player, dispatch, getState) => {
-      if (!getState().Video.seeking && getState().Video.state === "play") {
+      if (!getState().Video.seeking) {
         dispatch(Actions.progress(player.getCurrentTime()));
       }
     });
@@ -128,6 +154,9 @@ export const Actions = {
       if (getState().Video.duration !== duration) {
         dispatch(Actions.duration(duration));
       }
+
+      runner.run(() => dispatch(Actions.progressTick()),
+        () => getState().Video.state === "play");
     });
   },
   statePause() {
