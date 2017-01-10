@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import cx from "classnames";
 
 import * as Icons from "../../components/Icons";
-import Dropdown from "../../components/Dropdown";
+import { TrackAddDropdown, TrackActionDropdown } from "../../components/Dropdown/TrackDropdown";
 
 import "./style.styl";
 
@@ -20,13 +20,10 @@ export const ThumbnailSide = connect(state => ({
   </div> : <div />
 ));
 
-export const ThumbnailWithControls = connect(state => ({
-  isPlaying: state.Video.state === "play",
-  track: state.Video.tracks[state.Video.tracksIndex],
-}), {}, (stateProps, dispatchProps, ownProps) => ({
-  ...dispatchProps,
-  ...ownProps,
-  isPlaying: stateProps.isPlaying && stateProps.track && ownProps.track.id === stateProps.track.id,
+export const ThumbnailWithControls = connect((state, ownProps) => ({
+  isPlaying: (state.Video.state === "play" &&
+    state.Video.tracks[state.Video.tracksIndex] &&
+    ownProps.track.id === state.Video.tracks[state.Video.tracksIndex].id),
 }))((props) => (
   <div className={cx("Track Thumbnail", { "playing": props.isPlaying })}>
     <div className="Thumbnail-image"
@@ -39,9 +36,9 @@ export const ThumbnailWithControls = connect(state => ({
     </div>
     <div className="Thumbnail-controls">
       <div className="Thumbnail-title" title={props.track.name}>{props.track.name}</div>
-      <Dropdown icon={<Icons.Plus />} items={[{ name: "Nothing here yet" }]} onChoose={function () {}} />
-      <Dropdown icon={<Icons.Down />} items={[{ name: "Nothing here yet" }]} onChoose={function () {}} />
-    </div>
+        <TrackAddDropdown track={props.track} />
+        <TrackActionDropdown track={props.track} />
+      </div>
     <div className="Thumbnail-artist" title={props.track.artist}>{props.track.artist}</div>
   </div>
 ));

@@ -2,14 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router";
 import cx from "classnames";
-import bindClosures from "react-bind-closures";
 
 import { Actions as PlaylistActions } from "../../reducers/Playlist";
 import { Actions as NotificationActions } from "../../reducers/Notification";
 
 import { formatTime, trackSlug } from "../../lib/utils";
 import * as Icons from "../../components/Icons";
-import Dropdown from "../../components/Dropdown";
+import { TrackAddDropdown, TrackActionDropdown } from "../../components/Dropdown/TrackDropdown";
 
 import "./style.styl";
 
@@ -27,40 +26,7 @@ export const ListItem = connect((state) => ({
   ...ownProps,
   isPlaying: stateProps.isPlaying && ownProps.index === stateProps.index && ownProps.isInCurrentPlaylist,
   playlists: stateProps.playlists,
-}))(bindClosures({
-  dropdownPlaylists(props) {
-    const add = { name: "Add to new playlist..." };
-
-    if (props.playlists.length > 0) {
-      return [add, null, ...props.playlists.map(l => ({ name: <span><Icons.Music />{l.name}</span>, data: l.id }))];
-    }
-
-    return [add];
-  },
-  dropdownActions(props) {
-    const add = { name: "Add to queue..." };
-
-    if (props.playlist) {
-      return [add, null, { name: "Remove from playlist", data: props.track }];
-    }
-
-    return [add];
-  },
-  onDropdownPlaylistsChoose(props, id) {
-    if (id) {
-      return props.trackAdd(id, props.track);
-    }
-
-    props.create(`${props.track.artist} - ${props.track.name}`, [props.track]);
-  },
-  onDropdownActionsChoose(props, data) {
-    if (data) {
-      return props.trackRemove(props.playlist.id, data);
-    }
-
-    props.notificationShow("Not implemented yet");
-  },
-})(props => (
+}))((props) => (
   <li className={cx("ListItem", { active: props.isPlaying })}>
     <label>
       <input className="ListItem-checkbox" type="checkbox" />
@@ -70,12 +36,12 @@ export const ListItem = connect((state) => ({
       <div className="ListItem-title name">{props.track.name}</div>
       <div className="ListItem-title artist">{props.track.artist}</div>
       <div>{formatTime(props.track.duration)}</div>
-      <Dropdown icon={<Icons.Plus />} onChoose={props.onDropdownPlaylistsChoose} items={props.dropdownPlaylists()} />
-      <Dropdown icon={<Icons.Down />} onChoose={props.onDropdownActionsChoose} items={props.dropdownActions()} />
+      <TrackAddDropdown track={props.track} />
+      <TrackActionDropdown track={props.track} />
       <Link className="ListItem-share" to={`/track/${props.track.id}/${trackSlug(props.track)}`}><Icons.Share /></Link>
     </label>
   </li>
-)));
+));
 
 const List = (props) => (
   <ul className="List">
