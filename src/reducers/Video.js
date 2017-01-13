@@ -62,6 +62,16 @@ export const Actions = {
   tracksIndex: createAction("VIDEO_TRACKS_INDEX", index => index),
   playlist: createAction("VIDEO_PLAYLIST", (playlist, index) => ({ playlist, index })),
   reset: createAction("VIDEO_RESET"),
+  ready(player) {
+    return (dispatch, getState) => {
+      dispatch(Actions.init(player));
+
+      if (localStorage.getItem("volume") != null) {
+        dispatch(Actions.volumeSet(+localStorage.getItem("volume")));
+      }
+
+    };
+  },
   seekingStart() {
     return Actions.seeking(true);
   },
@@ -75,6 +85,8 @@ export const Actions = {
 
       player.setVolume(percentFixed);
       dispatch(Actions.volume(percentFixed));
+
+      localStorage.setItem("volume", percent);
 
       if (muted) {
         player.unMute();

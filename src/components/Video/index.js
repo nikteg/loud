@@ -20,7 +20,7 @@ export const Video = (props) => (
           },
         }}
         videoId={props.id}
-        onReady={e => props.init(e.target)}
+        onReady={e => props.ready(e.target)}
         onPlay={props.statePlay}
         onPause={props.statePause}
         onEnd={props.stateEnd}
@@ -33,7 +33,7 @@ export const Video = (props) => (
 export default connect(state => ({
   show: state.Video.popup,
 }), {
-  init: VideoActions.init,
+  ready: VideoActions.ready,
   statePlay: VideoActions.statePlay,
   statePause: VideoActions.statePause,
   stateEnd: VideoActions.stateEnd,
