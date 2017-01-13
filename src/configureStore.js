@@ -15,6 +15,8 @@ const translation = translator({
   [AuthActions.loginActions.complete]: [push("/"), PlaylistActions.loadAll()],
   [AuthActions.token]: [PlaylistActions.loadAll()],
   [AuthActions.logoutActions.complete]: [push("/"), VideoActions.stop()],
+  // [AuthActions.updatePasswordActions.complete]: [NotificationActions.show("Password successfully changed!")],
+  [AuthActions.updatePasswordActions.complete]: [NotificationActions.show("Not implemented yet!")],
   [SearchActions.searchActions.error]: a => [NotificationActions.show(`Search error. ${a.payload}.`)],
   [VideoActions.error]: a => [NotificationActions.show(`Video error. Code: ${a.payload}`)],
 });

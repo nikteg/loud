@@ -7,6 +7,7 @@ import { createNetworkAction } from "../lib/utils";
 export const Actions = {
   loginActions: createNetworkAction("AUTH_LOGIN"),
   logoutActions: createNetworkAction("AUTH_LOGOUT"),
+  updatePasswordActions: createNetworkAction("AUTH_UPDATE_PASSWORD"),
   token: createAction("AUTH_TOKEN", token => token),
   unauthenticated: createAction("AUTH_UNAUTHENTICATED"),
   popup: createAction("AUTH_POPUP", show => show),
@@ -48,6 +49,14 @@ export const Actions = {
           localStorage.removeItem("token");
           dispatch(Actions.logoutActions.complete());
         });
+    };
+  },
+  updatePassword(oldPassword, newPassword) {
+    return (dispatch, getState) => {
+      dispatch(Actions.updatePasswordActions.start());
+      Api.updatePassword(getState().Auth.token, oldPassword, newPassword)
+        .then(() => dispatch(Actions.updatePasswordActions.complete()))
+        .catch(err => dispatch(Actions.updatePasswordActions.error(err.message)));
     };
   },
 };

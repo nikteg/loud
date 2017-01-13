@@ -45,22 +45,23 @@ export function request(route, token, method, params) {
   });
 }
 
-export function requestWithoutToken(route, method, params) {
-  return request(route, null, method, params);
-}
-
 // Auth
 
 export function register(username, password) {
-  return requestWithoutToken("/auth/register", "POST", { username, password });
+  return request("/auth/register", null, "POST", { username, password });
 }
 
 export function login(username, password) {
-  return requestWithoutToken("/auth/login", "POST", { username, password });
+  return request("/auth/login", null, "POST", { username, password });
 }
 
 export function logout(token) {
   return request("/auth/logout", token, "POST", { token });
+}
+
+export function updatePassword(token, oldPassword, newPassword) {
+  return new Promise((resolve, reject) => setTimeout(resolve, 1000));
+  // return request("/auth/password", token, "POST", { oldPassword, newPassword });
 }
 
 // Playlists

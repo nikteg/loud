@@ -47,11 +47,15 @@ const Sidebar = bindClosures({
             return props.push(`/profile/${props.username}`);
           }
 
+          if (data === "settings") {
+            return props.push("/settings");
+          }
+
           if (data === "logout") {
             return props.logout();
           }
 
-          props.notificationShow("Not implemented yet");
+          props.notificationShow("Not implemented yet"); // This isn't really needed
         }}
         items={[
           { name: <span><Icons.User />Profile</span>, data: "profile" },

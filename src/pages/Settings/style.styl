@@ -1,0 +1,20 @@
+@require "../../style/variables"
+@require "../../style/inputs"
+
+.Settings-form {
+  display: flex;
+  flex-direction: column;
+  max-width: 32em;
+
+  input, button {
+    margin: .5em;
+  }
+
+  input {
+    @extends .input;
+  }
+
+  button {
+    @extends .button;
+  }
+}

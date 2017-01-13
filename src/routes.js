@@ -5,6 +5,7 @@ import App from "./components/App";
 import Track from "./pages/Track";
 import Playlist from "./pages/Playlist";
 import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 import Search from "./pages/Search";
 import Browse from "./pages/Browse";
 import Queue from "./pages/Queue";
@@ -67,6 +68,10 @@ function onTrackRouteEnter(store, nextState) {
   store.dispatch(TrackActions.load(+nextState.params.trackId));
 }
 
+function onSettingsRouteEnter(store, nextState) {
+  console.log("Settings load");
+}
+
 export default function routes(store) {
   return (
     <Route>
@@ -79,6 +84,8 @@ export default function routes(store) {
         <Route path="/queue" component={Queue} />
         <Route path="/profile/:username" component={Profile}
           onEnter={(nextState) => onUserRouteEnter(store, nextState)} />
+        <Route path="/settings" component={Settings}
+          onEnter={(nextState) => onSettingsRouteEnter(store, nextState)} />
         <Route path="/playlist/:playlistId" component={Playlist}
           onEnter={(nextState) => onPlaylistRouteEnter(store, nextState)} />
         <Route path="/track/:trackId/(:trackSlug)" component={Track}
