@@ -11,6 +11,9 @@ import Queue from "./pages/Queue";
 
 import { Actions as BrowseActions } from "./reducers/Browse";
 import { Actions as SearchActions } from "./reducers/Search";
+import { Actions as UserActions } from "./reducers/User";
+import { Actions as PlaylistActions } from "./reducers/Playlist";
+import { Actions as TrackActions } from "./reducers/Track";
 
 /* eslint-disable no-unused-vars */
 function onRequireAuthenticated(store, nextState, replace) {
@@ -52,6 +55,18 @@ function onBrowseRouteEnter(store) {
   store.dispatch(BrowseActions.load());
 }
 
+function onUserRouteEnter(store, nextState) {
+  store.dispatch(UserActions.load(nextState.params.username));
+}
+
+function onPlaylistRouteEnter(store, nextState) {
+  store.dispatch(PlaylistActions.load(+nextState.params.playlistId));
+}
+
+function onTrackRouteEnter(store, nextState) {
+  store.dispatch(TrackActions.load(+nextState.params.trackId));
+}
+
 export default function routes(store) {
   return (
     <Route>
@@ -62,9 +77,12 @@ export default function routes(store) {
           onEnter={(nextState) => onSearchRouteChange(store, nextState)}
           onChange={(prevState, nextState) => onSearchRouteChange(store, nextState, prevState)} />
         <Route path="/queue" component={Queue} />
-        <Route path="/profile/:username" component={Profile} />
-        <Route path="/playlist/:playlistId" component={Playlist} />
-        <Route path="/track/:trackId/(:trackSlug)" component={Track} />
+        <Route path="/profile/:username" component={Profile}
+          onEnter={(nextState) => onUserRouteEnter(store, nextState)} />
+        <Route path="/playlist/:playlistId" component={Playlist}
+          onEnter={(nextState) => onPlaylistRouteEnter(store, nextState)} />
+        <Route path="/track/:trackId/(:trackSlug)" component={Track}
+          onEnter={(nextState) => onTrackRouteEnter(store, nextState)} />
       </Route>
     </Route>
   );

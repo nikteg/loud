@@ -1,57 +1,37 @@
 import React from "react";
 import { connect } from "react-redux";
+import bindClosures from "react-bind-closures";
 
-import { Actions as PlaylistActions } from "../../reducers/Playlist";
 import { Actions as VideoActions } from "../../reducers/Video";
 import List from "../../components/List";
 
 import "./style.styl";
 
-class Playlist extends React.Component {
+const _Playlist = bindClosures({
+  onPlay({ playPlaylist, playlist }, index) {
+    playPlaylist(playlist, index);
+  },
+})(({ playlist, loading, playlistId, onPlay, params }) => (
+  <div className="Playlist page">
+    <div className="Playlist-title header-title">
+      {playlist && playlist.name}
+    </div>
+    {playlist && playlist.tracks.length > 0 && <List
+      tracks={playlist.tracks}
+      loading={loading}
+      isInCurrentPlaylist={+params.playlistId === playlistId}
+      onPlay={onPlay}
+      playlist={playlist}
+    />}
+  </div>
+));
 
-  constructor(props) {
-    super(props);
-
-    this.onPlay = this.onPlay.bind(this);
-  }
-
-  componentWillMount() {
-    this.props.load(+this.props.params.playlistId);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.params.playlistId !== this.props.params.playlistId) {
-      this.props.load(+nextProps.params.playlistId);
-    }
-  }
-
-  onPlay(index) {
-    this.props.playPlaylist(this.props.playlist, index);
-  }
-
-  render() {
-    return (
-      <div className="Playlist page">
-        <div className="Playlist-title header-title">
-          {this.props.playlist && this.props.playlist.name}
-        </div>
-        {this.props.playlist && this.props.playlist.tracks.length > 0 && <List
-          tracks={this.props.playlist.tracks}
-          loading={this.props.loading}
-          isInCurrentPlaylist={+this.props.params.playlistId === this.props.playlistId}
-          onPlay={this.onPlay}
-          playlist={this.props.playlist}
-        />}
-      </div>
-    );
-  }
-}
-
-export default connect(state => ({
+ const Playlist = connect(state => ({
   loading: state.Playlist.playlistLoading,
   playlist: state.Playlist.playlist,
   playlistId: state.Video.playlistId,
 }), {
-  load: PlaylistActions.load,
   playPlaylist: VideoActions.playPlaylist,
-})(Playlist);
+})(_Playlist);
+
+export default Playlist;
