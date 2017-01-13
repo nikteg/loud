@@ -152,7 +152,7 @@ export const Actions = {
   },
   progressTick() {
     return withPlayer((player, dispatch, getState) => {
-      if (!getState().Video.seeking) {
+      if (!document.hidden && !getState().Video.seeking) {
         dispatch(Actions.progress(player.getCurrentTime()));
       }
     });
@@ -168,8 +168,7 @@ export const Actions = {
         dispatch(Actions.duration(duration));
       }
 
-      runner.run(() => dispatch(Actions.progressTick()),
-        () => getState().Video.state === "play");
+      runner.run(() => dispatch(Actions.progressTick()), () => getState().Video.state === "play");
     });
   },
   statePause() {
