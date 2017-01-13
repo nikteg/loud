@@ -1,7 +1,7 @@
 import { createAction, handleActions } from "redux-actions";
 
 export const Actions = {
-  new: createAction("NOTIFICATION_NEW", message => message),
+  new: createAction("NOTIFICATION_NEW", (message) => message),
   dismiss: createAction("NOTIFICATION_DISMISS"),
   show(message) {
     return (dispatch, getState) => {

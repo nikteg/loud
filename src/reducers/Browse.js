@@ -13,8 +13,8 @@ export const Actions = {
 
     dispatch(Actions.browse.start());
     Api.getTracks(getState().Auth.token)
-      .then(tracks => dispatch(Actions.browse.complete(tracks)))
-      .catch(err => dispatch(Actions.browse.error(err.message)));
+      .then((tracks) => dispatch(Actions.browse.complete(tracks)))
+      .catch((err) => dispatch(Actions.browse.error(err.message)));
     };
   },
 };

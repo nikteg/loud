@@ -10,6 +10,6 @@ const Welcome = (props) => (
   </div>
 );
 
-export default connect(state => ({
+export default connect((state) => ({
   loggedIn: state.Auth.token != null,
 }))(Welcome);

@@ -9,8 +9,8 @@ export const Actions = {
     return (dispatch, getState) => {
       dispatch(Actions.trackActions.start(query));
       Api.getTrack(getState().Auth.token, query)
-        .then(track => dispatch(Actions.trackActions.complete(track)))
-        .catch(err => dispatch(Actions.trackActions.error(err.message)));
+        .then((track) => dispatch(Actions.trackActions.complete(track)))
+        .catch((err) => dispatch(Actions.trackActions.error(err.message)));
     };
   },
 };

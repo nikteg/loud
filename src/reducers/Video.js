@@ -50,16 +50,16 @@ class RunContiniously {
 let runner = new RunContiniously(500);
 
 export const Actions = {
-  init: createAction("VIDEO_INIT", player => player),
-  state: createAction("VIDEO_STATE", state => state),
-  progress: createAction("VIDEO_PROGRESS", progress => progress),
-  duration: createAction("VIDEO_DURATION", duration => duration),
-  muted: createAction("VIDEO_MUTED", muted => muted),
-  volume: createAction("VIDEO_VOLUME", volume => volume),
-  popup: createAction("VIDEO_POPUP", show => show),
-  error: createAction("VIDEO_ERROR", code => code),
-  seeking: createAction("VIDEO_SEEKING", seeking => seeking),
-  tracksIndex: createAction("VIDEO_TRACKS_INDEX", index => index),
+  init: createAction("VIDEO_INIT", (player) => player),
+  state: createAction("VIDEO_STATE", (state) => state),
+  progress: createAction("VIDEO_PROGRESS", (progress) => progress),
+  duration: createAction("VIDEO_DURATION", (duration) => duration),
+  muted: createAction("VIDEO_MUTED", (muted) => muted),
+  volume: createAction("VIDEO_VOLUME", (volume) => volume),
+  popup: createAction("VIDEO_POPUP", (show) => show),
+  error: createAction("VIDEO_ERROR", (code) => code),
+  seeking: createAction("VIDEO_SEEKING", (seeking) => seeking),
+  tracksIndex: createAction("VIDEO_TRACKS_INDEX", (index) => index),
   playlist: createAction("VIDEO_PLAYLIST", (playlist, index) => ({ playlist, index })),
   reset: createAction("VIDEO_RESET"),
   ready(player) {
@@ -157,10 +157,10 @@ export const Actions = {
     });
   },
   play() {
-    return withPlayer(player => player.playVideo());
+    return withPlayer((player) => player.playVideo());
   },
   pause() {
-    return withPlayer(player => player.pauseVideo());
+    return withPlayer((player) => player.pauseVideo());
   },
   progressTick() {
     return withPlayer((player, dispatch, getState) => {

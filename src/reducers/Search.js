@@ -9,8 +9,8 @@ export const Actions = {
     return (dispatch, getState) => {
       dispatch(Actions.searchActions.start(query));
       Api.search(getState().Auth.token, query)
-        .then(tracks => dispatch(Actions.searchActions.complete(tracks)))
-        .catch(err => dispatch(Actions.searchActions.error(err.message)));
+        .then((tracks) => dispatch(Actions.searchActions.complete(tracks)))
+        .catch((err) => dispatch(Actions.searchActions.error(err.message)));
     };
   },
 };

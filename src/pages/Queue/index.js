@@ -15,7 +15,7 @@ class Queue extends React.Component {
   }
 
   onPlay(index) {
-    return e => {
+    return (e) => {
       e.preventDefault();
       this.props.playPlaylist({ id: this.props.playlistId }, index);
     };
@@ -41,7 +41,7 @@ class Queue extends React.Component {
   }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
   tracks: VideoSelectors.queuedTracks(state),
   tracksIndex: state.Video.tracksIndex,
   playlistId: state.Video.playlistId,

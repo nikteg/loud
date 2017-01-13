@@ -22,7 +22,7 @@ const _Profile = (props) => (
   </div>
 );
 
-const Profile = connect(state => ({
+const Profile = connect((state) => ({
   user: state.User.user,
 }))(_Profile);
 

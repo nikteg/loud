@@ -31,7 +31,7 @@ export function request(route, token, method, params) {
     options.body = JSON.stringify(params);
   }
 
-  return fetch(`${process.env.API_URL}${route}`, options).then(res => res.json()).then(json => {
+  return fetch(`${process.env.API_URL}${route}`, options).then((res) => res.json()).then((json) => {
     if (json.error) {
       if (json.error === "Unauthenticated") {
         localStorage.removeItem("token");
@@ -105,5 +105,5 @@ export function getTracks(token) {
 
 export function getTrack(token, id) {
   return request(`/tracks/${id}`, token, "GET")
-    .then(json => json.data); // Temporary because of the API format.
+    .then((json) => json.data); // Temporary because of the API format.
 }

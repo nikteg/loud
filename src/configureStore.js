@@ -15,8 +15,8 @@ const translation = translator({
   [AuthActions.loginActions.complete]: [push("/"), PlaylistActions.loadAll()],
   [AuthActions.token]: [PlaylistActions.loadAll()],
   [AuthActions.logoutActions.complete]: [push("/"), VideoActions.stop()],
-  [SearchActions.searchActions.error]: a => [NotificationActions.show(`Search error. ${a.payload}.`)],
-  [VideoActions.error]: a => [NotificationActions.show(`Video error. Code: ${a.payload}`)],
+  [SearchActions.searchActions.error]: (a) => [NotificationActions.show(`Search error. ${a.payload}.`)],
+  [VideoActions.error]: (a) => [NotificationActions.show(`Video error. Code: ${a.payload}`)],
 });
 
 export default function configureStore(initialState) {

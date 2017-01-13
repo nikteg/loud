@@ -7,14 +7,14 @@ import { createNetworkAction } from "../lib/utils";
 export const Actions = {
   loginActions: createNetworkAction("AUTH_LOGIN"),
   logoutActions: createNetworkAction("AUTH_LOGOUT"),
-  token: createAction("AUTH_TOKEN", token => token),
+  token: createAction("AUTH_TOKEN", (token) => token),
   unauthenticated: createAction("AUTH_UNAUTHENTICATED"),
-  popup: createAction("AUTH_POPUP", show => show),
+  popup: createAction("AUTH_POPUP", (show) => show),
   register(loginUsername, password) {
     return (dispatch, getState) => {
       dispatch(Actions.loginActions.start());
       Api.register(loginUsername, password)
-        .then(json => {
+        .then((json) => {
           const token = json.token;
           const { id, username } = decode(json.token);
 
@@ -22,14 +22,14 @@ export const Actions = {
 
           dispatch(Actions.loginActions.complete({ id, username, token }));
         })
-        .catch(err => dispatch(Actions.loginActions.error(err.message)));
+        .catch((err) => dispatch(Actions.loginActions.error(err.message)));
     };
   },
   login(loginUsername, password) {
     return (dispatch, getState) => {
       dispatch(Actions.loginActions.start());
       Api.login(loginUsername, password)
-        .then(json => {
+        .then((json) => {
           const token = json.token;
           const { id, username } = decode(json.token);
 
@@ -37,7 +37,7 @@ export const Actions = {
 
           dispatch(Actions.loginActions.complete({ id, username, token }));
         })
-        .catch(err => dispatch(Actions.loginActions.error(err.message)));
+        .catch((err) => dispatch(Actions.loginActions.error(err.message)));
     };
   },
   logout() {

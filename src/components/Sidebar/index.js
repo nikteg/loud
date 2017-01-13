@@ -32,7 +32,7 @@ const Sidebar = bindClosures({
 
     props.showLoginPopup();
   },
-})(props => (
+})((props) => (
   <div className="Sidebar">
     {!props.loggedIn && <div className="Sidebar-profile">
       <a className="Sidebar-profile-login" onClick={props.onLoginClick}>Login / Register</a>
@@ -42,7 +42,7 @@ const Sidebar = bindClosures({
       <Link className="Sidebar-profile-username" to={`/profile/${props.username}`}>{props.username}</Link>
       <Dropdown
         icon={<Icons.Down />}
-        onChoose={data => {
+        onChoose={(data) => {
           if (data === "profile") {
             return props.push(`/profile/${props.username}`);
           }
@@ -87,7 +87,7 @@ const Sidebar = bindClosures({
   </div>
 ));
 
-export default connect(state => ({
+export default connect((state) => ({
   username: state.Auth.username,
   loggedIn: state.Auth.token != null,
   query: state.Search.query,

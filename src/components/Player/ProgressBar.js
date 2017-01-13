@@ -6,19 +6,19 @@ import { formatTime } from "../../lib/utils";
 
 import { Actions as VideoActions } from "../../reducers/Video";
 
-export const CurrentTime = connect(state => ({
+export const CurrentTime = connect((state) => ({
   progress: ["init", null].includes(state.Video.state) ? "---:---" : formatTime(state.Video.progress),
-}))(props => (
+}))((props) => (
   <div className="Controls-info-progress-time left">{props.progress}</div>
 ));
 
-export const Duration = connect(state => ({
+export const Duration = connect((state) => ({
   duration: ["init", null].includes(state.Video.state) ? "---:---" : formatTime(state.Video.duration),
-}))(props => (
+}))((props) => (
   <div className="Controls-info-progress-time right">{props.duration}</div>
 ));
 
-export default connect(state => ({
+export default connect((state) => ({
   min: 0,
   max: state.Video.duration,
   value: state.Video.progress,

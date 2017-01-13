@@ -26,7 +26,7 @@ const _Playlist = bindClosures({
   </div>
 ));
 
- const Playlist = connect(state => ({
+ const Playlist = connect((state) => ({
   loading: state.Playlist.playlistLoading,
   playlist: state.Playlist.playlist,
   playlistId: state.Video.playlistId,

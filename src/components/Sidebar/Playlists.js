@@ -18,7 +18,7 @@ const Playlist = (props) => (
     </Link>
     <Dropdown
       icon={<Icons.Down />}
-      onChoose={data => {
+      onChoose={(data) => {
         if (data === "remove") {
           return props.remove(props.list.id);
         }
@@ -168,7 +168,7 @@ class Playlists extends React.Component {
   }
 }
 
-export default connect(state => ({
+export default connect((state) => ({
   loading: state.Playlist.playlistsLoading,
   playlists: state.Playlist.playlists,
   currentPlaylistId: state.Video.playlistId,

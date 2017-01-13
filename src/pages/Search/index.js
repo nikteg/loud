@@ -7,7 +7,7 @@ import List from "../../components/List";
 
 import "./style.styl";
 
-const Search = connect(state => ({
+const Search = connect((state) => ({
   loading: state.Search.loading,
   error: state.Search.error,
   query: state.Search.query,
@@ -20,7 +20,7 @@ const Search = connect(state => ({
   trackCount(props) {
     return props.tracks ? props.tracks.length : 0;
   },
-})(props => (
+})((props) => (
   <div className="Search page">
     <div className="Search-title header-title">
       {(props.query !== "" && `Search results for '${props.query}'`) || "Search"}

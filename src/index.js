@@ -45,7 +45,7 @@ if (localStorage.getItem("token") != null) {
   }
 }
 
-window.addEventListener("keydown", e => {
+window.addEventListener("keydown", (e) => {
   if (e.altKey || e.ctrlKey || e.metaKey || e.target.tagName === "INPUT") {
     return;
   }

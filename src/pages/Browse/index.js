@@ -21,7 +21,7 @@ const Browse = bindClosures({
   </div>
 ));
 
-export default connect(state => ({
+export default connect((state) => ({
   loading: state.Browse.loading,
   tracks: state.Browse.tracks,
 }), { playPlaylist: VideoActions.playPlaylist })(Browse);

@@ -16,13 +16,13 @@ export const Actions = {
       dispatch(Actions.loadAllActions.start());
 
       Api.getPlaylists(getState().Auth.token)
-        .then(playlists => dispatch(Actions.loadAllActions.complete(playlists)))
-        .catch(err => dispatch(Actions.loadAllActions.error(err.message)));
+        .then((playlists) => dispatch(Actions.loadAllActions.complete(playlists)))
+        .catch((err) => dispatch(Actions.loadAllActions.error(err.message)));
     };
   },
   load(id) {
     return (dispatch, getState) => {
-      const localPlaylist = getState().Playlist.playlists.find(l => l.id === id);
+      const localPlaylist = getState().Playlist.playlists.find((l) => l.id === id);
 
       if (localPlaylist) {
         return dispatch(Actions.loadActions.complete(localPlaylist));
@@ -31,17 +31,17 @@ export const Actions = {
       dispatch(Actions.loadActions.start());
 
       Api.getPlaylist(getState().Auth.token, id)
-        .then(playlist => dispatch(Actions.loadActions.complete(playlist)))
-        .catch(err => dispatch(Actions.loadActions.error(err.message)));
+        .then((playlist) => dispatch(Actions.loadActions.complete(playlist)))
+        .catch((err) => dispatch(Actions.loadActions.error(err.message)));
     };
   },
   create(name, tracks = []) {
     return (dispatch, getState) => {
       dispatch(Actions.createActions.start());
 
-      Api.createPlaylist(getState().Auth.token, name, tracks.map(t => t.id))
-        .then(playlist => dispatch(Actions.createActions.complete(playlist)))
-        .catch(err => dispatch(Actions.createActions.error(err.message)));
+      Api.createPlaylist(getState().Auth.token, name, tracks.map((t) => t.id))
+        .then((playlist) => dispatch(Actions.createActions.complete(playlist)))
+        .catch((err) => dispatch(Actions.createActions.error(err.message)));
     };
   },
   update(id, name, tracks) {
@@ -49,30 +49,30 @@ export const Actions = {
       dispatch(Actions.updateActions.start());
 
       Api.updatePlaylist(getState().Auth.token, id, name, tracks)
-        .then(playlist => dispatch(Actions.updateActions.complete(playlist)))
-        .catch(err => dispatch(Actions.updateActions.error(err.message)));
+        .then((playlist) => dispatch(Actions.updateActions.complete(playlist)))
+        .catch((err) => dispatch(Actions.updateActions.error(err.message)));
     };
   },
   rename(id, name) {
     return (dispatch, getState) => {
-      const playlist = getState().Playlist.playlists.find(list => list.id === id);
-      const trackIds = playlist.tracks.map(t => t.id);
+      const playlist = getState().Playlist.playlists.find((list) => list.id === id);
+      const trackIds = playlist.tracks.map((t) => t.id);
       dispatch(Actions.update(id, name, trackIds));
     };
   },
   trackAdd(id, track) {
     return (dispatch, getState) => {
       const playlists = getState().Playlist.playlists.slice();
-      const playlist = playlists.find(list => list.id === id);
-      const trackIds = [...playlist.tracks, track].map(t => t.id);
+      const playlist = playlists.find((list) => list.id === id);
+      const trackIds = [...playlist.tracks, track].map((t) => t.id);
       dispatch(Actions.update(id, playlist.name, trackIds));
     };
   },
   trackRemove(id, track) {
     return (dispatch, getState) => {
       const playlists = getState().Playlist.playlists.slice();
-      const playlist = playlists.find(list => list.id === id);
-      const trackIds = playlist.tracks.filter(t => t.id !== track.id).map(t => t.id);
+      const playlist = playlists.find((list) => list.id === id);
+      const trackIds = playlist.tracks.filter((t) => t.id !== track.id).map((t) => t.id);
       dispatch(Actions.update(id, playlist.name, trackIds));
     };
   },
@@ -86,7 +86,7 @@ export const Actions = {
 
       Api.removePlaylist(getState().Auth.token, id)
         .then(() => dispatch(Actions.removeActions.complete(id)))
-        .catch(err => dispatch(NotificationActions.show(err.message)));
+        .catch((err) => dispatch(NotificationActions.show(err.message)));
     };
   },
 };
@@ -124,11 +124,11 @@ export default handleActions({
   }),
   [Actions.removeActions.complete]: (state, action) => ({
     ...state,
-    playlists: state.playlists.filter(list => list.id !== action.payload),
+    playlists: state.playlists.filter((list) => list.id !== action.payload),
   }),
   [Actions.updateActions.complete]: (state, action) => {
     const playlists = state.playlists.slice();
-    const playlist = playlists.findIndex(list => list.id === action.payload.id);
+    const playlist = playlists.findIndex((list) => list.id === action.payload.id);
     playlists[playlist] = action.payload;
 
     return {

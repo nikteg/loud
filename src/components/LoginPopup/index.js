@@ -41,11 +41,11 @@ class Form extends React.Component {
             type="text"
             placeholder="Username"
             defaultValue={this.props.username}
-            ref={node => (this.username = node)} />
+            ref={(node) => (this.username = node)} />
           <input
             type="password"
             placeholder="Password"
-            ref={node => (this.password = node)} />
+            ref={(node) => (this.password = node)} />
           <div className="buttons">
             <button type="submit">Login</button>
             <button onClick={this.onRegister}>Register</button>
@@ -58,7 +58,7 @@ class Form extends React.Component {
   }
 }
 
-const LoginForm = connect(state => ({
+const LoginForm = connect((state) => ({
   error: state.Auth.error,
   loading: state.Auth.loading,
   loggedIn: state.Auth.token != null,
@@ -68,7 +68,7 @@ const LoginForm = connect(state => ({
   register: AuthActions.register,
 })(Form);
 
-const LoginPopup = connect(state => ({
+const LoginPopup = connect((state) => ({
   popup: state.Auth.popup,
 }), {
   dismiss: () => AuthActions.popup(false),

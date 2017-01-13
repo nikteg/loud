@@ -7,7 +7,7 @@ import { TrackAddDropdown, TrackActionDropdown } from "../../components/Dropdown
 
 import "./style.styl";
 
-export const ThumbnailSide = connect(state => ({
+export const ThumbnailSide = connect((state) => ({
   track: state.Video.tracks[state.Video.tracksIndex],
 }))((props) => (
   props.track ? <div className="Track ThumbnailSide">

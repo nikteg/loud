@@ -9,8 +9,8 @@ export const Actions = {
     return (dispatch, getState) => {
       dispatch(Actions.loadActions.start());
       Api.getUser(getState().Auth.token, username)
-        .then(user => dispatch(Actions.loadActions.complete(user)))
-        .catch(err => dispatch(Actions.loadActions.error(err.message)));
+        .then((user) => dispatch(Actions.loadActions.complete(user)))
+        .catch((err) => dispatch(Actions.loadActions.error(err.message)));
     };
   },
 };

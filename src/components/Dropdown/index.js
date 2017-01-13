@@ -58,7 +58,7 @@ class Dropdown extends React.Component {
   }
 
   onChoose(data) {
-    return e => {
+    return (e) => {
       this.props.onChoose(data);
       this.onClick(e);
     };
@@ -68,7 +68,7 @@ class Dropdown extends React.Component {
     return (
       <div className={cx("Dropdown", this.state.anchor, { "active": this.state.show })}>
         <a className="Dropdown-button" onClick={this.onClick}
-          ref={node => this.dropdownButtonEl = node}>{this.props.icon}</a>
+          ref={(node) => this.dropdownButtonEl = node}>{this.props.icon}</a>
         {this.state.show && <div>
           <div className="Dropdown-overlay" onClick={this.onClick} onTouchMove={(e) => e.preventDefault()} />
           <ul style={this.state.position}>

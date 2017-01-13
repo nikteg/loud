@@ -41,7 +41,7 @@ const volumeIcons = {
 };
 /* eslint-enable max-len */
 
-const VolumeSlider = connect(state => ({
+const VolumeSlider = connect((state) => ({
   min: 0,
   max: 100,
   value: state.Video.muted ? 0 : state.Video.volume,
@@ -80,7 +80,7 @@ class VolumeButton extends React.Component {
   }
 }
 
-export default connect(state => {
+export default connect((state) => {
   let iconState = volumeIconStates.LOW;
 
   if (state.Video.volume > 75) {

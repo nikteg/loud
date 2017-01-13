@@ -20,17 +20,17 @@ export const Video = (props) => (
           },
         }}
         videoId={props.id}
-        onReady={e => props.ready(e.target)}
+        onReady={(e) => props.ready(e.target)}
         onPlay={props.statePlay}
         onPause={props.statePause}
         onEnd={props.stateEnd}
-        onError={e => props.stateError(e.data)}
+        onError={(e) => props.stateError(e.data)}
       />
     </div>
   </div>
 );
 
-export default connect(state => ({
+export default connect((state) => ({
   show: state.Video.popup,
 }), {
   ready: VideoActions.ready,

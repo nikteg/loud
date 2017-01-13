@@ -34,7 +34,7 @@ function generatePlaylist(track) {
   return { id: `track-${track.key}`, tracks: [track] };
 }
 
-const Track = connect(state => ({
+const Track = connect((state) => ({
   loading: state.Track.loading,
   track: state.Track.track,
   playlist: generatePlaylist(state.Track.track),
