@@ -28,18 +28,15 @@ export const ListItem = connect((state) => ({
   playlists: stateProps.playlists,
 }))((props) => (
   <li className={cx("ListItem", { active: props.isPlaying })}>
-    <label>
-      <input className="ListItem-checkbox" type="checkbox" />
-      <button className="ListItem-button" onClick={props.onPlay}>
-        {props.isPlaying ? <Icons.Pause /> : <Icons.Play />}
-      </button>
-      <div className="ListItem-title name">{props.track.name}</div>
-      <div className="ListItem-title artist">{props.track.artist}</div>
-      <div>{formatTime(props.track.duration)}</div>
-      <TrackAddDropdown track={props.track} />
-      <TrackActionDropdown track={props.track} />
-      <Link className="ListItem-share" to={`/track/${props.track.id}/${trackSlug(props.track)}`}><Icons.Share /></Link>
-    </label>
+    <button className="ListItem-button" onClick={props.onPlay}>
+      {props.isPlaying ? <Icons.Pause /> : <Icons.Play />}
+    </button>
+    <div className="ListItem-title name">{props.track.name}</div>
+    <div className="ListItem-title artist">{props.track.artist}</div>
+    <div>{formatTime(props.track.duration)}</div>
+    <TrackAddDropdown track={props.track} />
+    <TrackActionDropdown track={props.track} />
+    <Link className="ListItem-share" to={`/track/${props.track.id}/${trackSlug(props.track)}`}><Icons.Share /></Link>
   </li>
 ));
 
