@@ -11,14 +11,15 @@
     "no-console": 0,
     "no-unused-vars": [1, { "argsIgnorePattern": "^(reject|resolve|e(v(en)?t)?|props|getState|action)$" }],
     "react/prop-types": [0],
-    "max-len": [1, 120],
+    "max-len": [1, { "code": 120, "ignoreStrings": true }],
     "quote-props": 0,
     "no-param-reassign": [1, { "props": false }],
     "new-cap": 0,
     "react/prefer-stateless-function": [1],
     "semi": [1, "always"],
     "comma-dangle": [1, "always-multiline"],
-    "arrow-parens": [1, "always"]
+    "arrow-parens": [1, "always"],
+    "eol-last": "warn"
   },
   "globals": {
     "API_URL": false
