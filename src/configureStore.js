@@ -4,24 +4,42 @@ import { browserHistory } from "react-router";
 import thunk from "redux-thunk";
 import translator from "redux-action-translator";
 
+import createSagaMiddleware from "redux-saga";
+import rootSaga from "./sagas";
+
 import reducers from "./reducers";
-import { Actions as AuthActions } from "./reducers/Auth";
+import {
+  AUTH_LOGIN,
+  AUTH_LOGOUT,
+} from "./actions";
 import { Actions as PlaylistActions } from "./reducers/Playlist";
 import { Actions as VideoActions } from "./reducers/Video";
 import { Actions as NotificationActions } from "./reducers/Notification";
 import { Actions as SearchActions } from "./reducers/Search";
 
 const translation = translator({
-  [AuthActions.loginActions.complete]: [push("/"), PlaylistActions.loadAll()],
-  [AuthActions.token]: [PlaylistActions.loadAll()],
-  [AuthActions.logoutActions.complete]: [push("/"), VideoActions.stop()],
+  [AUTH_LOGIN.complete]: [push("/"), PlaylistActions.loadAll()],
+  [AUTH_LOGOUT.complete]: [push("/"), VideoActions.stop()],
   [SearchActions.searchActions.error]: (a) => [NotificationActions.show(`Search error. ${a.payload}.`)],
   [VideoActions.error]: (a) => [NotificationActions.show(`Video error. Code: ${a.payload}`)],
 });
 
+const errorLogger = () => (next) => (action) => {
+  if (action.error) {
+    console.group(action.type);
+    console.info("Error in action", action);
+    console.log(action.payload);
+    console.groupEnd(action.type);
+  }
+
+  return next(action);
+};
+
 export default function configureStore(initialState) {
+  const sagaMiddleware = createSagaMiddleware();
+
   const composers = [
-    applyMiddleware(thunk, routerMiddleware(browserHistory), translation),
+    applyMiddleware(thunk, routerMiddleware(browserHistory), translation, sagaMiddleware, errorLogger),
   ];
 
   if (window.devToolsExtension) {
@@ -39,5 +57,8 @@ export default function configureStore(initialState) {
     }));
   }
 
-  return createStore(reducers, initialState, compose(...composers));
+  const store = createStore(reducers, initialState, compose(...composers));
+  sagaMiddleware.run(rootSaga);
+
+  return store;
 }

@@ -1,9 +1,10 @@
 import { handleActions } from "redux-actions";
 
 import { Actions as NotificationActions } from "./Notification";
-import { Actions as AuthActions } from "./Auth";
 import * as Api from "../lib/api";
 import { createNetworkAction } from "../lib/utils";
+
+import { AUTH_LOGOUT } from "../actions";
 
 export const Actions = {
   loadActions: createNetworkAction("PLAYLIST_LOAD"),
@@ -99,7 +100,7 @@ const initialState = {
 };
 
 export default handleActions({
-  [AuthActions.logoutActions.complete]: (state, action) => initialState,
+  [AUTH_LOGOUT.complete]: (state, action) => initialState,
   [Actions.loadAllActions.start]: (state, action) => ({
     ...state,
     allLoading: true,

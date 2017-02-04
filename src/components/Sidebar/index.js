@@ -5,8 +5,9 @@ import { push } from "react-router-redux";
 import cx from "classnames";
 import bindClosures from "react-bind-closures";
 
-import { Actions as AuthActions } from "../../reducers/Auth";
 import { Actions as NotificationActions } from "../../reducers/Notification";
+
+import { logout, showLoginPopup } from "../../actions";
 
 import * as Icons from "../Icons";
 import Playlists from "./Playlists";
@@ -93,7 +94,7 @@ export default connect((state) => ({
   query: state.Search.query,
 }), {
   push,
-  logout: AuthActions.logout,
+  logout,
+  showLoginPopup,
   notificationShow: NotificationActions.show,
-  showLoginPopup: () => AuthActions.popup(true),
 })(Sidebar);

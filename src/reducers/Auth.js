@@ -1,79 +1,51 @@
-import decode from "jwt-decode";
-import { createAction, handleActions } from "redux-actions";
+import { handleActions } from "redux-actions";
 
-import * as Api from "../lib/api";
-import { createNetworkAction } from "../lib/utils";
-
-export const Actions = {
-  loginActions: createNetworkAction("AUTH_LOGIN"),
-  logoutActions: createNetworkAction("AUTH_LOGOUT"),
-  token: createAction("AUTH_TOKEN", (token) => token),
-  unauthenticated: createAction("AUTH_UNAUTHENTICATED"),
-  popup: createAction("AUTH_POPUP", (show) => show),
-  register(loginUsername, password) {
-    return (dispatch, getState) => {
-      dispatch(Actions.loginActions.start());
-      Api.register(loginUsername, password)
-        .then((json) => {
-          const token = json.token;
-          const { id, username } = decode(json.token);
-
-          localStorage.setItem("token", token);
-
-          dispatch(Actions.loginActions.complete({ id, username, token }));
-        })
-        .catch((err) => dispatch(Actions.loginActions.error(err.message)));
-    };
-  },
-  login(loginUsername, password) {
-    return (dispatch, getState) => {
-      dispatch(Actions.loginActions.start());
-      Api.login(loginUsername, password)
-        .then((json) => {
-          const token = json.token;
-          const { id, username } = decode(json.token);
-
-          localStorage.setItem("token", token);
-
-          dispatch(Actions.loginActions.complete({ id, username, token }));
-        })
-        .catch((err) => dispatch(Actions.loginActions.error(err.message)));
-    };
-  },
-  logout() {
-    return (dispatch, getState) => {
-      dispatch(Actions.logoutActions.start());
-      Api.logout(getState().Auth.token)
-        .then(() => {
-          localStorage.removeItem("token");
-          dispatch(Actions.logoutActions.complete());
-        });
-    };
-  },
-};
+import {
+  AUTH_LOGIN,
+  AUTH_REGISTER,
+  AUTH_LOGOUT,
+  AUTH_TOKEN,
+  AUTH_SHOW,
+  AUTH_UNAUTHENTICATED,
+} from "../actions";
 
 export default handleActions({
-  [Actions.loginActions.start]: (state, action) => ({
+  [AUTH_LOGIN.start]: (state, action) => ({
     ...state,
     loading: true,
     error: null,
   }),
-  [Actions.loginActions.complete]: (state, action) => ({
+  [AUTH_LOGIN.complete]: (state, action) => ({
     ...state,
     ...action.payload,
     popup: false,
   }),
-  [Actions.token]: (state, action) => ({
-    ...state,
-    ...action.payload,
-    popup: false,
-  }),
-  [Actions.loginActions.error]: (state, action) => ({
+  [AUTH_LOGIN.error]: (state, action) => ({
     ...state,
     error: action.payload,
     loading: false,
   }),
-  [Actions.logoutActions.complete]: (state, action) => ({
+  [AUTH_REGISTER.start]: (state, action) => ({
+    ...state,
+    loading: true,
+    error: null,
+  }),
+  [AUTH_REGISTER.complete]: (state, action) => ({
+    ...state,
+    ...action.payload,
+    popup: false,
+  }),
+  [AUTH_REGISTER.error]: (state, action) => ({
+    ...state,
+    error: action.payload,
+    loading: false,
+  }),
+  [AUTH_TOKEN.complete]: (state, action) => ({
+    ...state,
+    ...action.payload,
+    popup: false,
+  }),
+  [AUTH_LOGOUT.complete]: (state, action) => ({
     ...state,
     id: 0,
     username: null,
@@ -81,14 +53,14 @@ export default handleActions({
     loading: false,
     error: null,
   }),
-  [Actions.unauthenticated]: (state, action) => ({
+  [AUTH_UNAUTHENTICATED]: (state, action) => ({
     ...state,
     token: null,
     loading: false,
     error: null,
     popup: true,
   }),
-  [Actions.popup]: (state, action) => ({
+  [AUTH_SHOW]: (state, action) => ({
     ...state,
     popup: action.payload,
     token: null,

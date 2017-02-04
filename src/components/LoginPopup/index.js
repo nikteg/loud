@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 
-import { Actions as AuthActions } from "../../reducers/Auth";
+import { login, register, hideLoginPopup } from "../../actions";
 
 import "./style.styl";
 
@@ -50,7 +50,7 @@ class Form extends React.Component {
             <button type="submit">Login</button>
             <button onClick={this.onRegister}>Register</button>
           </div>
-          {this.props.error && <div className="LoginForm-form-status error">{this.props.error}</div>}
+          {this.props.error && <div className="LoginForm-form-status error">{this.props.error.message}</div>}
           {this.props.loading && <div className="LoginForm-form-status">Loading...</div>}
         </form>
       </div>
@@ -64,17 +64,17 @@ const LoginForm = connect((state) => ({
   loggedIn: state.Auth.token != null,
   username: state.Auth.username,
 }), {
-  login: AuthActions.login,
-  register: AuthActions.register,
+  login,
+  register,
 })(Form);
 
 const LoginPopup = connect((state) => ({
   popup: state.Auth.popup,
 }), {
-  dismiss: () => AuthActions.popup(false),
+  hideLoginPopup,
 })((props) => (
   props.popup && <div className="LoginPopup">
-    <div className="LoginPopup-overlay" onClick={props.dismiss} />
+    <div className="LoginPopup-overlay" onClick={props.hideLoginPopup} />
     <LoginForm />
   </div>
 ));

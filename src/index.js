@@ -3,7 +3,6 @@ import { render } from "react-dom";
 import { Provider } from "react-redux";
 import { Router, browserHistory } from "react-router";
 import { syncHistoryWithStore } from "react-router-redux";
-import decode from "jwt-decode";
 
 import configureStore from "./configureStore";
 import { setStore as setApiStore } from "./lib/api";
@@ -11,8 +10,8 @@ import routes from "./routes";
 
 import { Actions as VideoActions } from "./reducers/Video";
 
-import { Actions as AuthActions } from "./reducers/Auth";
 import { titleSelector } from "./reducers";
+import { token } from "./actions";
 
 import "normalize.css";
 import "./style/global.styl";
@@ -25,24 +24,8 @@ setApiStore(store);
 
 window.redux = store;
 
-// store.dispatch(playlistsLoad());
-
 if (localStorage.getItem("token") != null) {
-  const token = localStorage.getItem("token");
-
-  let id, username;
-
-  try {
-    ({ id, username } = decode(token));
-  } catch (err) {
-    localStorage.removeItem("token");
-    console.error("Could not decode token", token, err);
-    store.dispatch(AuthActions.unauthenticated());
-  } finally {
-    if (id && username) {
-      store.dispatch(AuthActions.token({ id, username, token }));
-    }
-  }
+  store.dispatch(token(localStorage.getItem("token")));
 }
 
 window.addEventListener("keydown", (e) => {
