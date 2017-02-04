@@ -23,5 +23,8 @@
   },
   "globals": {
     "API_URL": false
+  },
+  "env": {
+    "jest": true
   }
 }
