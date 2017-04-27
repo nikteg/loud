@@ -1,19 +1,19 @@
-import { handleActions } from "redux-actions";
+import { handleActions } from "redux-actions"
 
-import * as Api from "../lib/api";
-import { createNetworkAction } from "../lib/utils";
+import * as Api from "../lib/api"
+import { createNetworkAction } from "../lib/utils"
 
 export const Actions = {
   loadActions: createNetworkAction("USER_LOAD"),
   load(username) {
     return (dispatch, getState) => {
-      dispatch(Actions.loadActions.start());
+      dispatch(Actions.loadActions.start())
       Api.getUser(getState().Auth.token, username)
         .then((user) => dispatch(Actions.loadActions.complete(user)))
-        .catch((err) => dispatch(Actions.loadActions.error(err.message)));
-    };
+        .catch((err) => dispatch(Actions.loadActions.error(err.message)))
+    }
   },
-};
+}
 
 export default handleActions({
   [Actions.loadActions.start.toString()]: (state, action) => ({
@@ -35,4 +35,4 @@ export default handleActions({
   user: null,
   loading: false,
   error: null,
-});
+})

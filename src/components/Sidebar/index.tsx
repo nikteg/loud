@@ -1,37 +1,37 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router";
-import { push } from "react-router-redux";
-import cx from "classnames";
-import bindClosures from "react-bind-closures";
+import cx from "classnames"
+import * as React from "react"
+import bindClosures from "react-bind-closures"
+import { connect } from "react-redux"
+import { Link } from "react-router"
+import { push } from "react-router-redux"
 
-import { Actions as NotificationActions } from "../../reducers/Notification";
+import { Actions as NotificationActions } from "../../reducers/Notification"
 
-import { logout, showLoginPopup } from "../../actions";
+import { logout, showLoginPopup } from "../../actions"
 
-import * as Icons from "../Icons";
-import Playlists from "./Playlists";
-import Dropdown from "../Dropdown";
-import { ThumbnailSide } from "../Track";
+import Dropdown from "../Dropdown"
+import * as Icons from "../Icons"
+import { ThumbnailSide } from "../Track"
+import Playlists from "./Playlists"
 
-import "./style.styl";
+import "./style.styl"
 
 const Sidebar = bindClosures({
   notImplementedNotification(props) {
-    props.notificationShow("Not implemented yet");
+    props.notificationShow("Not implemented yet")
   },
   onSearch(props, e) {
-    e.preventDefault();
+    e.preventDefault()
     const el = document.getElementById("search-query") as HTMLInputElement
-    const query = el.value.trim();
+    const query = el.value.trim()
     if (query !== "") {
-      props.push(`/search?q=${query}`);
+      props.push(`/search?q=${query}`)
     }
   },
   onLoginClick(props, e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    props.showLoginPopup();
+    props.showLoginPopup()
   },
 })((props) => (
   <div className="Sidebar">
@@ -45,14 +45,14 @@ const Sidebar = bindClosures({
         icon={<Icons.Down />}
         onChoose={(data) => {
           if (data === "profile") {
-            return props.push(`/profile/${props.username}`);
+            return props.push(`/profile/${props.username}`)
           }
 
           if (data === "logout") {
-            return props.logout();
+            return props.logout()
           }
 
-          props.notificationShow("Not implemented yet");
+          props.notificationShow("Not implemented yet")
         }}
         items={[
           { name: <span><Icons.User />Profile</span>, data: "profile" },
@@ -86,7 +86,7 @@ const Sidebar = bindClosures({
       <ThumbnailSide />
     </div>
   </div>
-));
+))
 
 export default connect((state) => ({
   username: state.Auth.username,
@@ -97,4 +97,4 @@ export default connect((state) => ({
   logout,
   showLoginPopup,
   notificationShow: NotificationActions.show,
-})(Sidebar);
+})(Sidebar)

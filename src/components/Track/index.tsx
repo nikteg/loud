@@ -1,11 +1,11 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import cx from "classnames";
+import cx from "classnames"
+import * as React from "react"
+import { connect } from "react-redux"
 
-import * as Icons from "../../components/Icons";
-import { TrackAddDropdown, TrackActionDropdown } from "../../components/Dropdown/TrackDropdown";
+import { TrackActionDropdown, TrackAddDropdown } from "../../components/Dropdown/TrackDropdown"
+import * as Icons from "../../components/Icons"
 
-import "./style.styl";
+import "./style.styl"
 
 export const ThumbnailSide = connect((state) => ({
   track: state.Video.tracks[state.Video.tracksIndex],
@@ -18,14 +18,14 @@ export const ThumbnailSide = connect((state) => ({
       <div className="ThumbnailSide-artist" title={props.track.artist}>{props.track.artist}</div>
     </div>
   </div> : <div />
-));
+))
 
 export const ThumbnailWithControls = connect((state, ownProps) => ({
   isPlaying: (state.Video.state === "play" &&
     state.Video.tracks[state.Video.tracksIndex] &&
     ownProps.track.id === state.Video.tracks[state.Video.tracksIndex].id),
 }))((props) => (
-  <div className={cx("Track Thumbnail", { "playing": props.isPlaying })}>
+  <div className={cx("Track Thumbnail", { playing: props.isPlaying })}>
     <div className="Thumbnail-image"
       style={{ backgroundImage: `url(https://i.ytimg.com/vi/${props.track.key}/hqdefault.jpg)` }}>
       <div className="Thumbnail-hover">
@@ -41,4 +41,4 @@ export const ThumbnailWithControls = connect((state, ownProps) => ({
       </div>
     <div className="Thumbnail-artist" title={props.track.artist}>{props.track.artist}</div>
   </div>
-));
+))

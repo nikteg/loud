@@ -1,24 +1,24 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import * as React from "react"
+import { connect } from "react-redux"
 
-import { Actions as VideoActions, Selectors as VideoSelectors } from "../../reducers/Video";
-import { ListItem } from "../../components/List";
+import { ListItem } from "../../components/List"
+import { Actions as VideoActions, Selectors as VideoSelectors } from "../../reducers/Video"
 
-import "./style.styl";
+import "./style.styl"
 
 class Queue extends React.Component<any, any> {
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.onPlay = this.onPlay.bind(this);
+    this.onPlay = this.onPlay.bind(this)
   }
 
   onPlay(index) {
     return (e) => {
-      e.preventDefault();
-      this.props.playPlaylist({ id: this.props.playlistId }, index);
-    };
+      e.preventDefault()
+      this.props.playPlaylist({ id: this.props.playlistId }, index)
+    }
   }
 
   render() {
@@ -37,7 +37,7 @@ class Queue extends React.Component<any, any> {
           ))}
         </ul>
       </div>
-    );
+    )
   }
 }
 
@@ -45,4 +45,4 @@ export default connect((state) => ({
   tracks: VideoSelectors.queuedTracks(state),
   tracksIndex: state.Video.tracksIndex,
   playlistId: state.Video.playlistId,
-}), { playPlaylist: VideoActions.playPlaylist })(Queue);
+}), { playPlaylist: VideoActions.playPlaylist })(Queue)

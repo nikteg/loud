@@ -1,37 +1,37 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import * as React from "react"
+import { connect } from "react-redux"
 
-import { login, register, hideLoginPopup } from "../../actions";
+import { hideLoginPopup, login, register } from "../../actions"
 
-import "./style.styl";
+import "./style.styl"
 
 class Form extends React.Component<any, any> {
-  username: HTMLInputElement;
-  password: HTMLInputElement;
+  username: HTMLInputElement
+  password: HTMLInputElement
 
   constructor(props) {
-    super(props);
+    super(props)
 
-    this.onLogin = this.onLogin.bind(this);
-    this.onRegister = this.onRegister.bind(this);
+    this.onLogin = this.onLogin.bind(this)
+    this.onRegister = this.onRegister.bind(this)
   }
 
   onLogin(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const username = this.username.value;
-    const password = this.password.value;
+    const username = this.username.value
+    const password = this.password.value
 
-    this.props.login(username, password);
+    this.props.login(username, password)
   }
 
   onRegister(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const username = this.username.value;
-    const password = this.password.value;
+    const username = this.username.value
+    const password = this.password.value
 
-    this.props.register(username, password);
+    this.props.register(username, password)
   }
 
   render() {
@@ -56,7 +56,7 @@ class Form extends React.Component<any, any> {
           {this.props.loading && <div className="LoginForm-form-status">Loading...</div>}
         </form>
       </div>
-    );
+    )
   }
 }
 
@@ -68,7 +68,7 @@ const LoginForm = connect((state) => ({
 }), {
   login,
   register,
-})(Form);
+})(Form)
 
 const LoginPopup = connect((state) => ({
   popup: state.Auth.popup,
@@ -79,6 +79,6 @@ const LoginPopup = connect((state) => ({
     <div className="LoginPopup-overlay" onClick={props.hideLoginPopup} />
     <LoginForm />
   </div>
-));
+))
 
-export default LoginPopup;
+export default LoginPopup

@@ -1,15 +1,15 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import bindClosures from "react-bind-closures";
+import * as React from "react"
+import bindClosures from "react-bind-closures"
+import { connect } from "react-redux"
 
-import { Actions as VideoActions } from "../../reducers/Video";
-import List from "../../components/List";
+import List from "../../components/List"
+import { Actions as VideoActions } from "../../reducers/Video"
 
-import "./style.styl";
+import "./style.styl"
 
 const _Playlist = bindClosures({
   onPlay({ playPlaylist, playlist }, index) {
-    playPlaylist(playlist, index);
+    playPlaylist(playlist, index)
   },
 })(({ playlist, loading, playlistId, onPlay, params }) => (
   <div className="Playlist page">
@@ -24,14 +24,14 @@ const _Playlist = bindClosures({
       playlist={playlist}
     />}
   </div>
-));
+))
 
- const Playlist = connect((state) => ({
+const Playlist = connect((state) => ({
   loading: state.Playlist.playlistLoading,
   playlist: state.Playlist.playlist,
   playlistId: state.Video.playlistId,
 }), {
   playPlaylist: VideoActions.playPlaylist,
-})(_Playlist);
+})(_Playlist)
 
-export default Playlist;
+export default Playlist

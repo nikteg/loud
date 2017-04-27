@@ -1,17 +1,17 @@
-import cx from "classnames";
-import * as React from "react";
+import cx from "classnames"
+import * as React from "react"
 
-import "./style.styl";
+import "./style.styl"
 
-const DROPDOWN_ELEMENT_WIDTH = 128;
-const DROPDOWN_ELEMENT_HEIGHT = 30;
-const PLAYER_HEIGHT = 56;
+const DROPDOWN_ELEMENT_WIDTH = 128
+const DROPDOWN_ELEMENT_HEIGHT = 30
+const PLAYER_HEIGHT = 56
 
 class Dropdown extends React.Component<any, any> {
-  dropdownButtonEl: any;
+  dropdownButtonEl: any
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       show: false,
@@ -22,47 +22,46 @@ class Dropdown extends React.Component<any, any> {
         bottom: null,
         left: null,
       },
-    };
+    }
 
-    this.onClick = this.onClick.bind(this);
-    this.onChoose = this.onChoose.bind(this);
+    this.onClick = this.onClick.bind(this)
+    this.onChoose = this.onChoose.bind(this)
   }
 
   onClick(e) {
-    e.preventDefault();
+    e.preventDefault()
 
     if (this.state.show) {
-      this.setState({ show: false });
+      this.setState({ show: false })
     } else {
-      const { top, bottom, left, right } = this.dropdownButtonEl.getBoundingClientRect();
-      let anchorVertical = "top";
-      let anchorHorizontal = "left";
-      let position = { top: bottom, left };
-
+      const { top, bottom, left, right } = this.dropdownButtonEl.getBoundingClientRect()
+      let anchorVertical = "top"
+      let anchorHorizontal = "left"
+      let position = { top: bottom, left }
 
       if (right + DROPDOWN_ELEMENT_WIDTH > document.body.clientWidth) {
-        anchorHorizontal = "right";
-        position = { ...position, right: document.body.clientWidth - right, left: undefined };
+        anchorHorizontal = "right"
+        position = { ...position, right: document.body.clientWidth - right, left: undefined }
       }
 
-      const height = this.props.items.reduce((sum) => (sum + DROPDOWN_ELEMENT_HEIGHT), PLAYER_HEIGHT);
+      const height = this.props.items.reduce((sum) => (sum + DROPDOWN_ELEMENT_HEIGHT), PLAYER_HEIGHT)
 
       if (bottom + height > document.body.clientHeight) {
-        anchorVertical = "bottom";
-        position = { ...position, bottom: document.body.clientHeight - top, top: undefined };
+        anchorVertical = "bottom"
+        position = { ...position, bottom: document.body.clientHeight - top, top: undefined }
       }
 
-      const anchor = `${anchorVertical}-${anchorHorizontal}`;
+      const anchor = `${anchorVertical}-${anchorHorizontal}`
 
-      this.setState({ show: true, anchor, position });
+      this.setState({ show: true, anchor, position })
     }
   }
 
   onChoose(data) {
     return (e) => {
-      this.props.onChoose(data);
-      this.onClick(e);
-    };
+      this.props.onChoose(data)
+      this.onClick(e)
+    }
   }
 
   render() {
@@ -75,16 +74,16 @@ class Dropdown extends React.Component<any, any> {
           <ul style={this.state.position}>
             {this.props.items.map((item, i) => {
               if (item) {
-                return <li key={i}><a onClick={this.onChoose(item.data)}>{item.name}</a></li>;
+                return <li key={i}><a onClick={this.onChoose(item.data)}>{item.name}</a></li>
               }
 
-              return <li key={i} className="seperator" />;
+              return <li key={i} className="seperator" />
             })}
           </ul>
         </div>}
       </div>
-    );
+    )
   }
 }
 
-export default Dropdown;
+export default Dropdown

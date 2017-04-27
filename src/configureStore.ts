@@ -1,46 +1,46 @@
-import { applyMiddleware, compose, createStore } from "redux";
-import { push, routerMiddleware } from "react-router-redux";
-import { browserHistory } from "react-router";
-import thunk from "redux-thunk";
-import translator from "redux-action-translator";
+import { browserHistory } from "react-router"
+import { push, routerMiddleware } from "react-router-redux"
+import { applyMiddleware, compose, createStore } from "redux"
+import translator from "redux-action-translator"
+import thunk from "redux-thunk"
 
-import createSagaMiddleware from "redux-saga";
-import rootSaga from "./sagas";
+import createSagaMiddleware from "redux-saga"
+import rootSaga from "./sagas"
 
-import reducers from "./reducers";
+import { Actions as NotificationActions } from "reducers/Notification"
+import { Actions as PlaylistActions } from "reducers/Playlist"
+import { Actions as SearchActions } from "reducers/Search"
+import { Actions as VideoActions } from "reducers/Video"
 import {
   AUTH_LOGIN,
   AUTH_LOGOUT,
-} from "./actions";
-import { Actions as PlaylistActions } from "reducers/Playlist";
-import { Actions as VideoActions } from "reducers/Video";
-import { Actions as NotificationActions } from "reducers/Notification";
-import { Actions as SearchActions } from "reducers/Search";
+} from "./actions"
+import reducers from "./reducers"
 
 const translation = translator({
   [AUTH_LOGIN.complete.toString()]: [push("/"), PlaylistActions.loadAll()],
   [AUTH_LOGOUT.complete.toString()]: [push("/"), VideoActions.stop()],
   [SearchActions.searchActions.error.toString()]: (a) => [NotificationActions.show(`Search error. ${a.payload}.`)],
   [VideoActions.error.toString()]: (a) => [NotificationActions.show(`Video error. Code: ${a.payload}`)],
-});
+})
 
 const errorLogger = () => (next) => (action) => {
   if (action.error) {
-    console.group(action.type);
-    console.info("Error in action", action);
-    console.log(action.payload);
-    console.groupEnd();
+    console.group(action.type)
+    console.info("Error in action", action)
+    console.log(action.payload)
+    console.groupEnd()
   }
 
-  return next(action);
-};
+  return next(action)
+}
 
 declare const window: {
   devToolsExtension,
 }
 
 export default function configureStore(initialState) {
-  const sagaMiddleware = createSagaMiddleware();
+  const sagaMiddleware = createSagaMiddleware()
 
   const store = createStore(reducers, initialState, compose(
     applyMiddleware(thunk, routerMiddleware(browserHistory),
@@ -50,15 +50,15 @@ export default function configureStore(initialState) {
       // https://github.com/zalmoxisus/redux-devtools-extension/issues/159
       stateSanitizer: (state) => {
         if (state.Video.player) {
-          return { ...state, Video: { ...state.Video, player: "<<PLAYER>>" } };
+          return { ...state, Video: { ...state.Video, player: "<<PLAYER>>" } }
         }
 
-        return state;
+        return state
       },
       actionsBlacklist: ["VIDEO_PROGRESS"],
-    }) : (f) => f));
+    }) : (f) => f))
 
-  sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(rootSaga)
 
-  return store;
+  return store
 }

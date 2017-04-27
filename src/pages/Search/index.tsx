@@ -1,11 +1,11 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import bindClosures from "react-bind-closures";
+import * as React from "react"
+import bindClosures from "react-bind-closures"
+import { connect } from "react-redux"
 
-import { Actions as VideoActions } from "../../reducers/Video";
-import List from "../../components/List";
+import List from "../../components/List"
+import { Actions as VideoActions } from "../../reducers/Video"
 
-import "./style.styl";
+import "./style.styl"
 
 const Search = connect((state) => ({
   loading: state.Search.loading,
@@ -15,10 +15,10 @@ const Search = connect((state) => ({
   isInCurrentPlaylist: state.Video.playlistId === "search",
 }), { playPlaylist: VideoActions.playPlaylist })(bindClosures({
   onPlay(props, index) {
-    props.playPlaylist({ id: "search", tracks: props.tracks }, index);
+    props.playPlaylist({ id: "search", tracks: props.tracks }, index)
   },
   trackCount(props) {
-    return props.tracks ? props.tracks.length : 0;
+    return props.tracks ? props.tracks.length : 0
   },
 })((props) => (
   <div className="Search page">
@@ -35,6 +35,6 @@ const Search = connect((state) => ({
     {!props.loading && props.tracks.length === 0 && <div className="Search-content content">No results</div>}
     {props.loading && <div className="Search-content content">Loading...</div>}
   </div>
-)));
+)))
 
-export default Search;
+export default Search

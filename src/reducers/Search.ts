@@ -1,19 +1,19 @@
-import { handleActions } from "redux-actions";
+import { handleActions } from "redux-actions"
 
-import * as Api from "../lib/api";
-import { createNetworkAction } from "../lib/utils";
+import * as Api from "../lib/api"
+import { createNetworkAction } from "../lib/utils"
 
 export const Actions = {
   searchActions: createNetworkAction("SEARCH"),
   search(query) {
     return (dispatch, getState) => {
-      dispatch(Actions.searchActions.start(query));
+      dispatch(Actions.searchActions.start(query))
       Api.search(getState().Auth.token, query)
         .then((tracks) => dispatch(Actions.searchActions.complete(tracks)))
-        .catch((err) => dispatch(Actions.searchActions.error(err.message)));
-    };
+        .catch((err) => dispatch(Actions.searchActions.error(err.message)))
+    }
   },
-};
+}
 
 export default handleActions({
   [Actions.searchActions.start.toString()]: (state, action) => ({
@@ -37,4 +37,4 @@ export default handleActions({
   loading: false,
   error: null,
   tracks: [],
-});
+})

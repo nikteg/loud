@@ -1,14 +1,14 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { Actions as VideoActions } from "../../reducers/Video";
-import cx from "classnames";
+import cx from "classnames"
+import * as React from "react"
+import { connect } from "react-redux"
+import { Actions as VideoActions } from "../../reducers/Video"
 
-import YouTube from "react-youtube";
+import YouTube from "react-youtube"
 
-import "./style.styl";
+import "./style.styl"
 
 export const Video = (props) => (
-  <div className={cx("Video", { "none": !props.show })}>
+  <div className={cx("Video", { none: !props.show })}>
     <div className="Video-content">
       <YouTube
         opts={{
@@ -28,7 +28,7 @@ export const Video = (props) => (
       />
     </div>
   </div>
-);
+)
 
 export default connect((state) => ({
   show: state.Video.popup,
@@ -38,4 +38,4 @@ export default connect((state) => ({
   statePause: VideoActions.statePause,
   stateEnd: VideoActions.stateEnd,
   stateError: VideoActions.stateError,
-})(Video);
+})(Video)

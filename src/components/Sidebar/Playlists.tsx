@@ -1,14 +1,14 @@
-import cx from "classnames";
-import * as React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router";
+import cx from "classnames"
+import * as React from "react"
+import { connect } from "react-redux"
+import { Link } from "react-router"
 
-import { Actions as NotificationActions } from "../../reducers/Notification";
-import { Actions as PlaylistActions } from "../../reducers/Playlist";
+import { Actions as NotificationActions } from "../../reducers/Notification"
+import { Actions as PlaylistActions } from "../../reducers/Playlist"
 
-import Dropdown from "../Dropdown";
-import * as Icons from "../Icons";
-import Loader from "../Loader";
+import Dropdown from "../Dropdown"
+import * as Icons from "../Icons"
+import Loader from "../Loader"
 
 const Playlist = (props) => (
   <li className={cx("Playlists-item Sidebar-item", { active: props.active, isOver: props.isOver })}>
@@ -20,17 +20,17 @@ const Playlist = (props) => (
       icon={<Icons.Down />}
       onChoose={(data) => {
         if (data === "remove") {
-          return props.remove(props.list.id);
+          return props.remove(props.list.id)
         }
 
         if (data === "rename") {
-          return props.onRename(props.list);
+          return props.onRename(props.list)
         }
       }}
       items={[{ name: "Rename", data: "rename" }, null, { name: "Remove", data: "remove" }]}
     />
   </li>
-);
+)
 
 const PlaylistRename = (props) => (
   <li className="Playlists-item Sidebar-item">
@@ -45,33 +45,33 @@ const PlaylistRename = (props) => (
       />
     </form>
   </li>
-);
+)
 
 class Playlists extends React.Component<any, any> {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       adding: false,
       renamePlaylist: null,
-    };
+    }
 
-    this.onAdd = this.onAdd.bind(this);
-    this.onAddPlaylist = this.onAddPlaylist.bind(this);
-    this.onKeyDown = this.onKeyDown.bind(this);
-    this.resetInput = this.resetInput.bind(this);
-    this.onRename = this.onRename.bind(this);
-    this.onRenamePlaylist = this.onRenamePlaylist.bind(this);
-    this.onBodyClick = this.onBodyClick.bind(this);
+    this.onAdd = this.onAdd.bind(this)
+    this.onAddPlaylist = this.onAddPlaylist.bind(this)
+    this.onKeyDown = this.onKeyDown.bind(this)
+    this.resetInput = this.resetInput.bind(this)
+    this.onRename = this.onRename.bind(this)
+    this.onRenamePlaylist = this.onRenamePlaylist.bind(this)
+    this.onBodyClick = this.onBodyClick.bind(this)
   }
 
   componentDidMount() {
-    document.body.addEventListener("click", this.onBodyClick);
+    document.body.addEventListener("click", this.onBodyClick)
   }
 
   componentWillUnmount() {
-    document.body.removeEventListener("click", this.onBodyClick);
+    document.body.removeEventListener("click", this.onBodyClick)
   }
 
   getPlaylistRenameElement() {
@@ -81,51 +81,51 @@ class Playlists extends React.Component<any, any> {
   onBodyClick(e) {
     if ((this.state.adding || this.state.renamePlaylist !== null)
       && e.target !== this.getPlaylistRenameElement()) {
-      e.preventDefault();
-      e.stopPropagation();
-      this.resetInput();
+      e.preventDefault()
+      e.stopPropagation()
+      this.resetInput()
     }
   }
 
   onAdd(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    this.setState({ adding: true });
-    setTimeout(() => this.getPlaylistRenameElement().select(), 0);
+    this.setState({ adding: true })
+    setTimeout(() => this.getPlaylistRenameElement().select(), 0)
   }
 
   onAddPlaylist(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const name = this.getPlaylistRenameElement().value;
-    this.props.create(name);
-    this.resetInput();
+    const name = this.getPlaylistRenameElement().value
+    this.props.create(name)
+    this.resetInput()
   }
 
   onRename(playlist) {
     return () => {
-      this.setState({ renamePlaylist: playlist });
-      setTimeout(() => this.getPlaylistRenameElement().select(), 0);
-    };
+      this.setState({ renamePlaylist: playlist })
+      setTimeout(() => this.getPlaylistRenameElement().select(), 0)
+    }
   }
 
   onRenamePlaylist(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    const name = this.getPlaylistRenameElement().value;
-    this.props.rename(this.state.renamePlaylist.id, name);
-    this.resetInput();
+    const name = this.getPlaylistRenameElement().value
+    this.props.rename(this.state.renamePlaylist.id, name)
+    this.resetInput()
   }
 
   onKeyDown(e) {
     if (e.keyCode === 27) {
-      this.resetInput();
+      this.resetInput()
     }
   }
 
   resetInput() {
-    this.getPlaylistRenameElement().value = "";
-    this.setState({ adding: false, renamePlaylist: null });
+    this.getPlaylistRenameElement().value = ""
+    this.setState({ adding: false, renamePlaylist: null })
   }
 
   render() {
@@ -150,7 +150,7 @@ class Playlists extends React.Component<any, any> {
                   onKeyDown={this.onKeyDown}
                   defaultName={list.name}
                 />
-              );
+              )
             }
 
             return (
@@ -163,12 +163,12 @@ class Playlists extends React.Component<any, any> {
                 onRename={this.onRename(list)}
                 currentlyPlaying={this.props.currentPlaylistId === list.id}
               />
-            );
+            )
           })}
           {this.props.loading && <li className="Sidebar-item"><Loader show /></li>}
         </ul>
       </div>
-    );
+    )
   }
 }
 
@@ -181,4 +181,4 @@ export default connect((state) => ({
   remove: PlaylistActions.remove,
   rename: PlaylistActions.rename,
   notificationShow: NotificationActions.show,
-})(Playlists);
+})(Playlists)

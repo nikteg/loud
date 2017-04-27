@@ -1,19 +1,19 @@
-import * as React from "react";
-import { Route, IndexRoute } from "react-router";
+import * as React from "react"
+import { IndexRoute, Route } from "react-router"
 
-import App from "components/App";
-import Track from "pages/Track";
-import Playlist from "pages/Playlist";
-import Profile from "pages/Profile";
-import Search from "pages/Search";
-import Browse from "pages/Browse";
-import Queue from "pages/Queue";
+import App from "components/App"
+import Browse from "pages/Browse"
+import Playlist from "pages/Playlist"
+import Profile from "pages/Profile"
+import Queue from "pages/Queue"
+import Search from "pages/Search"
+import Track from "pages/Track"
 
-import { Actions as BrowseActions } from "reducers/Browse";
-import { Actions as SearchActions } from "reducers/Search";
-import { Actions as UserActions } from "reducers/User";
-import { Actions as PlaylistActions } from "reducers/Playlist";
-import { Actions as TrackActions } from "reducers/Track";
+import { Actions as BrowseActions } from "reducers/Browse"
+import { Actions as PlaylistActions } from "reducers/Playlist"
+import { Actions as SearchActions } from "reducers/Search"
+import { Actions as TrackActions } from "reducers/Track"
+import { Actions as UserActions } from "reducers/User"
 
 // function onRequireAuthenticated(store, nextState, replace) {
 //   if (!store.getState().Auth.token) {
@@ -28,41 +28,41 @@ import { Actions as TrackActions } from "reducers/Track";
 // }
 
 function onSearchRouteChange(store, nextState, prevState) {
-  const query = nextState.location.query.q;
+  const query = nextState.location.query.q
 
   if (!query) {
-    return;
+    return
   }
 
   if (prevState) {
-    const prevQuery = prevState.location.query.q;
+    const prevQuery = prevState.location.query.q
 
     if (prevQuery === query) {
-      return;
+      return
     }
   }
 
   if (store.getState().Search.query === query) {
-    return;
+    return
   }
 
-  store.dispatch(SearchActions.search(query));
+  store.dispatch(SearchActions.search(query))
 }
 
 function onBrowseRouteEnter(store) {
-  store.dispatch(BrowseActions.load());
+  store.dispatch(BrowseActions.load())
 }
 
 function onUserRouteEnter(store, nextState) {
-  store.dispatch(UserActions.load(nextState.params.username));
+  store.dispatch(UserActions.load(nextState.params.username))
 }
 
 function onPlaylistRouteEnter(store, nextState) {
-  store.dispatch(PlaylistActions.load(+nextState.params.playlistId));
+  store.dispatch(PlaylistActions.load(+nextState.params.playlistId))
 }
 
 function onTrackRouteEnter(store, nextState) {
-  store.dispatch(TrackActions.load(+nextState.params.trackId));
+  store.dispatch(TrackActions.load(+nextState.params.trackId))
 }
 
 export default function routes(store) {
@@ -83,5 +83,5 @@ export default function routes(store) {
           onEnter={(nextState) => onTrackRouteEnter(store, nextState)} />
       </Route>
     </Route>
-  );
-};
+  )
+}

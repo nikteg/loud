@@ -1,15 +1,15 @@
-import { combineReducers } from "redux";
-import { routerReducer } from "react-router-redux";
-import { createSelector } from "reselect";
+import { routerReducer } from "react-router-redux"
+import { combineReducers } from "redux"
+import { createSelector } from "reselect"
 
-import Video from "./Video";
-import Playlist from "./Playlist";
-import Auth from "./Auth";
-import Notification from "./Notification";
-import Search from "./Search";
-import User from "./User";
-import Track from "./Track";
-import Browse from "./Browse";
+import Auth from "./Auth"
+import Browse from "./Browse"
+import Notification from "./Notification"
+import Playlist from "./Playlist"
+import Search from "./Search"
+import Track from "./Track"
+import User from "./User"
+import Video from "./Video"
 
 export const titleSelector = createSelector<any, any, any, any, any, any, any, any>(
   (state, props) => state.Video.state === "play",
@@ -20,35 +20,35 @@ export const titleSelector = createSelector<any, any, any, any, any, any, any, a
   (state, props) => state.Playlist.playlist,
   (playing, playingTrack, pathname, track, user, playlist) => {
   if (playingTrack && playing) {
-    return `${playingTrack.artist} - ${playingTrack.name}`;
+    return `${playingTrack.artist} - ${playingTrack.name}`
   }
 
   if (playlist && pathname.startsWith("/playlist")) {
-    return `${playlist.name} by ${playlist.user.username}`;
+    return `${playlist.name} by ${playlist.user.username}`
   }
 
   if (user && pathname.startsWith("/profile")) {
-    return `${user.username}`;
+    return `${user.username}`
   }
 
   if (track && pathname.startsWith("/track")) {
-    return `${track.artist} - ${track.name}`;
+    return `${track.artist} - ${track.name}`
   }
 
   if (pathname.startsWith("/queue")) {
-    return "Queue";
+    return "Queue"
   }
 
   if (pathname.startsWith("/login")) {
-    return "Login";
+    return "Login"
   }
 
   if (pathname === "/") {
-    return "Browse";
+    return "Browse"
   }
 
-  return "Loud";
-});
+  return "Loud"
+})
 
 export default combineReducers({
   routing: routerReducer,
@@ -60,4 +60,4 @@ export default combineReducers({
   User,
   Track,
   Browse,
-});
+})

@@ -1,16 +1,16 @@
-import { createAction, handleActions } from "redux-actions";
+import { createAction, handleActions } from "redux-actions"
 
 export const Actions = {
   new: createAction("NOTIFICATION_NEW", (message) => message),
   dismiss: createAction("NOTIFICATION_DISMISS"),
   show(message) {
     return (dispatch, getState) => {
-      dispatch(Actions.new(message));
+      dispatch(Actions.new(message))
 
-      setTimeout(() => dispatch(Actions.dismiss()), 5000); // Dismiss error after 5 seconds
-    };
+      setTimeout(() => dispatch(Actions.dismiss()), 5000) // Dismiss error after 5 seconds
+    }
   },
-};
+}
 
 export default handleActions({
   [Actions.new.toString()]: (state, action) => ({
@@ -21,4 +21,4 @@ export default handleActions({
   }),
 }, {
   messages: [],
-});
+})

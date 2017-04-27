@@ -1,27 +1,27 @@
-import { createAction, handleActions } from "redux-actions";
-import { createSelector } from "reselect";
+import { createAction, handleActions } from "redux-actions"
+import { createSelector } from "reselect"
 
-import { Actions as SearchActions } from "./Search";
+import { Actions as SearchActions } from "./Search"
 
 // Helper function
 function withPlayer(fn) {
   return (dispatch, getState) => {
-    const { Video: { player } } = getState();
+    const { Video: { player } } = getState()
 
     if (player) {
-      fn(player, dispatch, getState);
+      fn(player, dispatch, getState)
     }
-  };
+  }
 }
 
-let seekTimeout;
+let seekTimeout
 
 export const Selectors = {
   queuedTracks: createSelector<any, any, any, any>(
     (state, props) => state.Video.tracks,
     (state, props) => state.Video.tracksIndex,
     (tracks, index) => tracks.slice(index)),
-};
+}
 
 class RunContiniously {
   predicateFn: () => void
@@ -30,28 +30,28 @@ class RunContiniously {
   interval: any
 
   constructor(interval) {
-    this.interval = interval;
-    this.runInner = this.runInner.bind(this);
+    this.interval = interval
+    this.runInner = this.runInner.bind(this)
   }
 
   run(fn, predicateFn) {
-    this.fn = fn;
-    this.predicateFn = predicateFn;
+    this.fn = fn
+    this.predicateFn = predicateFn
 
-    clearTimeout(this.timeout);
+    clearTimeout(this.timeout)
 
-    this.runInner();
+    this.runInner()
   }
 
   runInner() {
     if (this.predicateFn()) {
-      this.fn();
-      this.timeout = setTimeout(this.runInner, this.interval);
+      this.fn()
+      this.timeout = setTimeout(this.runInner, this.interval)
     }
   }
 }
 
-let runner = new RunContiniously(500);
+const runner = new RunContiniously(500)
 
 export const Actions = {
   init: createAction("VIDEO_INIT", (player) => player),
@@ -68,180 +68,180 @@ export const Actions = {
   reset: createAction("VIDEO_RESET"),
   ready(player) {
     return (dispatch, getState) => {
-      dispatch(Actions.init(player));
+      dispatch(Actions.init(player))
 
       if (localStorage.getItem("volume") != null) {
-        dispatch(Actions.volumeSet(+localStorage.getItem("volume")));
+        dispatch(Actions.volumeSet(+localStorage.getItem("volume")))
       }
 
-    };
+    }
   },
   seekingStart() {
-    return Actions.seeking(true);
+    return Actions.seeking(true)
   },
   popupToggle() {
-    return (dispatch, getState) => dispatch(Actions.popup(!getState().Video.popup));
+    return (dispatch, getState) => dispatch(Actions.popup(!getState().Video.popup))
   },
   volumeSet(percent) {
     return withPlayer((player, dispatch, getState) => {
-      const muted = getState().Video.player.isMuted();
-      const percentFixed = Math.min(100, Math.max(0, percent));
+      const muted = getState().Video.player.isMuted()
+      const percentFixed = Math.min(100, Math.max(0, percent))
 
-      player.setVolume(percentFixed);
-      dispatch(Actions.volume(percentFixed));
+      player.setVolume(percentFixed)
+      dispatch(Actions.volume(percentFixed))
 
-      localStorage.setItem("volume", percent);
+      localStorage.setItem("volume", percent)
 
       if (muted) {
-        player.unMute();
-        dispatch(Actions.muted(false));
+        player.unMute()
+        dispatch(Actions.muted(false))
       }
-    });
+    })
   },
   playPause() {
     return withPlayer((player, dispatch, getState) => {
       if (getState().Video.state === "play") {
-        player.pauseVideo();
+        player.pauseVideo()
       }
 
       if (getState().Video.state === "pause" || getState().Video.state === "end") {
-        player.playVideo();
+        player.playVideo()
       }
-    });
+    })
   },
   stop() {
     return (dispatch, getState) => {
-      const { Video: { player } } = getState();
+      const { Video: { player } } = getState()
 
       if (player) {
-        player.stopVideo();
+        player.stopVideo()
       }
 
-      dispatch(Actions.reset());
-    };
+      dispatch(Actions.reset())
+    }
   },
   playPlaylist(playlist, index = 0) {
     return withPlayer((player, dispatch, getState) => {
       if (getState().Video.playlistId === playlist.id &&
         getState().Video.tracksIndex === index) {
-        return dispatch(Actions.playPause());
+        return dispatch(Actions.playPause())
       }
 
-      player.loadVideoById(playlist.tracks[index].key);
-      dispatch(Actions.playlist(playlist, index));
-    });
+      player.loadVideoById(playlist.tracks[index].key)
+      dispatch(Actions.playlist(playlist, index))
+    })
   },
   listNext() {
     return withPlayer((player, dispatch, getState) => {
-      const index = getState().Video.tracksIndex;
-      const tracks = getState().Video.tracks;
+      const index = getState().Video.tracksIndex
+      const tracks = getState().Video.tracks
 
       if (index < tracks.length - 1) {
-        player.loadVideoById(tracks[(index + 1)].key);
-        dispatch(Actions.tracksIndex(index + 1));
-        dispatch(Actions.progress(0));
+        player.loadVideoById(tracks[(index + 1)].key)
+        dispatch(Actions.tracksIndex(index + 1))
+        dispatch(Actions.progress(0))
       }
-    });
+    })
   },
   listPrev() {
     return withPlayer((player, dispatch, getState) => {
-      const index = getState().Video.tracksIndex;
-      const tracks = getState().Video.tracks;
+      const index = getState().Video.tracksIndex
+      const tracks = getState().Video.tracks
 
       if (index === 0) {
-        dispatch(Actions.seekTo(0));
+        dispatch(Actions.seekTo(0))
 
-        return;
+        return
       }
 
       if (index > 0) {
-        player.loadVideoById(tracks[(index - 1)].key);
-        dispatch(Actions.tracksIndex(index - 1));
+        player.loadVideoById(tracks[(index - 1)].key)
+        dispatch(Actions.tracksIndex(index - 1))
       }
-    });
+    })
   },
   play() {
-    return withPlayer((player) => player.playVideo());
+    return withPlayer((player) => player.playVideo())
   },
   pause() {
-    return withPlayer((player) => player.pauseVideo());
+    return withPlayer((player) => player.pauseVideo())
   },
   progressTick() {
     return withPlayer((player, dispatch, getState) => {
       if (!document.hidden && !getState().Video.seeking) {
-        dispatch(Actions.progress(player.getCurrentTime()));
+        dispatch(Actions.progress(player.getCurrentTime()))
       }
-    });
+    })
   },
   statePlay() {
     return withPlayer((player, dispatch, getState) => {
-      dispatch(Actions.state("play"));
+      dispatch(Actions.state("play"))
 
       // Hooking into the play state seems to be the easiest way to determine the video duration
-      const duration = player.getDuration();
+      const duration = player.getDuration()
 
       if (getState().Video.duration !== duration) {
-        dispatch(Actions.duration(duration));
+        dispatch(Actions.duration(duration))
       }
 
-      runner.run(() => dispatch(Actions.progressTick()), () => getState().Video.state === "play");
-    });
+      runner.run(() => dispatch(Actions.progressTick()), () => getState().Video.state === "play")
+    })
   },
   statePause() {
-    return Actions.state("pause");
+    return Actions.state("pause")
   },
   stateEnd() {
     return withPlayer((player, dispatch, getState) => {
-      dispatch(Actions.state("end"));
+      dispatch(Actions.state("end"))
 
       // Go to next video
       if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
-        dispatch(Actions.listNext());
+        dispatch(Actions.listNext())
       }
-    });
+    })
   },
   stateError(code) {
     return withPlayer((player, dispatch, getState) => {
-      dispatch(Actions.error(code));
+      dispatch(Actions.error(code))
 
       // Go to next video
       if (getState().Video.tracksIndex < getState().Video.tracks.length - 1) {
-        dispatch(Actions.listNext());
+        dispatch(Actions.listNext())
       }
-    });
+    })
   },
   seekTo(seconds) {
     return withPlayer((player, dispatch, getState) => {
-      player.seekTo(seconds);
-      dispatch(Actions.progress(seconds));
-      dispatch(Actions.seeking(false));
-    });
+      player.seekTo(seconds)
+      dispatch(Actions.progress(seconds))
+      dispatch(Actions.seeking(false))
+    })
   },
   seekRelative(seconds) {
     return withPlayer((player, dispatch, getState) => {
-      const progress = Math.min(getState().Video.duration, Math.max(0, getState().Video.progress + seconds));
+      const progress = Math.min(getState().Video.duration, Math.max(0, getState().Video.progress + seconds))
 
-      player.seekTo(progress);
-      dispatch(Actions.progress(progress));
-      dispatch(Actions.seeking(true));
-      clearTimeout(seekTimeout);
-      seekTimeout = setTimeout(() => dispatch(Actions.seeking(false)), 200);
-    });
+      player.seekTo(progress)
+      dispatch(Actions.progress(progress))
+      dispatch(Actions.seeking(true))
+      clearTimeout(seekTimeout)
+      seekTimeout = setTimeout(() => dispatch(Actions.seeking(false)), 200)
+    })
   },
   muteToggle() {
     return withPlayer((player, dispatch, getState) => {
-      const muted = getState().Video.player.isMuted();
+      const muted = getState().Video.player.isMuted()
 
       if (muted) {
-        player.unMute();
+        player.unMute()
       } else {
-        player.mute();
+        player.mute()
       }
 
-      dispatch(Actions.muted(!muted));
-    });
+      dispatch(Actions.muted(!muted))
+    })
   },
-};
+}
 
 const initialState = {
   tracks: [],
@@ -255,7 +255,7 @@ const initialState = {
   popup: false,
   error: null,
   seeking: false,
-};
+}
 
 export default handleActions({
   [Actions.reset.toString()]: (state, action) => ({
@@ -317,4 +317,4 @@ export default handleActions({
     ...state,
     seeking: action.payload,
   }),
-}, initialState);
+}, initialState)

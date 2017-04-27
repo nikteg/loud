@@ -1,16 +1,16 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import Slider from "rc-slider";
-import cx from "classnames";
+import cx from "classnames"
+import Slider from "rc-slider"
+import * as React from "react"
+import { connect } from "react-redux"
 
-import { Actions as VideoActions } from "../../reducers/Video";
+import { Actions as VideoActions } from "../../reducers/Video"
 
 const volumeIconStates = {
   HIGH: "HIGH",
   MEDIUM: "MEDIUM",
   LOW: "LOW",
   MUTE: "MUTE",
-};
+}
 
 /* eslint-disable max-len */
 const volumeIcons = {
@@ -38,7 +38,7 @@ const volumeIcons = {
       <path d="M6.5 15c-0.13 0-0.258-0.051-0.354-0.146l-3.854-3.854h-1.793c-0.276 0-0.5-0.224-0.5-0.5v-5c0-0.276 0.224-0.5 0.5-0.5h1.793l3.854-3.854c0.143-0.143 0.358-0.186 0.545-0.108s0.309 0.26 0.309 0.462v13c0 0.202-0.122 0.385-0.309 0.462-0.062 0.026-0.127 0.038-0.191 0.038z" />
     </svg>
   ),
-};
+}
 /* eslint-enable max-len */
 
 const VolumeSlider = connect((state) => ({
@@ -48,22 +48,22 @@ const VolumeSlider = connect((state) => ({
   className: "Volume-popup-slider",
   tipFormatter: null,
   vertical: true,
-}), { onChange: VideoActions.volumeSet })(Slider);
+}), { onChange: VideoActions.volumeSet })(Slider)
 
 class VolumeButton extends React.Component<any, any> {
 
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       changing: false,
-    };
+    }
 
-    this.setChange = this.setChange.bind(this);
+    this.setChange = this.setChange.bind(this)
   }
 
   setChange(changing) {
-    return () => this.setState({ changing });
+    return () => this.setState({ changing })
   }
 
   render() {
@@ -76,24 +76,24 @@ class VolumeButton extends React.Component<any, any> {
           {volumeIcons[this.props.iconState]}
         </button>
       </div>
-    );
+    )
   }
 }
 
 export default connect((state) => {
-  let iconState = volumeIconStates.LOW;
+  let iconState = volumeIconStates.LOW
 
   if (state.Video.volume > 75) {
-    iconState = volumeIconStates.HIGH;
+    iconState = volumeIconStates.HIGH
   } else if (state.Video.volume > 25) {
-    iconState = volumeIconStates.MEDIUM;
+    iconState = volumeIconStates.MEDIUM
   }
 
   if (state.Video.muted) {
-    iconState = volumeIconStates.MUTE;
+    iconState = volumeIconStates.MUTE
   }
 
   return {
     iconState,
-  };
-}, { muteToggle: VideoActions.muteToggle, volumeSet: VideoActions.volumeSet })(VolumeButton);
+  }
+}, { muteToggle: VideoActions.muteToggle, volumeSet: VideoActions.volumeSet })(VolumeButton)

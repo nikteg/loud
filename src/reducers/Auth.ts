@@ -1,13 +1,13 @@
-import { handleActions } from "redux-actions";
+import { handleActions } from "redux-actions"
 
 import {
   AUTH_LOGIN,
-  AUTH_REGISTER,
   AUTH_LOGOUT,
-  AUTH_TOKEN,
+  AUTH_REGISTER,
   AUTH_SHOW,
+  AUTH_TOKEN,
   AUTH_UNAUTHENTICATED,
-} from "../actions";
+} from "../actions"
 
 export default handleActions({
   [AUTH_LOGIN.start.toString()]: (state, action) => ({
@@ -74,4 +74,4 @@ export default handleActions({
   token: null,
   error: null,
   popup: false,
-});
+})

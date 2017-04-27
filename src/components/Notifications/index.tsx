@@ -1,7 +1,7 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import * as React from "react"
+import { connect } from "react-redux"
 
-import "./style.styl";
+import "./style.styl"
 
 const Notifications = connect((state) => ({
   message: state.Notification.messages[0] || null,
@@ -9,6 +9,6 @@ const Notifications = connect((state) => ({
   props.message && <div className="Notifications">
     {props.message}
   </div>
-));
+))
 
-export default Notifications;
+export default Notifications

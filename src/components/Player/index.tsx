@@ -1,14 +1,14 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import * as React from "react"
+import { connect } from "react-redux"
 
-import PlayPauseButton from "./PlayPauseButton";
-import VideoButton from "./VideoButton";
-import ProgressBar, { CurrentTime, Duration } from "./ProgressBar";
-import VolumeButton from "./VolumeButton";
-import NextButton from "./NextButton";
-import PrevButton from "./PrevButton";
+import NextButton from "./NextButton"
+import PlayPauseButton from "./PlayPauseButton"
+import PrevButton from "./PrevButton"
+import ProgressBar, { CurrentTime, Duration } from "./ProgressBar"
+import VideoButton from "./VideoButton"
+import VolumeButton from "./VolumeButton"
 
-import "./style.styl";
+import "./style.styl"
 
 const Player = connect()((props) => (
   <div className="Player">
@@ -31,6 +31,6 @@ const Player = connect()((props) => (
       </div>
     </div>
   </div>
-));
+))
 
-export default Player;
+export default Player

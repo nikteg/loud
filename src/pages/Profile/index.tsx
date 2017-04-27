@@ -1,8 +1,8 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router";
+import * as React from "react"
+import { connect } from "react-redux"
+import { Link } from "react-router"
 
-import "./style.styl";
+import "./style.styl"
 
 const _Profile = (props) => (
   <div className="Profile page">
@@ -20,10 +20,10 @@ const _Profile = (props) => (
         </li>)}
     </ul>
   </div>
-);
+)
 
 const Profile = connect((state) => ({
   user: state.User.user,
-}))(_Profile);
+}))(_Profile)
 
-export default Profile;
+export default Profile

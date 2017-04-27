@@ -1,12 +1,12 @@
-import * as React from "react";
+import * as React from "react"
 
-import Sidebar from "components/Sidebar";
-import Player from "components/Player";
-import Video from "components/Video";
-import Notifications from "components/Notifications";
-import LoginPopup from "components/LoginPopup";
+import LoginPopup from "components/LoginPopup"
+import Notifications from "components/Notifications"
+import Player from "components/Player"
+import Sidebar from "components/Sidebar"
+import Video from "components/Video"
 
-import "./style.styl";
+import "./style.styl"
 
 class App extends React.Component<any, any> {
   render() {
@@ -27,8 +27,8 @@ class App extends React.Component<any, any> {
         </div>
         <Player />
       </div>
-    );
+    )
   }
 }
 
-export default App;
+export default App

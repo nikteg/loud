@@ -1,7 +1,7 @@
-import * as React from "react";
-import { connect } from "react-redux";
+import * as React from "react"
+import { connect } from "react-redux"
 
-import { Actions as VideoActions } from "../../reducers/Video";
+import { Actions as VideoActions } from "../../reducers/Video"
 
 const NextButton = connect((state) => ({
   active: state.Video.popup,
@@ -11,6 +11,6 @@ const NextButton = connect((state) => ({
       <path d="M12 2v12h-2v-5.5l-5 5v-11l5 5v-5.5z" />
     </svg>
   </button>
-));
+))
 
-export default NextButton;
+export default NextButton

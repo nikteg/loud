@@ -1,16 +1,16 @@
-import * as React from "react";
-import { connect } from "react-redux";
-import { Link } from "react-router";
-import cx from "classnames";
+import cx from "classnames"
+import * as React from "react"
+import { connect } from "react-redux"
+import { Link } from "react-router"
 
-import { Actions as PlaylistActions } from "../../reducers/Playlist";
-import { Actions as NotificationActions } from "../../reducers/Notification";
+import { Actions as NotificationActions } from "../../reducers/Notification"
+import { Actions as PlaylistActions } from "../../reducers/Playlist"
 
-import { formatTime, trackSlug } from "../../lib/utils";
-import * as Icons from "../../components/Icons";
-import { TrackAddDropdown, TrackActionDropdown } from "../../components/Dropdown/TrackDropdown";
+import { TrackActionDropdown, TrackAddDropdown } from "../../components/Dropdown/TrackDropdown"
+import * as Icons from "../../components/Icons"
+import { formatTime, trackSlug } from "../../lib/utils"
 
-import "./style.styl";
+import "./style.styl"
 
 export const ListItem = connect((state) => ({
   playlists: state.Playlist.playlists,
@@ -38,7 +38,7 @@ export const ListItem = connect((state) => ({
     <TrackActionDropdown track={props.track} />
     <Link className="ListItem-share" to={`/track/${props.track.id}/${trackSlug(props.track)}`}><Icons.Share /></Link>
   </li>
-));
+))
 
 const List = (props) => (
   <ul className="List">
@@ -48,8 +48,8 @@ const List = (props) => (
         index={i}
         track={track}
         onPlay={(e) => {
-          e.preventDefault();
-          props.onPlay(i);
+          e.preventDefault()
+          props.onPlay(i)
         }}
         isInCurrentPlaylist={props.isInCurrentPlaylist}
         playlist={props.playlist}
@@ -57,6 +57,6 @@ const List = (props) => (
     ))}
     {props.loading && <li className="ListItem">Loading...</li>}
   </ul>
-);
+)
 
-export default List;
+export default List
