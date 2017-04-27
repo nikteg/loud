@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "dev": "webpack-dev-server --progress --inline --content-base public/",
+    "dev:remote": "env API_URL='https://salty-plains-29832.herokuapp.com' webpack-dev-server --progress --inline --content-base public/",
     "start": "node scripts/start.js",
     "start:remote": "env API_URL='https://salty-plains-29832.herokuapp.com' node scripts/start.js",
     "build": "node scripts/build.js",
@@ -10,7 +12,12 @@
     "test": "node scripts/test.js --env=jsdom"
   },
   "devDependencies": {
+    "@types/node": "^7.0.14",
+    "@types/react": "^15.0.23",
+    "@types/redux-actions": "^1.2.4",
+    "@types/reselect": "^2.2.0",
     "autoprefixer": "6.4.1",
+    "awesome-typescript-loader": "^3.1.2",
     "babel-core": "6.14.0",
     "babel-eslint": "6.1.2",
     "babel-jest": "15.0.0",
@@ -21,7 +28,7 @@
     "chalk": "1.1.3",
     "connect-history-api-fallback": "1.3.0",
     "cross-spawn": "4.0.0",
-    "css-loader": "0.24.0",
+    "css-loader": "^0.28.0",
     "detect-port": "1.0.0",
     "dotenv": "2.0.0",
     "eslint": "3.5.0",
@@ -52,12 +59,14 @@
     "spotify-web-api-node": "^2.3.5",
     "squel": "^5.3.3",
     "strip-ansi": "3.0.1",
-    "style-loader": "0.13.1",
-    "stylus-loader": "^2.3.1",
+    "style-loader": "^0.16.1",
+    "stylus-loader": "^3.0.1",
+    "tslint": "^5.1.0",
+    "typescript": "^2.2.2",
     "url-loader": "0.5.7",
-    "webpack": "1.13.2",
-    "webpack-dev-server": "1.16.1",
-    "whatwg-fetch": "1.0.0"
+    "webpack": "^2.4.1",
+    "webpack-dev-server": "^2.4.5",
+    "whatwg-fetch": "^1.0.0"
   },
   "dependencies": {
     "classnames": "^2.2.5",
@@ -73,14 +82,13 @@
     "react-router": "^2.5.2",
     "react-router-redux": "^4.0.5",
     "react-youtube": "^7.0.1",
-    "redux": "^3.5.2",
+    "redux": "^3.6.0",
     "redux-action-translator": "^1.0.3",
-    "redux-actions": "^0.10.1",
+    "redux-actions": "^2.0.2",
     "redux-saga": "^0.14.3",
-    "redux-thunk": "^2.1.0",
+    "redux-thunk": "^2.2.0",
     "reselect": "^2.5.4",
     "stylus": "^0.54.5",
-    "whatwg-fetch": "^1.0.0",
     "youtube-api": "^2.0.4"
   },
   "jest": {
