@@ -18,8 +18,8 @@ let seekTimeout
 
 export const Selectors = {
   queuedTracks: createSelector<any, any, any, any>(
-    (state, props) => state.Video.tracks,
-    (state, props) => state.Video.tracksIndex,
+    (state) => state.Video.tracks,
+    (state) => state.Video.tracksIndex,
     (tracks, index) => tracks.slice(index)),
 }
 

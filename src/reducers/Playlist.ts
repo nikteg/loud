@@ -100,7 +100,7 @@ const initialState = {
 }
 
 export default handleActions({
-  [AUTH_LOGOUT.complete.toString()]: (state, action) => initialState,
+  [AUTH_LOGOUT.done.type]: (state, action) => initialState,
   [Actions.loadAllActions.start.toString()]: (state, action) => ({
     ...state,
     allLoading: true,

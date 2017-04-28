@@ -18,8 +18,8 @@ import {
 import reducers from "./reducers"
 
 const translation = translator({
-  [AUTH_LOGIN.complete.toString()]: [push("/"), PlaylistActions.loadAll()],
-  [AUTH_LOGOUT.complete.toString()]: [push("/"), VideoActions.stop()],
+  [AUTH_LOGIN.done.type]: [push("/"), PlaylistActions.loadAll()],
+  [AUTH_LOGOUT.done.type]: [push("/"), VideoActions.stop()],
   [SearchActions.searchActions.error.toString()]: (a) => [NotificationActions.show(`Search error. ${a.payload}.`)],
   [VideoActions.error.toString()]: (a) => [NotificationActions.show(`Video error. Code: ${a.payload}`)],
 })

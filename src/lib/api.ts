@@ -44,7 +44,7 @@ export function request(route, token, method, params?): Promise<ApiResponse> {
         dispatch(unauthenticated())
       }
 
-      throw new Error(json.error)
+      return new Error(json.error)
     }
 
     return json

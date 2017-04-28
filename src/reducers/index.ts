@@ -12,12 +12,12 @@ import User from "./User"
 import Video from "./Video"
 
 export const titleSelector = createSelector<any, any, any, any, any, any, any, any>(
-  (state, props) => state.Video.state === "play",
-  (state, props) => state.Video.tracks[state.Video.tracksIndex],
-  (state, props) => (state.routing.locationBeforeTransitions && state.routing.locationBeforeTransitions.pathname) || "",
-  (state, props) => state.Track.track,
-  (state, props) => state.User.user,
-  (state, props) => state.Playlist.playlist,
+  (state) => state.Video.state === "play",
+  (state) => state.Video.tracks[state.Video.tracksIndex],
+  (state) => (state.routing.locationBeforeTransitions && state.routing.locationBeforeTransitions.pathname) || "",
+  (state) => state.Track.track,
+  (state) => state.User.user,
+  (state) => state.Playlist.playlist,
   (playing, playingTrack, pathname, track, user, playlist) => {
   if (playingTrack && playing) {
     return `${playingTrack.artist} - ${playingTrack.name}`

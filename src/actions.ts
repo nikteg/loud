@@ -1,21 +1,27 @@
-import { createNetworkAction } from "lib/utils"
-import { createAction } from "redux-actions"
+import actionCreatorFactory from "typescript-fsa"
 
-export const AUTH_LOGIN = createNetworkAction("AUTH_LOGIN")
-export const AUTH_REGISTER = createNetworkAction("AUTH_REGISTER")
-export const AUTH_LOGOUT = createNetworkAction("AUTH_LOGOUT")
-export const AUTH_TOKEN = createNetworkAction("AUTH_TOKEN")
-export const AUTH_SHOW = createAction("AUTH_SHOW")
-export const AUTH_UNAUTHENTICATED = createAction("AUTH_UNAUTHENTICATED")
+const authActionCreator = actionCreatorFactory("AUTH")
+const playlistActionCreator = actionCreatorFactory("PLAYLIST")
 
-export const PLAYLIST_LOAD_ALL = createNetworkAction("PLAYLIST_LOAD_ALL")
+export const AUTH_LOGIN = authActionCreator.async<
+  { username: string, password: string },
+  { id: number, username: string, token: string },
+  any
+>("LOGIN")
+export const AUTH_REGISTER = authActionCreator.async<{ username: string, password: string }, any, any>("REGISTER")
+export const AUTH_LOGOUT = authActionCreator.async("LOGOUT")
+export const AUTH_TOKEN = authActionCreator.async<{ token: string }, any, any>("TOKEN")
+export const AUTH_SHOW = authActionCreator<boolean>("SHOW")
+export const AUTH_UNAUTHENTICATED = authActionCreator("UNAUTHENTICATED")
 
-export function login(username, password) { return AUTH_LOGIN.start({ username, password }) }
-export function register(username, password) { return AUTH_REGISTER.start({ username, password }) }
-export function logout() { return AUTH_LOGOUT.start() }
-export function token(token) { return AUTH_TOKEN.start(token) }
+export const PLAYLIST_LOAD_ALL = playlistActionCreator.async("LOAD_ALL")
+
+export function login(username, password) { return { type: AUTH_LOGIN.type, payload: { username, password } } }
+export function register(username, password) { return AUTH_REGISTER.started({ username, password }) }
+export function logout() { return AUTH_LOGOUT.started(null) }
+export function token(token) { return AUTH_TOKEN.started(token) }
 export function showLoginPopup() { return AUTH_SHOW(true) }
 export function hideLoginPopup() { return AUTH_SHOW(false) }
 export function unauthenticated() { return AUTH_UNAUTHENTICATED() }
 
-export function loadAllPlaylists() { return PLAYLIST_LOAD_ALL.start() }
+export function loadAllPlaylists() { return PLAYLIST_LOAD_ALL.started(null) }

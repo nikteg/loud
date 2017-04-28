@@ -9,7 +9,7 @@ import * as Icons from "../../components/Icons"
 import Dropdown from "./"
 
 const playlistsDropdownItems = createSelector<any, any, any[]>(
-  (state, props) => state.Playlist.playlists,
+  (state) => state.Playlist.playlists,
   (playlists) => playlists.map((playlist) => ({
     data: playlist.id,
     name: <span><Icons.Music />{playlist.name}</span>,

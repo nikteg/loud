@@ -10,42 +10,42 @@ import {
 } from "../actions"
 
 export default handleActions({
-  [AUTH_LOGIN.start.toString()]: (state, action) => ({
+  [AUTH_LOGIN.started.type]: (state, action) => ({
     ...state,
     loading: true,
     error: null,
   }),
-  [AUTH_LOGIN.complete.toString()]: (state, action) => ({
+  [AUTH_LOGIN.done.type]: (state, action) => ({
     ...state,
     ...action.payload,
     popup: false,
   }),
-  [AUTH_LOGIN.error.toString()]: (state, action) => ({
+  [AUTH_LOGIN.failed.type]: (state, action) => ({
     ...state,
     error: action.payload,
     loading: false,
   }),
-  [AUTH_REGISTER.start.toString()]: (state, action) => ({
+  [AUTH_REGISTER.started.type]: (state, action) => ({
     ...state,
     loading: true,
     error: null,
   }),
-  [AUTH_REGISTER.complete.toString()]: (state, action) => ({
+  [AUTH_REGISTER.done.type]: (state, action) => ({
     ...state,
     ...action.payload,
     popup: false,
   }),
-  [AUTH_REGISTER.error.toString()]: (state, action) => ({
+  [AUTH_REGISTER.failed.type]: (state, action) => ({
     ...state,
     error: action.payload,
     loading: false,
   }),
-  [AUTH_TOKEN.complete.toString()]: (state, action) => ({
+  [AUTH_TOKEN.done.type]: (state, action) => ({
     ...state,
     ...action.payload,
     popup: false,
   }),
-  [AUTH_LOGOUT.complete.toString()]: (state, action) => ({
+  [AUTH_LOGOUT.done.type]: (state, action) => ({
     ...state,
     id: 0,
     username: null,
@@ -53,14 +53,14 @@ export default handleActions({
     loading: false,
     error: null,
   }),
-  [AUTH_UNAUTHENTICATED.toString()]: (state, action) => ({
+  [AUTH_UNAUTHENTICATED.type]: (state, action) => ({
     ...state,
     token: null,
     loading: false,
     error: null,
     popup: true,
   }),
-  [AUTH_SHOW.toString()]: (state, action) => ({
+  [AUTH_SHOW.type]: (state, action) => ({
     ...state,
     popup: action.payload,
     token: null,
